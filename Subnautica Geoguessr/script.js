@@ -26,8 +26,8 @@ fetch("data/locations.json")
 // Map setup
 const map = L.map("map", {
   crs: L.CRS.Simple,
-  minZoom: -4,
-  maxZoom: 1.5,
+  minZoom: -3.7,
+  maxZoom: 3,
   attributionControl: false,
   zoomControl: true,
 });
@@ -201,3 +201,4 @@ function restartGame() {
   newRound();
   startTotalTimer();
 }
+
