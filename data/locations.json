@@ -1,0 +1,17 @@
+[
+  {
+    "image": "images/GTC_1.jpg",
+    "coords": { "x": -147, "z": -465 },
+    "biome": "Safe Shallows"
+  },
+  {
+    "image": "images/GTC_2.jpg",
+    "coords": { "x": -146, "z": -414 },
+    "biome": "Safe Shallows"
+  },
+  {
+    "image": "images/GTC_3.jpg",
+    "coords": { "x": -115, "z": -455 },
+    "biome": "Safe Shallows"
+  }
+]
