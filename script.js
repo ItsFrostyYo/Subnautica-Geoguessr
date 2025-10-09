@@ -33,7 +33,7 @@ const map = L.map("map", {
 });
 
 const mapBounds = [[0, 0], [4096, 4096]];
-L.imageOverlay("images/Map.png", mapBounds).addTo(map);
+L.imageOverlay("./images/Map.png", mapBounds).addTo(map);
 
 map.fitBounds(mapBounds);
 map.setMaxBounds(mapBounds);
@@ -201,3 +201,4 @@ function restartGame() {
   newRound();
   startTotalTimer();
 }
+
