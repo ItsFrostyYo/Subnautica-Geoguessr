@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Subnautica GeoGuessr — Web Edition (Map Update Oct 9)</title>
+<title>Subnautica GeoGuessr — Web Edition (Smooth Zoom Update)</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
   html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
@@ -21,13 +21,9 @@
 </head>
 <body>
   <img id="photo" src="" alt="photo">
-  <div id="mapContainer">
-    <div id="map"></div>
-  </div>
+  <div id="mapContainer"><div id="map"></div></div>
 
-  <div id="controlsTop">
-    <button id="submit">Submit Guess (Space)</button>
-  </div>
+  <div id="controlsTop"><button id="submit">Submit Guess (Space)</button></div>
 
   <div id="topInfo">
     <div id="roundDisplay">Round 1 / 5</div>
@@ -49,8 +45,8 @@ import { saveScore } from './supabase.js';
 (() => {
   const WORLD_MIN_X = -2000, WORLD_MAX_X = 2000;
   const WORLD_MIN_Z = -2000, WORLD_MAX_Z = 2000;
-
   let IMG_W = 4096, IMG_H = 4096;
+
   let places = [], current = 0, totalScore = 0, guess = null;
   let leafletMap = null, guessMarker = null, actualMarker = null;
   let totalElapsed = 0, roundStartTime = 0, timerInterval = null;
@@ -58,9 +54,8 @@ import { saveScore } from './supabase.js';
   const selectedBiome = localStorage.getItem('selectedBiome') || 'Safe Shallows';
   const username = sessionStorage.getItem("username") || "Unknown";
 
-  // --- Protection flags & constants ---
-  let mapLocked = false;      // blocks map clicks after guess
-  let roundLocked = false;    // enforces 750ms freeze after round ends
+  let mapLocked = false;
+  let roundLocked = false;
   const MAX_ROUNDS = 5;
   const MAX_SCORE_ALLOWED = 25000;
 
@@ -71,7 +66,6 @@ import { saveScore } from './supabase.js';
   const summaryButtons = document.getElementById('summaryButtons');
   const result = document.getElementById('result');
 
-  // Back to menu button (unchanged)
   const backBtn = document.createElement("button");
   backBtn.textContent = "Back to Menu";
   backBtn.style.position = "fixed";
@@ -81,7 +75,6 @@ import { saveScore } from './supabase.js';
   backBtn.onclick = () => window.location.href = "index.html";
   document.body.appendChild(backBtn);
 
-  // --- Helper functions (unchanged) ---
   function formatTime(ms) {
     const totalSeconds = ms / 1000;
     const minutes = Math.floor(totalSeconds / 60);
@@ -122,262 +115,137 @@ import { saveScore } from './supabase.js';
     return [py, px];
   }
 
-  function distanceWorld(a, b) { return Math.hypot(a.x - b.x, a.z - b.z); }
-  function scoreFromDistance(d) {
-    const max = 5000;
-    if (d <= 10) return max;
-    const scaled = Math.max(0, max - (d - 10) * 1.25);
-    return Math.round(scaled);
-  }
+  function distanceWorld(a,b){return Math.hypot(a.x-b.x,a.z-b.z);}
+  function scoreFromDistance(d){const max=5000;if(d<=10)return max;return Math.round(Math.max(0,max-(d-10)*1.25));}
 
-  // --- Map interaction helpers (minimal, safe) ---
-  function disableMapInteractions() {
-    if (!leafletMap) return;
-    try {
-      leafletMap.dragging.disable();
-      leafletMap.scrollWheelZoom.disable();
-      leafletMap.doubleClickZoom.disable();
-      leafletMap.boxZoom.disable();
-      leafletMap.keyboard.disable();
-      leafletMap.touchZoom.disable();
-    } catch (e) { /* ignore */ }
-  }
-  function enableMapInteractions() {
-    if (!leafletMap) return;
-    try {
-      leafletMap.dragging.enable();
-      leafletMap.scrollWheelZoom.enable();
-      leafletMap.doubleClickZoom.enable();
-      leafletMap.boxZoom.enable();
-      leafletMap.keyboard.enable();
-      leafletMap.touchZoom.enable();
-    } catch (e) { /* ignore */ }
-  }
+  function disableMapInteractions(){try{leafletMap.dragging.disable();leafletMap.scrollWheelZoom.disable();leafletMap.doubleClickZoom.disable();leafletMap.boxZoom.disable();leafletMap.keyboard.disable();leafletMap.touchZoom.disable();}catch{}}
+  function enableMapInteractions(){try{leafletMap.dragging.enable();leafletMap.scrollWheelZoom.enable();leafletMap.doubleClickZoom.enable();leafletMap.boxZoom.enable();leafletMap.keyboard.enable();leafletMap.touchZoom.enable();}catch{}}
 
-  // --- Load locations (unchanged except MAX_ROUNDS slice) ---
-  async function loadLocations() {
-    try {
-      const res = await fetch(`locations.json?cacheBust=${Date.now()}`);
-      const data = await res.json();
-      const biomeTarget = (selectedBiome || "").trim().toLowerCase();
-
-      let source;
-      if (biomeTarget === "entire map") {
-        source = data; // use all
-      } else {
-        const filtered = data.filter(
-          item => (item.biome || "").trim().toLowerCase() === biomeTarget
-        );
-        source = filtered.length ? filtered : [];
-      }
-
-      if (!source.length) {
-        alert(`No locations found for "${selectedBiome}".`);
-        return; // do not start game
-      }
-
-      const shuffled = source.sort(() => 0.5 - Math.random());
-      // defensive: ensure at most MAX_ROUNDS places
-      places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(item => ({
-        ...item,
-        coords: { x: Number(item.coords.x), z: -Number(item.coords.z) }
-      }));
-
-      totalScore = 0;
-      totalElapsed = 0;
-      times.length = 0;
-
-      startRound(0);
-    } catch (err) {
-      alert('Could not load locations.json');
-      console.error(err);
+  async function loadLocations(){
+    const res = await fetch(`locations.json?cacheBust=${Date.now()}`);
+    const data = await res.json();
+    const biomeTarget = (selectedBiome || "").trim().toLowerCase();
+    let source;
+    if(biomeTarget==="entire map") source=data;
+    else{
+      const filtered=data.filter(i=>(i.biome||"").trim().toLowerCase()===biomeTarget);
+      source=filtered.length?filtered:[];
     }
+    if(!source.length){alert(`No locations found for "${selectedBiome}".`);return;}
+    const shuffled=source.sort(()=>0.5-Math.random());
+    places=shuffled.slice(0,Math.min(MAX_ROUNDS,shuffled.length)).map(i=>({...i,coords:{x:Number(i.coords.x),z:-Number(i.coords.z)}}));
+    totalScore=0;totalElapsed=0;times.length=0;
+    startRound(0);
   }
 
-  // --- startRound: unchanged behavior except enable interactions & guards ---
-  function startRound(i) {
-    // hard cap: never start if beyond MAX_ROUNDS or beyond places length
-    if (i >= MAX_ROUNDS) return;
-    if (i >= places.length) return;
-
-    current = i;
-    roundDisplay.textContent = `Round ${i + 1} / ${places.length}`;
-    guess = null; result.textContent = '';
-
-    // unlock for new round
-    mapLocked = false;
-    roundLocked = false;
+  function startRound(i){
+    if(i>=MAX_ROUNDS||i>=places.length)return;
+    current=i;
+    roundDisplay.textContent=`Round ${i+1} / ${places.length}`;
+    guess=null;result.textContent='';
+    mapLocked=false;roundLocked=false;
     enableMapInteractions();
-
-    if (leafletMap) {
-      if (guessMarker) leafletMap.removeLayer(guessMarker);
-      if (actualMarker) leafletMap.removeLayer(actualMarker);
-      leafletMap.setView([IMG_H / 2, IMG_W / 2], -3.3);
+    if(leafletMap){
+      if(guessMarker)leafletMap.removeLayer(guessMarker);
+      if(actualMarker)leafletMap.removeLayer(actualMarker);
+      leafletMap.flyTo([IMG_H/2,IMG_W/2], -3.3, {duration: 0.5}); // smooth fly to start
     }
-
-    document.getElementById('photo').src = places[i].image;
-    timerDisplay.textContent = '0:00.00';
-
-    // start timer when round begins
+    document.getElementById('photo').src=places[i].image;
+    timerDisplay.textContent='0:00.00';
     startTimer();
   }
 
-  // --- showSummaryRound: enforce 750ms freeze before allowing continue ---
-  function showSummaryRound(d, s) {
+  function showSummaryRound(d,s){
     stopTimer();
-
-    // show overlay immediately and block interactions for freeze
-    summaryOverlay.style.display = 'flex';
-    summaryText.innerHTML = `
-      <h2>Round ${current + 1} Complete</h2>
-      <p>Distance: ${Math.round(d)} m</p>
-      <p>Score: ${s}</p>
-      <p>Loading next round...</p>`;
-
-    // block input during freeze
-    roundLocked = true;
-    summaryOverlay.onclick = null;
-    // remove any previous key listener to be safe
-    document.removeEventListener('keydown', nextRoundKey);
-
-    setTimeout(() => {
-      // after freeze, allow continuing
-      roundLocked = false;
-      summaryText.innerHTML = `
-        <h2>Round ${current + 1} Complete</h2>
-        <p>Distance: ${Math.round(d)} m</p>
-        <p>Score: ${s}</p>
-        <p>Press Space or Click to Continue</p>`;
-      document.addEventListener('keydown', nextRoundKey, { once: true });
-      summaryOverlay.onclick = () => {
-        document.removeEventListener('keydown', nextRoundKey);
-        nextRound();
-      };
-    }, 750);
+    summaryOverlay.style.display='flex';
+    summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Loading next round...</p>`;
+    roundLocked=true;
+    summaryOverlay.onclick=null;
+    document.removeEventListener('keydown',nextRoundKey);
+    setTimeout(()=>{
+      roundLocked=false;
+      summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Press Space or Click to Continue</p>`;
+      document.addEventListener('keydown',nextRoundKey,{once:true});
+      summaryOverlay.onclick=()=>{document.removeEventListener('keydown',nextRoundKey);nextRound();};
+    },500);
   }
 
-  function nextRoundKey(e) { if (e.code === 'Space' && !roundLocked) nextRound(); }
-
-  function nextRound() {
-    // if locked for any reason, do nothing
-    if (roundLocked) return;
-
-    summaryOverlay.onclick = null;
-    summaryOverlay.style.display = 'none';
+  function nextRoundKey(e){if(e.code==='Space'&&!roundLocked)nextRound();}
+  function nextRound(){
+    if(roundLocked)return;
+    summaryOverlay.onclick=null;
+    summaryOverlay.style.display='none';
     current++;
-    if (current < places.length && current < MAX_ROUNDS) startRound(current);
+    if(current<places.length&&current<MAX_ROUNDS)startRound(current);
     else showFinalSummary();
   }
 
-  // --- Final summary: do not send scores > MAX_SCORE_ALLOWED ---
-  async function showFinalSummary() {
-    const totalTimeSec = Number((totalElapsed / 1000).toFixed(2));
-
-    summaryOverlay.style.display = 'flex';
-    summaryText.innerHTML = `
-      <h2>Game Over</h2>
-      <p>Username: ${username}</p>
-      <p>Biome: ${selectedBiome}</p>
-      <p>Total Score: ${totalScore}</p>
-      <p>Total Time: ${formatTime(totalElapsed)}</p>`;
-
-    summaryButtons.innerHTML = '';
-
-    if (totalScore <= MAX_SCORE_ALLOWED) {
-      try {
-        await saveScore(username, selectedBiome, totalScore, totalTimeSec);
-      } catch (err) {
-        console.error("Error saving score:", err);
-      }
-    } else {
-      console.warn("Rejected invalid total score (not sent):", totalScore);
-    }
-
-    const againBtn = document.createElement('button');
-    againBtn.textContent = 'Play Again';
-    againBtn.onclick = () => {
-      summaryOverlay.style.display = 'none';
-      loadLocations();
-    };
-    summaryButtons.appendChild(againBtn);
-
-    const dashBtn = document.createElement('button');
-    dashBtn.textContent = 'Return to Dashboard';
-    dashBtn.onclick = () => window.location.href = 'index.html';
-    summaryButtons.appendChild(dashBtn);
+  async function showFinalSummary(){
+    const totalTimeSec=Number((totalElapsed/1000).toFixed(2));
+    summaryOverlay.style.display='flex';
+    summaryText.innerHTML=`<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${selectedBiome}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
+    summaryButtons.innerHTML='';
+    if(totalScore<=MAX_SCORE_ALLOWED){
+      try{await saveScore(username,selectedBiome,totalScore,totalTimeSec);}catch(e){console.error("Error saving score:",e);}
+    }else console.warn("Rejected invalid total score:",totalScore);
+    const again=document.createElement('button');again.textContent='Play Again';again.onclick=()=>{summaryOverlay.style.display='none';loadLocations();};
+    const dash=document.createElement('button');dash.textContent='Return to Dashboard';dash.onclick=()=>window.location.href='index.html';
+    summaryButtons.appendChild(again);summaryButtons.appendChild(dash);
   }
 
-  // --- submitGuess: immediate lock, immediate zoom reset, then showSummaryRound after 400ms ---
-  function submitGuess() {
-    // block if locked
-    if (mapLocked || roundLocked) return;
-
-    if (!guess) { alert('Place a guess first!'); return; }
-
-    // Immediately lock map + round to prevent extra interactions
-    mapLocked = true;
-    roundLocked = true;
+  function submitGuess(){
+    if(mapLocked||roundLocked)return;
+    if(!guess){alert('Place a guess first!');return;}
+    mapLocked=true;roundLocked=true;
     disableMapInteractions();
-
-    const actual = places[current].coords;
-    const d = distanceWorld(actual, guess);
-    const s = scoreFromDistance(d);
-    totalScore += s;
-    result.textContent = `Distance: ${Math.round(d)} m — Score: ${s}`;
-
-    const [py, px] = worldToPixel(actual.x, actual.z);
-    if (leafletMap) {
-      if (actualMarker) leafletMap.removeLayer(actualMarker);
-      actualMarker = L.circleMarker([py, px], { radius:6, color:'red', fillColor:'red', fillOpacity:0.9 }).addTo(leafletMap);
-
-      // reset zoom immediately after guess (this is critical to prevent extra guesses)
-      leafletMap.setView([IMG_H / 2, IMG_W / 2], -3.3);
+    const actual=places[current].coords;
+    const d=distanceWorld(actual,guess);
+    const s=scoreFromDistance(d);
+    totalScore+=s;
+    result.textContent=`Distance: ${Math.round(d)} m — Score: ${s}`;
+    const [py,px]=worldToPixel(actual.x,actual.z);
+    if(leafletMap){
+      if(actualMarker)leafletMap.removeLayer(actualMarker);
+      actualMarker=L.circleMarker([py,px],{radius:6,color:'red',fillColor:'red',fillOpacity:0.9}).addTo(leafletMap);
+      leafletMap.flyTo([py,px], -0.75, {duration: 0.5, easeLinearity: 0.25}); // smooth zoom-in animation
     }
-
-    // keep the same small delay before showing summary (preserves baseline feel)
-    setTimeout(()=> showSummaryRound(d, s), 400);
+    setTimeout(()=>showSummaryRound(d,s),400);
   }
 
-  // --- initMap (keeps exact baseline behavior) ---
-  function initMap() {
-    leafletMap = L.map('map', {
-      crs: L.CRS.Simple,
-      minZoom: -3.3,
-      maxZoom: 2.3,
-      attributionControl: false,
+  function initMap(){
+    leafletMap=L.map('map',{
+      crs:L.CRS.Simple,
+      minZoom:-3.3,
+      maxZoom:3,
+      zoomSnap:0.2,
+      zoomDelta:0.2,
+      wheelPxPerZoomLevel:150,
+      zoomAnimation:true,
+      zoomAnimationThreshold:5,
+      attributionControl:false
     });
-    const bounds = [[0,0],[IMG_H,IMG_W]];
-    L.imageOverlay('map.png', bounds).addTo(leafletMap);
+    const bounds=[[0,0],[IMG_H,IMG_W]];
+    L.imageOverlay('map.png',bounds).addTo(leafletMap);
     leafletMap.fitBounds(bounds);
     leafletMap.setMaxBounds(bounds);
-    leafletMap.on('click', e => {
-      // obey locks
-      if (mapLocked || roundLocked) return;
-      const px = e.latlng.lng, py = e.latlng.lat;
-      guess = pixelToWorld(px, py);
-      if (guessMarker) leafletMap.removeLayer(guessMarker);
-      guessMarker = L.circleMarker([py, px], {
-        radius:6, color:'cyan', fillColor:'cyan', fillOpacity:0.9
-      }).addTo(leafletMap);
+    leafletMap.on('click',e=>{
+      if(mapLocked||roundLocked)return;
+      const px=e.latlng.lng,py=e.latlng.lat;
+      guess=pixelToWorld(px,py);
+      if(guessMarker)leafletMap.removeLayer(guessMarker);
+      guessMarker=L.circleMarker([py,px],{radius:6,color:'cyan',fillColor:'cyan',fillOpacity:0.9}).addTo(leafletMap);
     });
   }
 
-  // submit and spacebar handler (respects locks inside submitGuess)
-  document.getElementById('submit').addEventListener('click', submitGuess);
-  document.addEventListener('keydown', e => {
-    if (e.code === 'Space' && summaryOverlay.style.display === 'none' && !roundLocked) submitGuess();
+  document.getElementById('submit').addEventListener('click',submitGuess);
+  document.addEventListener('keydown',e=>{
+    if(e.code==='Space'&&summaryOverlay.style.display==='none'&&!roundLocked)submitGuess();
   });
 
-  // --- image preload + init (exact baseline order restored) ---
-  const img = new Image();
-  img.onload = () => { IMG_W = img.width; IMG_H = img.height; initMap(); loadLocations(); };
-  img.src = 'map.png';
-
-  // dev flag so you can confirm correct file loaded in console
-  window.__SubnauticaGeoFix = true;
-  console.log("Subnautica GeoFix loaded — protections: mapLocked, roundLocked, zoom reset, 750ms freeze, score cap.");
+  const img=new Image();
+  img.onload=()=>{IMG_W=img.width;IMG_H=img.height;initMap();loadLocations();};
+  img.src='map.png';
 })();
 </script>
 </body>
 </html>
-
