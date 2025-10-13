@@ -21,7 +21,7 @@ export class GameMap {
   };
 
   this. IMAGES = {
-        main: './map_main.png',
+        main: './map_main.webp',
         lost_river: './map_lost_river.png',
         inactive_lavazone: './map_inactive_lavazone.png',
         lava_lakes: './map_lava_lakes.png',
@@ -73,7 +73,7 @@ export class GameMap {
     }
   };
 
-  this.image.src = options.imageSrc || "map_main.png";
+  this.image.src = options.imageSrc || "map_main.webp";
 
   // events
   this._setupEvents();
