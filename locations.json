@@ -1568,30 +1568,6 @@
     "biome": "Safe Shallows"
   },
   {
-    "image": "images/screenshot_20251012_130357.png",
-    "coords": {
-      "x": -19,
-      "z": 196
-    },
-    "biome": "Kelp Forest"
-  },
-  {
-    "image": "images/screenshot_20251012_130845.png",
-    "coords": {
-      "x": 450,
-      "z": 999
-    },
-    "biome": "Kelp Forest"
-  },
-  {
-    "image": "images/screenshot_20251012_132039.png",
-    "coords": {
-      "x": 436,
-      "z": 1159
-    },
-    "biome": "Kelp Forest"
-  },
-  {
     "image": "images/screenshot_20251012_154911.png",
     "coords": {
       "x": 127,
@@ -3471,4 +3447,5 @@
     },
     "biome": "Kelp Forest"
   }
+
 ]
