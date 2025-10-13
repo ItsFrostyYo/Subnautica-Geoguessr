@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Subnautica GeoGuessr — Web Edition (Smooth Zoom + Canvas Map)</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<title>Subnautica GeoGuessr — Web Edition (Smooth Zoom Update)</title>
 <style>
   html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
   #photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
   #mapContainer{position:fixed;right:20px;bottom:20px;width:420px;height:420px;border-radius:10px;border:2px solid #0ff;overflow:hidden;z-index:40;background:#00161a}
-  #mapCanvas{width:100%;height:100%;display:block}
+  #map{width:100%;height:100%}
   #controlsTop{position:fixed;right:20px;bottom:450px;display:flex;justify-content:center;width:420px;z-index:60;}
   button{background:#00ffff22;border:1px solid #00ffff88;color:#fff;padding:6px 10px;border-radius:6px;margin:0;cursor:pointer;font-size:14px;}
   button:hover{background:#00ffff55;}
@@ -20,11 +19,20 @@
 </style>
 </head>
 <body>
+  
+
   <img id="photo" src="" alt="photo">
+
   <div id="mapContainer">
-    <!-- canvas will be controlled by GameMap -->
-    <canvas id="mapCanvas"></canvas>
-  </div>
+    <select id="mapSelect" style="background:#111;color:#fff;border:1px solid #444;border-radius:6px;padding:4px 8px;">
+        <option value="main">Main</option>
+        <option value="lost_river">Lost River</option>
+        <option value="inactive_lavazone">Inactive Lava Zone</option>
+        <option value="lava_lakes">Lava Lakes</option>
+        <option value="jellyshroom">Jellyshroom</option>
+      </select>
+    <canvas id="mapCanvas" style="width:100%; height:100%; display:block;"></canvas>
+</div>
 
   <div id="controlsTop"><button id="submit">Submit Guess (Space)</button></div>
 
@@ -46,17 +54,9 @@ import { saveScore } from './supabase.js';
 import { GameMap } from './GameMap.js';
 
 (() => {
-  // constants for mapping back/forth with previous coordinate system
-  const WORLD_MIN = -2048;
-  const WORLD_MAX = 2048;
-  const WORLD_SPAN = WORLD_MAX - WORLD_MIN; // 4096
-  const MAP_WORLD_SIZE = 2048; // GameMap.worldSize
-
-  let IMG_W = 2048, IMG_H = 2048; // new map size
-
   let places = [], current = 0, totalScore = 0, guess = null;
-  let gameMap = null;
   let totalElapsed = 0, roundStartTime = 0, timerInterval = null;
+  let map = null;
   const times = [];
   const selectedBiome = localStorage.getItem('selectedBiome') || 'Safe Shallows';
   const username = sessionStorage.getItem("username") || "Unknown";
@@ -66,16 +66,17 @@ import { GameMap } from './GameMap.js';
   const MAX_ROUNDS = 5;
   const MAX_SCORE_ALLOWED = 25000;
 
+  const canvas = document.getElementById('mapCanvas');
+  const select = document.getElementById('mapSelect');
+  const mouseLabel = document.getElementById('mouseLabel');
+
   const timerDisplay = document.getElementById('timerDisplay');
   const roundDisplay = document.getElementById('roundDisplay');
   const summaryOverlay = document.getElementById('summaryOverlay');
   const summaryText = document.getElementById('summaryText');
   const summaryButtons = document.getElementById('summaryButtons');
   const result = document.getElementById('result');
-  const mapContainer = document.getElementById('mapContainer');
-  const canvas = document.getElementById('mapCanvas');
 
-  // back button
   const backBtn = document.createElement("button");
   backBtn.textContent = "Back to Menu";
   backBtn.style.position = "fixed";
@@ -85,7 +86,6 @@ import { GameMap } from './GameMap.js';
   backBtn.onclick = () => window.location.href = "index.html";
   document.body.appendChild(backBtn);
 
-  // helpers
   function formatTime(ms) {
     const totalSeconds = ms / 1000;
     const minutes = Math.floor(totalSeconds / 60);
@@ -102,6 +102,7 @@ import { GameMap } from './GameMap.js';
       timerDisplay.textContent = formatTime(elapsed);
     }, 31);
   }
+
   function stopTimer() {
     if (timerInterval) {
       clearInterval(timerInterval);
@@ -113,233 +114,151 @@ import { GameMap } from './GameMap.js';
     }
   }
 
-  // convert original world coords (wx in [-2048,2048]) -> GameMap world coords [0..2048]
-  function worldToGameMapCoords(wx, wz) {
-    // note: baseline used wz = -item.coords.z earlier; places will store coords already with that inversion
-    const gx = ((wx - WORLD_MIN) / WORLD_SPAN) * MAP_WORLD_SIZE;
-    const gy = ((wz - WORLD_MIN) / WORLD_SPAN) * MAP_WORLD_SIZE;
-    return { x: gx, y: gy };
-  }
+  function distanceWorld(a,b,c,d){return Math.hypot(a-c,b-d);}
+  function scoreFromDistance(d){const max=5000;if(d<=10)return max;return Math.round(Math.max(0,max-(d-10)*1.25));}
 
-  // convert from GameMap world coords -> original world coords
-  function gameMapToWorldCoords(gx, gy) {
-    const wx = (gx / MAP_WORLD_SIZE) * WORLD_SPAN + WORLD_MIN;
-    const wz = (gy / MAP_WORLD_SIZE) * WORLD_SPAN + WORLD_MIN;
-    return { x: wx, z: wz };
-  }
+  //function disableMapInteractions(){try{leafletMap.dragging.disable();leafletMap.scrollWheelZoom.disable();leafletMap.doubleClickZoom.disable();leafletMap.boxZoom.disable();leafletMap.keyboard.disable();leafletMap.touchZoom.disable();}catch{}}
+  //function enableMapInteractions(){try{leafletMap.dragging.enable();leafletMap.scrollWheelZoom.enable();leafletMap.doubleClickZoom.enable();leafletMap.boxZoom.enable();leafletMap.keyboard.enable();leafletMap.touchZoom.enable();}catch{}}
 
-  function distanceWorld(a, b) { return Math.hypot(a.x - b.x, a.z - b.z); }
-  function scoreFromDistance(d) {
-    const max = 5000;
-    if (d <= 10) return max;
-    const scaled = Math.max(0, max - (d - 10) * 1.25);
-    return Math.round(scaled);
-  }
-
-  function disableMapInteractions() {
-    // block canvas input
-    if (canvas) canvas.style.pointerEvents = "none";
-  }
-  function enableMapInteractions() {
-    if (canvas) canvas.style.pointerEvents = "auto";
-  }
-
-  // --- Load locations (convert coords to internal world coords) ---
-  async function loadLocations() {
-    try {
-      const res = await fetch(`locations.json?cacheBust=${Date.now()}`);
-      const data = await res.json();
-      const biomeTarget = (selectedBiome || "").trim().toLowerCase();
-
-      let source;
-      if (biomeTarget === "entire map") {
-        source = data; // use all
-      } else {
-        const filtered = data.filter(
-          item => (item.biome || "").trim().toLowerCase() === biomeTarget
-        );
-        source = filtered.length ? filtered : [];
-      }
-
-      if (!source.length) {
-        alert(`No locations found for "${selectedBiome}".`);
-        return;
-      }
-
-      const shuffled = source.sort(() => 0.5 - Math.random());
-
-      // convert coords: keep original-style "world coords" for scoring, but add gm coords for map display
-      places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(item => {
-        const wx = Number(item.coords.x);             // original X
-        const wz = -Number(item.coords.z);            // baseline used negative Z; keep same
-        const gm = worldToGameMapCoords(wx, wz);      // map-space coords
-        return {
-          ...item,
-          coords: { x: wx, z: wz },       // world coords kept for scoring
-          gmCoords: { x: gm.x, y: gm.y }  // GameMap world coords (0..2048)
-        };
-      });
-
-      totalScore = 0;
-      totalElapsed = 0;
-      times.length = 0;
-
-      startRound(0);
-    } catch (err) {
-      alert('Could not load locations.json');
-      console.error(err);
+  async function loadLocations(){
+    const res = await fetch(`locations.json?cacheBust=${Date.now()}`);
+    const data = await res.json();
+    const biomeTarget = (selectedBiome || "").trim().toLowerCase();
+    let source;
+    if(biomeTarget==="entire map") source=data;
+    else{
+      const filtered=data.filter(i=>(i.biome||"").trim().toLowerCase()===biomeTarget);
+      source=filtered.length?filtered:[];
     }
+    if(!source.length){alert(`No locations found for "${selectedBiome}".`);return;}
+    const shuffled=source.sort(()=>0.5-Math.random());
+    places=shuffled.slice(0,Math.min(MAX_ROUNDS,shuffled.length)).map(i=>({...i,coords:{x:Number(i.coords.x),z:-Number(i.coords.z)}}));
+    totalScore=0;totalElapsed=0;times.length=0;
+    startRound(0);
   }
 
-  // --- Map initialization ---
-  function initGameMap() {
-    gameMap = new GameMap(canvas, { imageSrc: "map.png", worldSize: MAP_WORLD_SIZE });
-
-    // patch resize behavior so canvas equals the #mapContainer dimensions (keeps small fixed map)
-    gameMap._externalResize = () => {
-      const rect = mapContainer.getBoundingClientRect();
-      // ensure integer pixel sizes
-      canvas.width = Math.max(100, Math.round(rect.width));
-      canvas.height = Math.max(100, Math.round(rect.height));
-      gameMap._draw();
-    };
-
-    // set initial camera so whole map is visible (a comfortable zoom-out)
-    // choose a target zoom that shows the full map inside the container
-    // small container -> target zoom < 1 to fit; try a safe value
-    gameMap.camera.targetZoom = 0.45;
-    gameMap.camera.zoom = 0.45;
-    gameMap.camera.x = MAP_WORLD_SIZE / 2;
-    gameMap.camera.y = MAP_WORLD_SIZE / 2;
-
-    // ensure pointer events are allowed initially
-    canvas.style.pointerEvents = "auto";
-  }
-
-  // --- startRound: mirrors your baseline behavior ---
-  function startRound(i) {
-    if (i >= MAX_ROUNDS || i >= places.length) return;
-    current = i;
-    roundDisplay.textContent = `Round ${i + 1} / ${places.length}`;
-    guess = null;
-    result.textContent = '';
-    mapLocked = false;
-    roundLocked = false;
-    enableMapInteractions();
-
-    if (gameMap) {
-      // clear markers
-      gameMap.guessMarker = null;
-      gameMap.actualMarker = null;
-
-      // smooth fly to center and a comfortable zoom for the small container
-      // center is (MAP_WORLD_SIZE/2, MAP_WORLD_SIZE/2)
-      // do it by setting an anchor so GameMap handles smooth motion
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-      gameMap._zoomAnchor = { sx: cx, sy: cy, wx: MAP_WORLD_SIZE / 2, wy: MAP_WORLD_SIZE / 2 };
-      // target zoom chosen to show whole map in 420x420 container; adjust easily if you want
-      gameMap.camera.targetZoom = 0.21;
+  function startRound(i){
+    if(i>=MAX_ROUNDS||i>=places.length)return;
+    current=i;
+    roundDisplay.textContent=`Round ${i+1} / ${places.length}`;
+    guess=null;result.textContent='';
+    mapLocked=false;roundLocked=false;
+    //enableMapInteractions();
+    if(map){
+      map.drawActualMarker = false;
+      map.drawLine = false;
+      map.clearGuessMarker();
+      map.flyTo([0,0], -3.3, {duration: 0.5}); // smooth fly to start
     }
-
-    document.getElementById('photo').src = places[i].image;
-    timerDisplay.textContent = '0:00.00';
+    document.getElementById('photo').src=places[i].image;
+    timerDisplay.textContent='0:00.00';
     startTimer();
   }
 
-  // --- summary/round flow (500ms freeze) ---
-  function showSummaryRound(d, s) {
+  function showSummaryRound(d,s){
     stopTimer();
-    summaryOverlay.style.display = 'flex';
-    summaryText.innerHTML = `<h2>Round ${current + 1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Loading next round...</p>`;
-    roundLocked = true;
-    summaryOverlay.onclick = null;
-    document.removeEventListener('keydown', nextRoundKey);
-    setTimeout(() => {
-      roundLocked = false;
-      summaryText.innerHTML = `<h2>Round ${current + 1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Press Space or Click to Continue</p>`;
-      document.addEventListener('keydown', nextRoundKey, { once: true });
-      summaryOverlay.onclick = () => { document.removeEventListener('keydown', nextRoundKey); nextRound(); };
-    }, 500); // 500ms freeze
+    summaryOverlay.style.display='flex';
+    summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Loading next round...</p>`;
+    roundLocked=true;
+    summaryOverlay.onclick=null;
+    document.removeEventListener('keydown',nextRoundKey);
+    setTimeout(()=>{
+      roundLocked=false;
+      summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Press Space or Click to Continue</p>`;
+      document.addEventListener('keydown',nextRoundKey,{once:true});
+      summaryOverlay.onclick=()=>{document.removeEventListener('keydown',nextRoundKey);nextRound();};
+    },500);
   }
 
-  function nextRoundKey(e) { if (e.code === 'Space' && !roundLocked) nextRound(); }
-
-  function nextRound() {
-    if (roundLocked) return;
-    summaryOverlay.onclick = null;
-    summaryOverlay.style.display = 'none';
+  function nextRoundKey(e){if(e.code==='Space'&&!roundLocked)nextRound();}
+  function nextRound(){
+    if(roundLocked)return;
+    summaryOverlay.onclick=null;
+    summaryOverlay.style.display='none';
     current++;
-    if (current < places.length && current < MAX_ROUNDS) startRound(current);
+    if(current<places.length&&current<MAX_ROUNDS)startRound(current);
     else showFinalSummary();
   }
 
-  // --- final summary and save (reject > MAX_SCORE_ALLOWED) ---
-  async function showFinalSummary() {
-    const totalTimeSec = Number((totalElapsed / 1000).toFixed(2));
-    summaryOverlay.style.display = 'flex';
-    summaryText.innerHTML = `<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${selectedBiome}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
-    summaryButtons.innerHTML = '';
-    if (totalScore <= MAX_SCORE_ALLOWED) {
-      try { await saveScore(username, selectedBiome, totalScore, totalTimeSec); } catch (e) { console.error("Error saving score:", e); }
-    } else {
-      console.warn("Rejected invalid total score:", totalScore);
-    }
-    const again = document.createElement('button'); again.textContent = 'Play Again'; again.onclick = () => { summaryOverlay.style.display = 'none'; loadLocations(); };
-    const dash = document.createElement('button'); dash.textContent = 'Return to Dashboard'; dash.onclick = () => window.location.href = 'index.html';
-    summaryButtons.appendChild(again); summaryButtons.appendChild(dash);
+  async function showFinalSummary(){
+    const totalTimeSec=Number((totalElapsed/1000).toFixed(2));
+    summaryOverlay.style.display='flex';
+    summaryText.innerHTML=`<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${selectedBiome}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
+    summaryButtons.innerHTML='';
+    if(totalScore<=MAX_SCORE_ALLOWED){
+      try{await saveScore(username,selectedBiome,totalScore,totalTimeSec);}catch(e){console.error("Error saving score:",e);}
+    }else console.warn("Rejected invalid total score:",totalScore);
+    const again=document.createElement('button');again.textContent='Play Again';again.onclick=()=>{summaryOverlay.style.display='none';loadLocations();};
+    const dash=document.createElement('button');dash.textContent='Return to Dashboard';dash.onclick=()=>window.location.href='index.html';
+    summaryButtons.appendChild(again);summaryButtons.appendChild(dash);
   }
 
-  // --- submitGuess: use GameMap.guessMarker, convert coords, lock map, show actual marker and animate ---
-  function submitGuess() {
-    if (mapLocked || roundLocked) return;
+  function submitGuess(){
+    if(mapLocked||roundLocked)return;
+    if(!map.guessMarker){alert('Place a guess first!');return;}
+    mapLocked=true;roundLocked=true;
+    //disableMapInteractions();
+    const actual=places[current].coords;
+    const d=distanceWorld(actual.x, actual.z, map.guessMarker.x, map.guessMarker.y);
+    const s=scoreFromDistance(d);
+    totalScore+=s;
+    result.textContent=`Distance: ${Math.round(d)} m — Score: ${s}`;
 
-    if (!gameMap || !gameMap.guessMarker) { alert('Place a guess first!'); return; }
-
-    // Immediately lock map & round
-    mapLocked = true;
-    roundLocked = true;
-    disableMapInteractions();
-
-    // get world coords for actual and guess (original [-2048..2048] space)
-    const actualWorld = { x: places[current].coords.x, z: places[current].coords.z };
-    const guessGm = gameMap.guessMarker; // in [0..MAP_WORLD_SIZE]
-    const guessWorld = gameMapToWorldCoords(guessGm.x, guessGm.y); // {x,z} in [-2048..2048]
-
-    const d = distanceWorld(actualWorld, guessWorld);
-    const s = scoreFromDistance(d);
-    totalScore += s;
-    result.textContent = `Distance: ${Math.round(d)} m — Score: ${s}`;
-
-    // set actual marker on the GameMap (in GameMap coords)
-    const actualGm = worldToGameMapCoords(actualWorld.x, actualWorld.z);
-    if (gameMap) {
-      gameMap.actualMarker = { x: actualGm.x, y: actualGm.y };
-      // animate smoothly to the actual marker and zoom in a bit
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-      // decide a zoom-in target (bigger than default). These values are tuned to container size.
-      gameMap._zoomAnchor = { sx: cx, sy: cy, wx: actualGm.x, wy: actualGm.y };
-      // zoom in moderately
-      gameMap.camera.targetZoom = Math.min(gameMap.maxZoom, 1.6);
+    if(map){
+      map.clearActualMarker();
+      map.setActualMarker(actual.x, actual.z);
+      map.drawActualMarker = true;
+      map.drawLine = true;
+      map.flyTo([actual.z,actual.x], 0.75, {duration: 0.5, easeLinearity: 0.25}); // smooth zoom-in animation
     }
-
-    // small delay before showing summary (preserve baseline feel)
-    setTimeout(() => showSummaryRound(d, s), 400);
+    setTimeout(()=>showSummaryRound(d,s),400);
   }
 
-  // --- init map & load ---
-  initGameMap();
-  loadLocations();
+  function initMap(){
+     map = new GameMap(canvas, {
+        worldMin: -2048,
+        worldMax:  2048,
+        zoomSpeed: 1.15,
+        zoomLerpSpeed: 0.1,
+        minZoom: 0.1,
+        maxZoom: 10
+    });
 
-  // submit and spacebar handlers
-  document.getElementById('submit').addEventListener('click', submitGuess);
-  document.addEventListener('keydown', e => {
-    if (e.code === 'Space' && summaryOverlay.style.display === 'none' && !roundLocked) submitGuess();
+    const resizeCanvas = () => {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width  = Math.round(rect.width  * dpr);
+        canvas.height = Math.round(rect.height * dpr);
+      };
+      resizeCanvas();
+      new ResizeObserver(resizeCanvas).observe(document.body);
+
+      select.addEventListener('change', () => {
+        const key = select.value;
+        map.guessMarker = null;
+        map.clearActualMarker?.();
+
+        map.setMap({ imageSrc: map.IMAGES[key], recenter: true });
+
+        map.flyToWorld?.(map.camera.x, map.camera.y, null, { duration: 0.35, easeLinearity: 0.25 });
+      });
+
+      function getLocal(e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width  / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+      }
+  }
+
+  document.getElementById('submit').addEventListener('click',submitGuess);
+  document.addEventListener('keydown',e=>{
+    if(e.code==='Space'&&summaryOverlay.style.display==='none'&&!roundLocked)submitGuess();
   });
 
-  // expose for debugging if needed
-  window.__SubnauticaGameMap = { gameMap, worldToGameMapCoords, gameMapToWorldCoords };
+  const img=new Image();
+  img.onload=()=>{initMap();loadLocations();};
+  img.src='map_main.png';
 })();
 </script>
 </body>
