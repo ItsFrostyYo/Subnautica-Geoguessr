@@ -132,7 +132,7 @@ import { GameMap } from './GameMap.js';
     }
     if(!source.length){alert(`No locations found for "${selectedBiome}".`);return;}
     const shuffled=source.sort(()=>0.5-Math.random());
-    places=shuffled.slice(0,Math.min(MAX_ROUNDS,shuffled.length)).map(i=>({...i,coords:{x:Number(i.coords.x),z:-Number(i.coords.z)}}));
+    places=shuffled.slice(0,Math.min(MAX_ROUNDS,shuffled.length)).map(i=>({...i,coords:{x:Number(i.coords.x),z:Number(i.coords.z)}}));
     totalScore=0;totalElapsed=0;times.length=0;
     startRound(0);
   }
