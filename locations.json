@@ -1566,5 +1566,1917 @@
       "z": -87
     },
     "biome": "Safe Shallows"
+  },
+  {
+    "image": "images/screenshot_20251012_130357.png",
+    "coords": {
+      "x": -19,
+      "z": 196
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_130845.png",
+    "coords": {
+      "x": 450,
+      "z": 999
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_132039.png",
+    "coords": {
+      "x": 436,
+      "z": 1159
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_154437.png",
+    "coords": {
+      "x": 214,
+      "z": 735
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_154911.png",
+    "coords": {
+      "x": 127,
+      "z": 789
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_154928.png",
+    "coords": {
+      "x": 110,
+      "z": 787
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155235.png",
+    "coords": {
+      "x": 148,
+      "z": 760
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155251.png",
+    "coords": {
+      "x": 173,
+      "z": 730
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155343.png",
+    "coords": {
+      "x": 199,
+      "z": 715
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155400.png",
+    "coords": {
+      "x": 238,
+      "z": 709
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155449.png",
+    "coords": {
+      "x": 520,
+      "z": 605
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155507.png",
+    "coords": {
+      "x": 514,
+      "z": 641
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155539.png",
+    "coords": {
+      "x": 499,
+      "z": 579
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155820.png",
+    "coords": {
+      "x": 468,
+      "z": 532
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_155956.png",
+    "coords": {
+      "x": 460,
+      "z": 531
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160000.png",
+    "coords": {
+      "x": 455,
+      "z": 530
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160110.png",
+    "coords": {
+      "x": 447,
+      "z": 608
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160143.png",
+    "coords": {
+      "x": 326,
+      "z": 588
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160150.png",
+    "coords": {
+      "x": 326,
+      "z": 588
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160212.png",
+    "coords": {
+      "x": 271,
+      "z": 523
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160222.png",
+    "coords": {
+      "x": 323,
+      "z": 528
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160233.png",
+    "coords": {
+      "x": 326,
+      "z": 521
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160318.png",
+    "coords": {
+      "x": 175,
+      "z": 548
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160327.png",
+    "coords": {
+      "x": 165,
+      "z": 562
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160351.png",
+    "coords": {
+      "x": 144,
+      "z": 601
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160409.png",
+    "coords": {
+      "x": 184,
+      "z": 625
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160426.png",
+    "coords": {
+      "x": 185,
+      "z": 604
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160508.png",
+    "coords": {
+      "x": 233,
+      "z": 582
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160549.png",
+    "coords": {
+      "x": 60,
+      "z": 594
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160621.png",
+    "coords": {
+      "x": 63,
+      "z": 609
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160635.png",
+    "coords": {
+      "x": 52,
+      "z": 704
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160650.png",
+    "coords": {
+      "x": 74,
+      "z": 726
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160721.png",
+    "coords": {
+      "x": 90,
+      "z": 748
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160757.png",
+    "coords": {
+      "x": 89,
+      "z": 680
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160812.png",
+    "coords": {
+      "x": 117,
+      "z": 645
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160815.png",
+    "coords": {
+      "x": 117,
+      "z": 645
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160902.png",
+    "coords": {
+      "x": 98,
+      "z": 544
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160904.png",
+    "coords": {
+      "x": 98,
+      "z": 544
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160929.png",
+    "coords": {
+      "x": 75,
+      "z": 506
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160944.png",
+    "coords": {
+      "x": 17,
+      "z": 495
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_160952.png",
+    "coords": {
+      "x": 17,
+      "z": 495
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161039.png",
+    "coords": {
+      "x": 106,
+      "z": 457
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161042.png",
+    "coords": {
+      "x": 107,
+      "z": 457
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161102.png",
+    "coords": {
+      "x": 114,
+      "z": 420
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161111.png",
+    "coords": {
+      "x": 126,
+      "z": 420
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161253.png",
+    "coords": {
+      "x": 132,
+      "z": 317
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161257.png",
+    "coords": {
+      "x": 132,
+      "z": 317
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161312.png",
+    "coords": {
+      "x": 153,
+      "z": 373
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161320.png",
+    "coords": {
+      "x": 153,
+      "z": 373
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161358.png",
+    "coords": {
+      "x": 72,
+      "z": 384
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161508.png",
+    "coords": {
+      "x": 35,
+      "z": 398
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161513.png",
+    "coords": {
+      "x": 35,
+      "z": 398
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161528.png",
+    "coords": {
+      "x": 61,
+      "z": 399
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161538.png",
+    "coords": {
+      "x": 81,
+      "z": 403
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161555.png",
+    "coords": {
+      "x": 46,
+      "z": 356
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161621.png",
+    "coords": {
+      "x": 63,
+      "z": 293
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161625.png",
+    "coords": {
+      "x": 63,
+      "z": 293
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161726.png",
+    "coords": {
+      "x": 92,
+      "z": 257
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161729.png",
+    "coords": {
+      "x": 92,
+      "z": 257
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161739.png",
+    "coords": {
+      "x": 104,
+      "z": 241
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161753.png",
+    "coords": {
+      "x": 146,
+      "z": 232
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161806.png",
+    "coords": {
+      "x": 176,
+      "z": 247
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161809.png",
+    "coords": {
+      "x": 176,
+      "z": 247
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161904.png",
+    "coords": {
+      "x": 99,
+      "z": 333
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_161917.png",
+    "coords": {
+      "x": 117,
+      "z": 364
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162004.png",
+    "coords": {
+      "x": 66,
+      "z": 280
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162108.png",
+    "coords": {
+      "x": -37,
+      "z": 356
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162114.png",
+    "coords": {
+      "x": -37,
+      "z": 356
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162151.png",
+    "coords": {
+      "x": -76,
+      "z": 388
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162153.png",
+    "coords": {
+      "x": -76,
+      "z": 388
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162206.png",
+    "coords": {
+      "x": -42,
+      "z": 410
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162215.png",
+    "coords": {
+      "x": -30,
+      "z": 395
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162235.png",
+    "coords": {
+      "x": -3,
+      "z": 406
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162257.png",
+    "coords": {
+      "x": -34,
+      "z": 409
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162304.png",
+    "coords": {
+      "x": -35,
+      "z": 413
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162340.png",
+    "coords": {
+      "x": 6,
+      "z": 409
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162345.png",
+    "coords": {
+      "x": 6,
+      "z": 409
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162401.png",
+    "coords": {
+      "x": -26,
+      "z": 457
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162408.png",
+    "coords": {
+      "x": -25,
+      "z": 475
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162426.png",
+    "coords": {
+      "x": -47,
+      "z": 474
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162451.png",
+    "coords": {
+      "x": -75,
+      "z": 456
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162517.png",
+    "coords": {
+      "x": -123,
+      "z": 489
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162532.png",
+    "coords": {
+      "x": -121,
+      "z": 491
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162557.png",
+    "coords": {
+      "x": -167,
+      "z": 484
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162831.png",
+    "coords": {
+      "x": -156,
+      "z": 452
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162846.png",
+    "coords": {
+      "x": -108,
+      "z": 405
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_162928.png",
+    "coords": {
+      "x": -109,
+      "z": 395
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163124.png",
+    "coords": {
+      "x": -104,
+      "z": 388
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163203.png",
+    "coords": {
+      "x": -24,
+      "z": 221
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163211.png",
+    "coords": {
+      "x": -21,
+      "z": 222
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163216.png",
+    "coords": {
+      "x": -21,
+      "z": 222
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163224.png",
+    "coords": {
+      "x": -64,
+      "z": 203
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163228.png",
+    "coords": {
+      "x": -64,
+      "z": 203
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163241.png",
+    "coords": {
+      "x": -54,
+      "z": 182
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163352.png",
+    "coords": {
+      "x": -100,
+      "z": 290
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163408.png",
+    "coords": {
+      "x": -71,
+      "z": 285
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163427.png",
+    "coords": {
+      "x": -100,
+      "z": 273
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163443.png",
+    "coords": {
+      "x": -152,
+      "z": 266
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163452.png",
+    "coords": {
+      "x": -152,
+      "z": 266
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163544.png",
+    "coords": {
+      "x": -188,
+      "z": 285
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_163621.png",
+    "coords": {
+      "x": -177,
+      "z": 292
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164246.png",
+    "coords": {
+      "x": -214,
+      "z": 370
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164248.png",
+    "coords": {
+      "x": -214,
+      "z": 370
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164310.png",
+    "coords": {
+      "x": -247,
+      "z": 401
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164312.png",
+    "coords": {
+      "x": -247,
+      "z": 401
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164341.png",
+    "coords": {
+      "x": -318,
+      "z": 371
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164348.png",
+    "coords": {
+      "x": -324,
+      "z": 376
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164412.png",
+    "coords": {
+      "x": -411,
+      "z": 354
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164455.png",
+    "coords": {
+      "x": -491,
+      "z": 356
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164458.png",
+    "coords": {
+      "x": -491,
+      "z": 356
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164535.png",
+    "coords": {
+      "x": -529,
+      "z": 354
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164549.png",
+    "coords": {
+      "x": -536,
+      "z": 355
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164651.png",
+    "coords": {
+      "x": -614,
+      "z": 331
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164748.png",
+    "coords": {
+      "x": -619,
+      "z": 332
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_164917.png",
+    "coords": {
+      "x": -698,
+      "z": 330
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_165024.png",
+    "coords": {
+      "x": -671,
+      "z": 231
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_165034.png",
+    "coords": {
+      "x": -669,
+      "z": 230
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_165102.png",
+    "coords": {
+      "x": -561,
+      "z": 247
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_165238.png",
+    "coords": {
+      "x": -979,
+      "z": 179
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_165242.png",
+    "coords": {
+      "x": -979,
+      "z": 179
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_165423.png",
+    "coords": {
+      "x": -984,
+      "z": 153
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_165425.png",
+    "coords": {
+      "x": -984,
+      "z": 153
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_170640.png",
+    "coords": {
+      "x": -516,
+      "z": 233
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_170657.png",
+    "coords": {
+      "x": -501,
+      "z": 231
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_172107.png",
+    "coords": {
+      "x": -499,
+      "z": 254
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_172257.png",
+    "coords": {
+      "x": -388,
+      "z": 219
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_172619.png",
+    "coords": {
+      "x": -36,
+      "z": 235
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_172924.png",
+    "coords": {
+      "x": -253,
+      "z": 298
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_172933.png",
+    "coords": {
+      "x": -254,
+      "z": 296
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_183714.png",
+    "coords": {
+      "x": -122,
+      "z": 227
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_183719.png",
+    "coords": {
+      "x": -122,
+      "z": 221
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_183842.png",
+    "coords": {
+      "x": -142,
+      "z": 251
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_183908.png",
+    "coords": {
+      "x": -214,
+      "z": 177
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_183915.png",
+    "coords": {
+      "x": -214,
+      "z": 177
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_183938.png",
+    "coords": {
+      "x": -231,
+      "z": 118
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_183940.png",
+    "coords": {
+      "x": -231,
+      "z": 118
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184335.png",
+    "coords": {
+      "x": -252,
+      "z": -54
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184617.png",
+    "coords": {
+      "x": -249,
+      "z": -54
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184649.png",
+    "coords": {
+      "x": -227,
+      "z": -150
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184701.png",
+    "coords": {
+      "x": -240,
+      "z": -200
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184705.png",
+    "coords": {
+      "x": -240,
+      "z": -200
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184708.png",
+    "coords": {
+      "x": -240,
+      "z": -200
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184726.png",
+    "coords": {
+      "x": -273,
+      "z": -263
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_184729.png",
+    "coords": {
+      "x": -273,
+      "z": -263
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185036.png",
+    "coords": {
+      "x": -287,
+      "z": -69
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185039.png",
+    "coords": {
+      "x": -287,
+      "z": -69
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185108.png",
+    "coords": {
+      "x": -338,
+      "z": 28
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185225.png",
+    "coords": {
+      "x": -319,
+      "z": 129
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185227.png",
+    "coords": {
+      "x": -319,
+      "z": 129
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185303.png",
+    "coords": {
+      "x": -322,
+      "z": 194
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185323.png",
+    "coords": {
+      "x": -360,
+      "z": 237
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185324.png",
+    "coords": {
+      "x": -360,
+      "z": 237
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185925.png",
+    "coords": {
+      "x": -308,
+      "z": 267
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185941.png",
+    "coords": {
+      "x": -275,
+      "z": 242
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_185948.png",
+    "coords": {
+      "x": -275,
+      "z": 242
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190036.png",
+    "coords": {
+      "x": -303,
+      "z": 291
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190047.png",
+    "coords": {
+      "x": -321,
+      "z": 274
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190107.png",
+    "coords": {
+      "x": -340,
+      "z": 260
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190223.png",
+    "coords": {
+      "x": -289,
+      "z": 286
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190255.png",
+    "coords": {
+      "x": -257,
+      "z": 182
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190330.png",
+    "coords": {
+      "x": -389,
+      "z": -4
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190413.png",
+    "coords": {
+      "x": -354,
+      "z": -132
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190429.png",
+    "coords": {
+      "x": -313,
+      "z": -190
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190920.png",
+    "coords": {
+      "x": -312,
+      "z": -238
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190923.png",
+    "coords": {
+      "x": -313,
+      "z": -238
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251012_190936.png",
+    "coords": {
+      "x": -290,
+      "z": -260
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_103639.png",
+    "coords": {
+      "x": -214,
+      "z": -257
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104003.png",
+    "coords": {
+      "x": -222,
+      "z": -414
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104018.png",
+    "coords": {
+      "x": -229,
+      "z": -429
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104345.png",
+    "coords": {
+      "x": -229,
+      "z": -429
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104349.png",
+    "coords": {
+      "x": -229,
+      "z": -429
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104527.png",
+    "coords": {
+      "x": -173,
+      "z": -499
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104546.png",
+    "coords": {
+      "x": -197,
+      "z": -521
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104557.png",
+    "coords": {
+      "x": -198,
+      "z": -540
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104902.png",
+    "coords": {
+      "x": -67,
+      "z": -506
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_104948.png",
+    "coords": {
+      "x": -67,
+      "z": -506
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_105013.png",
+    "coords": {
+      "x": -10,
+      "z": -467
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_105045.png",
+    "coords": {
+      "x": 24,
+      "z": -420
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_105240.png",
+    "coords": {
+      "x": 60,
+      "z": -465
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_105351.png",
+    "coords": {
+      "x": 70,
+      "z": -423
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_105401.png",
+    "coords": {
+      "x": 68,
+      "z": -421
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_110112.png",
+    "coords": {
+      "x": 72,
+      "z": -417
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_111525.png",
+    "coords": {
+      "x": 26,
+      "z": -480
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_111941.png",
+    "coords": {
+      "x": 102,
+      "z": -414
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_112007.png",
+    "coords": {
+      "x": 96,
+      "z": -375
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_112040.png",
+    "coords": {
+      "x": -8,
+      "z": -515
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_112055.png",
+    "coords": {
+      "x": -66,
+      "z": -533
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_112116.png",
+    "coords": {
+      "x": -131,
+      "z": -528
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_112815.png",
+    "coords": {
+      "x": -172,
+      "z": -600
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_112824.png",
+    "coords": {
+      "x": -177,
+      "z": -599
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_112858.png",
+    "coords": {
+      "x": -94,
+      "z": -558
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113213.png",
+    "coords": {
+      "x": -224,
+      "z": -631
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113215.png",
+    "coords": {
+      "x": -224,
+      "z": -631
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113411.png",
+    "coords": {
+      "x": -280,
+      "z": -603
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113544.png",
+    "coords": {
+      "x": -242,
+      "z": -574
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113630.png",
+    "coords": {
+      "x": -318,
+      "z": -632
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113631.png",
+    "coords": {
+      "x": -318,
+      "z": -632
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113701.png",
+    "coords": {
+      "x": -323,
+      "z": -593
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113713.png",
+    "coords": {
+      "x": -375,
+      "z": -557
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113719.png",
+    "coords": {
+      "x": -367,
+      "z": -562
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113803.png",
+    "coords": {
+      "x": -286,
+      "z": -462
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113837.png",
+    "coords": {
+      "x": -244,
+      "z": -445
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_113948.png",
+    "coords": {
+      "x": -300,
+      "z": -506
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_114015.png",
+    "coords": {
+      "x": -230,
+      "z": -537
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_114058.png",
+    "coords": {
+      "x": 59,
+      "z": -470
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_114217.png",
+    "coords": {
+      "x": 228,
+      "z": -271
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115404.png",
+    "coords": {
+      "x": 222,
+      "z": -276
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115418.png",
+    "coords": {
+      "x": 253,
+      "z": -273
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115518.png",
+    "coords": {
+      "x": 310,
+      "z": -321
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115545.png",
+    "coords": {
+      "x": 332,
+      "z": -306
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115558.png",
+    "coords": {
+      "x": 348,
+      "z": -312
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115611.png",
+    "coords": {
+      "x": 346,
+      "z": -281
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115627.png",
+    "coords": {
+      "x": 341,
+      "z": -337
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115635.png",
+    "coords": {
+      "x": 344,
+      "z": -356
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_115707.png",
+    "coords": {
+      "x": 302,
+      "z": -418
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120017.png",
+    "coords": {
+      "x": 321,
+      "z": -461
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120031.png",
+    "coords": {
+      "x": 331,
+      "z": -462
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120106.png",
+    "coords": {
+      "x": 331,
+      "z": -524
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120137.png",
+    "coords": {
+      "x": 257,
+      "z": -497
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120146.png",
+    "coords": {
+      "x": 236,
+      "z": -479
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120316.png",
+    "coords": {
+      "x": 101,
+      "z": -204
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120334.png",
+    "coords": {
+      "x": 20,
+      "z": -234
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120341.png",
+    "coords": {
+      "x": 24,
+      "z": -221
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120352.png",
+    "coords": {
+      "x": -20,
+      "z": -251
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120358.png",
+    "coords": {
+      "x": -12,
+      "z": -255
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120417.png",
+    "coords": {
+      "x": -54,
+      "z": -258
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120423.png",
+    "coords": {
+      "x": -53,
+      "z": -250
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120446.png",
+    "coords": {
+      "x": -98,
+      "z": -233
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120456.png",
+    "coords": {
+      "x": -106,
+      "z": -198
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120607.png",
+    "coords": {
+      "x": -52,
+      "z": -187
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120620.png",
+    "coords": {
+      "x": -29,
+      "z": -220
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120637.png",
+    "coords": {
+      "x": 47,
+      "z": -220
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120651.png",
+    "coords": {
+      "x": 79,
+      "z": -156
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120657.png",
+    "coords": {
+      "x": 96,
+      "z": -159
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120704.png",
+    "coords": {
+      "x": 105,
+      "z": -118
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120712.png",
+    "coords": {
+      "x": 91,
+      "z": -111
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120722.png",
+    "coords": {
+      "x": 124,
+      "z": -85
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120737.png",
+    "coords": {
+      "x": 145,
+      "z": -124
+    },
+    "biome": "Kelp Forest"
+  },
+  {
+    "image": "images/screenshot_20251013_120757.png",
+    "coords": {
+      "x": 128,
+      "z": -149
+    },
+    "biome": "Kelp Forest"
   }
 ]
