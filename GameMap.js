@@ -7,7 +7,7 @@ export class GameMap {
   this.worldMin = options.worldMin ?? -2048;
   this.worldMax = options.worldMax ??  2048;
   this.worldSize = this.worldMax - this.worldMin;
-  this.zoomSpeed = options.zoomSpeed || 1.1;
+  this.zoomSpeed = options.zoomSpeed || 1.2;
   this.zoomLerpSpeed = options.zoomLerpSpeed || 0.15;
   this.minZoom = options.minZoom || 0.25;
   this.maxZoom = options.maxZoom || 8;
