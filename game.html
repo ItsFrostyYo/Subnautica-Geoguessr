@@ -120,20 +120,63 @@ import { GameMap } from './GameMap.js';
   //function disableMapInteractions(){try{leafletMap.dragging.disable();leafletMap.scrollWheelZoom.disable();leafletMap.doubleClickZoom.disable();leafletMap.boxZoom.disable();leafletMap.keyboard.disable();leafletMap.touchZoom.disable();}catch{}}
   //function enableMapInteractions(){try{leafletMap.dragging.enable();leafletMap.scrollWheelZoom.enable();leafletMap.doubleClickZoom.enable();leafletMap.boxZoom.enable();leafletMap.keyboard.enable();leafletMap.touchZoom.enable();}catch{}}
 
-  async function loadLocations(){
+    async function getLatestCommitSha({
+  owner = 'ItsFrostyYo',
+  repo = 'Subnautica-Geoguessr-Images',
+  branch = 'main',
+  cacheTtlMs = 5 * 60 * 1000
+} = {}) {
+  const cacheKey = `latestSha:${owner}/${repo}@${branch}`;
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (cached && (Date.now() - cached.time) < cacheTtlMs && cached.sha) {
+      return cached.sha;
+    }
+
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/commits/${encodeURIComponent(branch)}`
+    );
+    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+    const data = await res.json();
+    const sha = data && data.sha;
+    if (typeof sha === 'string' && sha.length >= 7) {
+      localStorage.setItem(cacheKey, JSON.stringify({ sha, time: Date.now() }));
+      return sha;
+    }
+    throw new Error('No SHA in response');
+  } catch (e) {
+    console.warn('Failed to get latest commit SHA, falling back to @main:', e);
+    return null; // signals fallback
+  }
+}
+
+  async function loadLocations() {
     const res = await fetch(`locations.json?cacheBust=${Date.now()}`);
     const data = await res.json();
     const biomeTarget = (selectedBiome || "").trim().toLowerCase();
     let source;
-    if(biomeTarget==="entire map") source=data;
-    else{
-      const filtered=data.filter(i=>(i.biome||"").trim().toLowerCase()===biomeTarget);
-      source=filtered.length?filtered:[];
+
+    if (biomeTarget === "entire map") source = data;
+    else {
+      const filtered = data.filter(i => (i.biome || "").trim().toLowerCase() === biomeTarget);
+      source = filtered.length ? filtered : [];
     }
-    if(!source.length){alert(`No locations found for "${selectedBiome}".`);return;}
-    const shuffled=source.sort(()=>0.5-Math.random());
-    places=shuffled.slice(0,Math.min(MAX_ROUNDS,shuffled.length)).map(i=>({...i,coords:{x:Number(i.coords.x),z:Number(i.coords.z)}}));
-    totalScore=0;totalElapsed=0;times.length=0;
+
+    if (!source.length) {
+      alert(`No locations found for "${selectedBiome}".`);
+      return;
+    }
+    const sha = await getLatestCommitSha();
+    const shuffled = source.sort(() => 0.5 - Math.random());
+    places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
+      ...i,
+      coords: { x: Number(i.coords.x), z: Number(i.coords.z) },
+      image: `https://cdn.jsdelivr.net/gh/ItsFrostyYo/Subnautica-Geoguessr-Images@${sha}/${i.image}`
+    }));
+
+    totalScore = 0;
+    totalElapsed = 0;
+    times.length = 0;
     startRound(0);
   }
 
