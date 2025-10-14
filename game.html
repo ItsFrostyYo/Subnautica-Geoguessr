@@ -5,6 +5,7 @@
 <title>Subnautica GeoGuessr — Web Edition (Smooth Zoom Update)</title>
 <style>
   html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+  #viewer {width:100%;height:100%;}
   #photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
   #mapContainer{position:fixed;right:20px;bottom:20px;width:420px;height:420px;border-radius:10px;border:2px solid #0ff;overflow:hidden;z-index:40;background: rgb(24, 26, 28);}
   #map{width:100%;height:100%}
@@ -20,12 +21,25 @@
   #loadingScreen.visible{opacity:1;pointer-events:all}.spinner{width:60px;height:60px;border:5px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .9s linear infinite;margin-bottom:15px}
   @keyframes spin{to{transform:rotate(360deg)}}
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.min.css" />
 </head>
 <body>
   <div id="loadingScreen" class="hidden">
     <div class="spinner"></div>
     <div class="loadingText">Loading next location...</div>
   </div>
+
+  <div id="viewer" style="width: 100vw; height: 100vh;"></div>
+
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three/build/three.module.js",
+            "@photo-sphere-viewer/core": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.module.js"
+        }
+    }
+  </script>
 
   <img id="photo" src="" alt="photo">
 
@@ -56,6 +70,7 @@
   </div>
 
 <script type="module">
+import { Viewer } from '@photo-sphere-viewer/core';
 import { saveScore } from './supabase.js';
 import { GameMap } from './GameMap.js';
 
@@ -63,6 +78,7 @@ import { GameMap } from './GameMap.js';
   let places = [], current = 0, totalScore = 0, guess = null;
   let totalElapsed = 0, roundStartTime = 0, timerInterval = null;
   let map = null;
+  let gameMode = ""; //360 for 360
   const times = [];
   const selectedBiome = localStorage.getItem('selectedBiome') || 'Safe Shallows';
   const username = sessionStorage.getItem("username") || "Unknown";
@@ -71,6 +87,8 @@ import { GameMap } from './GameMap.js';
   let roundLocked = false;
   const MAX_ROUNDS = 5;
   const MAX_SCORE_ALLOWED = 25000;
+
+  document.getElementById('photo').style.display = 'none';
 
   const canvas = document.getElementById('mapCanvas');
   const select = document.getElementById('mapSelect');
@@ -92,16 +110,20 @@ import { GameMap } from './GameMap.js';
   backBtn.onclick = () => window.location.href = "index.html";
   document.body.appendChild(backBtn);
 
+  const viewer = new Viewer({
+        container: document.querySelector('#viewer'),
+        panorama: 'Background/DashboardBackground.png',
+    });
+
   function showLoadingScreen() {
-  const screen = document.getElementById("loadingScreen");
-  screen.classList.add("visible");
-}
+    const screen = document.getElementById("loadingScreen");
+    screen.classList.add("visible");
+  } 
 
-function hideLoadingScreen() {
-  const screen = document.getElementById("loadingScreen");
-  screen.classList.remove("visible");
-}
-
+  function hideLoadingScreen() {
+    const screen = document.getElementById("loadingScreen");
+    screen.classList.remove("visible");
+  }
 
   function formatTime(ms) {
     const totalSeconds = ms / 1000;
@@ -253,7 +275,20 @@ async function waitForCondition(checkFn, interval = 40) {
     map.flyTo([0, 0], -3.3, { duration: 0.5 });
   }
 
-  document.getElementById('photo').src = place.image;
+  
+  if (gameMode == "360")
+  {
+    document.getElementById('viewer').style.display = 'block';
+    document.getElementById('photo').style.display = 'none';
+    viewer.setPanorama(places[i].image).catch(console.error);
+  }
+  else
+  {
+    document.getElementById('photo').style.display = 'block';
+    document.getElementById('viewer').style.display = 'none';
+    document.getElementById('photo').src = place.image;
+  }
+    
   timerDisplay.textContent = '0:00.00';
   startTimer();
 }
