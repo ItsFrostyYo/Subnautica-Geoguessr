@@ -12,5 +12,12 @@
     "z": 165.0,
     "biome": "safeShallows",
     "image": "Images360/41;-36;165;safeShallows.png"
+  },
+  {
+    "x": 109.0,
+    "y": -68.0,
+    "z": 163.0,
+    "biome": "safeShallows",
+    "image": "Images360/109;-68;163;safeShallows.png"
   }
 ]
