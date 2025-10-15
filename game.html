@@ -6,7 +6,6 @@
 <style>
   html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
   #viewer {width:100%;height:100%;}
-  #photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
   #mapContainer{position:fixed;right:20px;bottom:20px;width:420px;height:420px;border-radius:10px;border:2px solid #0ff;overflow:hidden;z-index:40;background: rgb(24, 26, 28);}
   #map{width:100%;height:100%}
   #controlsTop{position:fixed;right:20px;bottom:450px;display:flex;justify-content:center;width:420px;z-index:60;}
@@ -40,8 +39,6 @@
         }
     }
   </script>
-
-  <img id="photo" src="" alt="photo">
 
   <div id="mapContainer">
     <select id="mapSelect" style="background:#111;color:#fff;border:1px solid #444;border-radius:6px;padding:4px 8px;">
@@ -78,17 +75,15 @@ import { GameMap } from './GameMap.js';
   let places = [], current = 0, totalScore = 0, guess = null;
   let totalElapsed = 0, roundStartTime = 0, timerInterval = null;
   let map = null;
-  let gameMode = "360"; //360 for 360
+  const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
   const times = [];
-  const selectedBiome = localStorage.getItem('selectedBiome') || 'Safe Shallows';
+  const selectedBiome = localStorage.getItem('selectedBiomeKey') || 'ssafeShallows';
   const username = sessionStorage.getItem("username") || "Unknown";
-
+  let selectedImageMode = localStorage.getItem('selectedImageMode') || IMAGE_MODE.DEG360;
   let mapLocked = false;
   let roundLocked = false;
   const MAX_ROUNDS = 5;
   const MAX_SCORE_ALLOWED = 25000;
-
-  document.getElementById('photo').style.display = 'none';
 
   const canvas = document.getElementById('mapCanvas');
   const select = document.getElementById('mapSelect');
@@ -204,9 +199,7 @@ async function loadImageToMemory(place) {
 
 async function loadLocations() {
   summaryButtons.innerHTML='';
-  const res = gameMode === "360" 
-    ? await fetch(`locations360.json?cacheBust=${Date.now()}`) 
-    : await fetch(`locations.json?cacheBust=${Date.now()}`);
+  const res = await fetch(`locations360.json?cacheBust=${Date.now()}`) 
   const data = await res.json();
   const biomeTarget = (selectedBiome || "").trim().toLowerCase();
 
@@ -221,28 +214,15 @@ async function loadLocations() {
 
   const sha = await getLatestCommitSha();
   const shuffled = source.sort(() => 0.5 - Math.random());
-  if (gameMode === "360")
-  {
-    places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
+
+  places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
     ...i,
     coords: { x: Number(i.x), z: Number(i.z) },
     biome: i.biome,
     image: `https://cdn.jsdelivr.net/gh/ItsFrostyYo/Subnautica-Geoguessr-Images@${sha}/${i.image}`,
     loaded: false
   }));
-  }
-  else
-{
-places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
-    ...i,
-    coords: { x: Number(i.coords.x), z: Number(i.coords.z) },
-    biome: i.biome,
-    image: `https://cdn.jsdelivr.net/gh/ItsFrostyYo/Subnautica-Geoguessr-Images@${sha}/${i.image}`,
-    loaded: false
-  }));
-}
   
-
   (async () => {
     for (const p of places) {
       await loadImageToMemory(p);
@@ -278,6 +258,23 @@ async function waitForCondition(checkFn, interval = 40) {
 
   hideLoadingScreen();
 
+    if (selectedImageMode === '360')
+  {
+    viewer.setOption('mousemove', true);
+    viewer.setOption('mousewheel', true);
+    viewer.setOption('touchmoveTwoFingers', true);
+    viewer.navbar.show();
+  }
+  else
+  {
+    viewer.setOption('mousemove', false);
+    viewer.setOption('mousewheel', false);
+    viewer.setOption('touchmoveTwoFingers', false);
+    viewer.navbar.hide();
+  }
+
+  viewer.setPanorama(places[i].image).catch(console.error);
+
   current = i;
   roundDisplay.textContent = `Round ${i + 1} / ${places.length}`;
   guess = null;
@@ -290,20 +287,6 @@ async function waitForCondition(checkFn, interval = 40) {
     map.drawLine = false;
     map.clearGuessMarker();
     map.flyTo([0, 0], -3.3, { duration: 0.5 });
-  }
-
-  
-  if (gameMode == "360")
-  {
-    document.getElementById('viewer').style.display = 'block';
-    document.getElementById('photo').style.display = 'none';
-    viewer.setPanorama(places[i].image).catch(console.error);
-  }
-  else
-  {
-    document.getElementById('photo').style.display = 'block';
-    document.getElementById('viewer').style.display = 'none';
-    document.getElementById('photo').src = place.image;
   }
     
   timerDisplay.textContent = '0:00.00';
