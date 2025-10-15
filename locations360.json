@@ -41,5 +41,11 @@
     "Y": -6.0,
     "Z": 140.0,
     "Image": "Images360/12;-6;140;safeShallows.png"
+  },
+  {
+    "X": 21.0,
+    "Y": -9.0,
+    "Z": 145.0,
+    "Image": "Images360/21;-9;145;safeShallows.png"
   }
 ]
