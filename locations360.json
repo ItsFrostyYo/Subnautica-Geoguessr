@@ -47,5 +47,11 @@
     "Y": -121.0,
     "Z": 302.0,
     "Image": "Images360/556;-121;302;mushroomForest.png"
+  },
+  {
+    "X": 614.0,
+    "Y": -126.0,
+    "Z": 314.0,
+    "Image": "Images360/614;-126;314;mushroomForest.png"
   }
 ]
