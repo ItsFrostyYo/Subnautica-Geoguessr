@@ -1,1 +1,7 @@
-
+[
+  { "x": 1204.0, "y": 14.0, "z": -382.0, "path": "images360/1204;14;-382;KelpForest.png" },
+  { "x": 865.0,  "y": -5.0, "z": 210.0,  "path": "images360/865;-5;210;GrassyPlateaus.png" },
+  { "x": -130.0, "y": 2.0,  "z": 48.0,   "path": "images360/-130;2;48;SafeShallows.png" },
+  { "x": -420.0, "y": -35.0,"z": -910.0, "path": "images360/-420;-35;-910;BloodKelp.png" },
+  { "x": 1540.0, "y": -118.0,"z": 775.0, "path": "images360/1540;-118;775;MushroomForest.png" }
+]
