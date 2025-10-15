@@ -12,6 +12,10 @@ export class GameMap {
   this.minZoom = options.minZoom || 0.25;
   this.maxZoom = options.maxZoom || 8;
   this.dragThreshhold = options.dragThreshhold || 4;
+  this.guessMarkerOffset = options.guessMarkerOffset || {x: 0, y: 0};
+  this.actualMarkerOffset = options.actualMarkerOffset || {x: 0, y: 0};
+  this.guessMarkerImage = options.guessMarkerImage || null;
+  this.actualMarkerImage = options.actualMarkerImage || null;
 
   this.region = options.region ?? {
     minX: this.worldMin,
@@ -207,6 +211,37 @@ _setupEvents() {
   requestAnimationFrame(() => this._animate());
 }
 
+drawMarker(ctx, worldToScreen, marker, offset, {
+  img = null,
+  draw = true,
+  size = 24,        
+  color = "red",    
+  radius = 5       
+} = {}) {
+  if (!draw || !marker) return;
+
+  const { x, y } = marker;
+  if (Math.max(Math.abs(x), Math.abs(y)) > 2048) return;
+
+  const s = worldToScreen(x, y);
+  const o = this._toScreenOffset(offset, this.camera.zoom);
+  const sx = s.x + o.x;
+  const sy = s.y + o.y;
+
+
+  if (img && img.complete && img.naturalWidth > 0) {
+    const w = size;
+    const h = size;
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(img, sx - w / 2, sy - h / 2, w, h);
+  } else {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(sx, sy, radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
   _draw() {
   if (!this.image || !this.image.complete || this.image.naturalWidth === 0) return;
 
@@ -227,8 +262,12 @@ _setupEvents() {
   ctx.drawImage(this.image, drawX, drawY, imgW, imgH);
 
   if (this.guessMarker && this.actualMarker && this.drawLine == true) {
-    const g = this.worldToScreen(this.guessMarker.x, this.guessMarker.y);
-    const a = this.worldToScreen(this.actualMarker.x, this.actualMarker.y);
+    const gs = this.worldToScreen(this.guessMarker.x, this.guessMarker.y);
+    const as = this.worldToScreen(this.actualMarker.x, this.actualMarker.y);
+    const go = this._toScreenOffset(this.guessMarkerOffset, this.camera.zoom);
+    const ao = this._toScreenOffset(this.actualMarkerOffset, this.camera.zoom);
+    const g = { x: gs.x + go.x, y: gs.y + go.y };
+    const a = { x: as.x + ao.x, y: as.y + ao.y };
 
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
@@ -238,32 +277,38 @@ _setupEvents() {
     ctx.stroke();
   }
 
-    if (this.guessMarker) {
-      const { x, y } = this.guessMarker;
-      if (Math.max(Math.abs(x), Math.abs(y)) <= 2048) { 
-        const screen = this.worldToScreen(x, y);
-        ctx.fillStyle = "red"; ctx.beginPath();
-        ctx.arc(screen.x, screen.y, 5, 0, Math.PI * 2);
-        ctx.fill(); 
-      } 
-    }
+  // GUESS
+this.drawMarker(this.ctx, this.worldToScreen.bind(this), this.guessMarker, this.guessMarkerOffset, {
+  img: this.guessMarkerImage,
+  draw: true,
+  size: 24,
+  color: "red",
+  radius: 5
+});
 
-    if (this.actualMarker && this.drawActualMarker) {
-      const s = this.worldToScreen(this.actualMarker.x, this.actualMarker.y);
+// ACTUAL
+if (this.drawActualMarker) {
+  this.drawMarker(this.ctx, this.worldToScreen.bind(this), this.actualMarker, this.actualMarkerOffset, {
+    img: this.actualMarkerImage,
+    draw: true,
+    size: 28,
+    color: "limegreen",
+    radius: 6
+  });
 
-      this.ctx.fillStyle = "limegreen";
-      this.ctx.beginPath();
-      this.ctx.arc(s.x, s.y, 6, 0, Math.PI * 2);
-      this.ctx.fill();
-
-      // outline
-      this.ctx.strokeStyle = "white";
-      this.ctx.lineWidth = 2;
-      this.ctx.beginPath();
-      this.ctx.arc(s.x, s.y, 6, 0, Math.PI * 2);
-      this.ctx.stroke();
-    }
+  if (!(this.actualMarkerImage && this.actualMarkerImage.complete && this.actualMarkerImage.naturalWidth > 0)
+      && this.actualMarker) {
+    const s0 = this.worldToScreen(this.actualMarker.x, this.actualMarker.y);
+    const o  = this._toScreenOffset(this.actualMarkerOffset, this.camera.zoom);
+    const s  = { x: s0.x + o.x, y: s0.y + o.y };
+    this.ctx.strokeStyle = "white";
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    this.ctx.arc(s.x, s.y, 6, 0, Math.PI * 2);
+    this.ctx.stroke();
   }
+}
+}
 
   _fitRegionToCanvas(mode = 'cover') {
   const { minX, maxX, minY, maxY } = this.region ?? {
@@ -310,6 +355,28 @@ _setupEvents() {
   };
 }
 
+worldToScreen(wx, wy) {
+  const cx = this.canvas.width / 2;
+  const cy = this.canvas.height / 2;
+  return {
+    x: (wx - this.camera.x) * this.camera.zoom + cx,
+    y: (this.camera.y - wy) * this.camera.zoom + cy
+  };
+}
+
+_toScreenOffset(offset = {x: 0, y: 0}, zoom = this.camera.zoom) {
+  const units = offset.units || 'screen';
+  if (units === 'world') {
+    return { x: offset.x * zoom, y: -offset.y * zoom };
+  }
+  return { x: offset.x || 0, y: offset.y || 0 };
+}
+
+_easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+_blendEase(t, easeLinearity) {
+  return (1 - easeLinearity) * t + easeLinearity * this._easeInOutCubic(t);
+}
+
 setMap({ imageSrc, region, recenter = true }) {
   if (region) this.region = { ...region };
   if (recenter) {
@@ -327,20 +394,6 @@ setMap({ imageSrc, region, recenter = true }) {
     this.image.src = imageSrc;
   }
   if (recenter) this._fitRegionToCanvas('cover');
-}
-
-worldToScreen(wx, wy) {
-  const cx = this.canvas.width / 2;
-  const cy = this.canvas.height / 2;
-  return {
-    x: (wx - this.camera.x) * this.camera.zoom + cx,
-    y: (this.camera.y - wy) * this.camera.zoom + cy
-  };
-}
-
-_easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
-_blendEase(t, easeLinearity) {
-  return (1 - easeLinearity) * t + easeLinearity * this._easeInOutCubic(t);
 }
 
 flyToWorld(x, y, zoom = null, options = {}) {
