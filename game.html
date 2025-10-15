@@ -78,7 +78,7 @@ import { GameMap } from './GameMap.js';
   let places = [], current = 0, totalScore = 0, guess = null;
   let totalElapsed = 0, roundStartTime = 0, timerInterval = null;
   let map = null;
-  let gameMode = ""; //360 for 360
+  let gameMode = "360"; //360 for 360
   const times = [];
   const selectedBiome = localStorage.getItem('selectedBiome') || 'Safe Shallows';
   const username = sessionStorage.getItem("username") || "Unknown";
@@ -204,7 +204,9 @@ async function loadImageToMemory(place) {
 
 async function loadLocations() {
   summaryButtons.innerHTML='';
-  const res = await fetch(`locations.json?cacheBust=${Date.now()}`);
+  const res = gameMode === "360" 
+    ? await fetch(`locations360.json?cacheBust=${Date.now()}`) 
+    : await fetch(`locations.json?cacheBust=${Date.now()}`);
   const data = await res.json();
   const biomeTarget = (selectedBiome || "").trim().toLowerCase();
 
@@ -219,12 +221,27 @@ async function loadLocations() {
 
   const sha = await getLatestCommitSha();
   const shuffled = source.sort(() => 0.5 - Math.random());
-  places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
+  if (gameMode === "360")
+  {
+    places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
     ...i,
-    coords: { x: Number(i.coords.x), z: Number(i.coords.z) },
+    coords: { x: Number(i.x), z: Number(i.z) },
+    biome: i.biome,
     image: `https://cdn.jsdelivr.net/gh/ItsFrostyYo/Subnautica-Geoguessr-Images@${sha}/${i.image}`,
     loaded: false
   }));
+  }
+  else
+{
+places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
+    ...i,
+    coords: { x: Number(i.coords.x), z: Number(i.coords.z) },
+    biome: i.biome,
+    image: `https://cdn.jsdelivr.net/gh/ItsFrostyYo/Subnautica-Geoguessr-Images@${sha}/${i.image}`,
+    loaded: false
+  }));
+}
+  
 
   (async () => {
     for (const p of places) {
