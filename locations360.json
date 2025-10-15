@@ -19,5 +19,12 @@
     "z": 163.0,
     "biome": "safeShallows",
     "image": "Images360/109;-68;163;safeShallows.png"
+  },
+  {
+    "x": 135.0,
+    "y": -59.0,
+    "z": 314.0,
+    "biome": "kelpForest",
+    "image": "Images360/135;-59;314;kelpForest.png"
   }
 ]
