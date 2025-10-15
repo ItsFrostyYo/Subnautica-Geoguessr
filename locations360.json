@@ -1,16 +1,1 @@
-[
-  {
-    "x": -174.0,
-    "y": -771.0,
-    "z": 323.0,
-    "biome": "LostRiver_Junction",
-    "image": "Images360/-174;-771;323;LostRiver_Junction.png"
-  },
-  {
-    "x": -301.0,
-    "y": -32.0,
-    "z": -411.0,
-    "biome": "grassyPlateaus",
-    "image": "Images360/-301;-32;-411;grassyPlateaus.png"
-  }
-]
+[]
