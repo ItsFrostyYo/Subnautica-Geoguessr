@@ -668,5 +668,15 @@
     "roll": 0.0,
     "biome": "crashZone",
     "image": "Images360/948;-2;-25;crashZone.png"
+  },
+  {
+    "x": 938.0,
+    "y": 12.0,
+    "z": 43.0,
+    "pitch": -2.0,
+    "yaw": -153.0,
+    "roll": 0.0,
+    "biome": "crashZone",
+    "image": "Images360/938;12;43;crashZone.png"
   }
 ]
