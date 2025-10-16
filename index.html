@@ -208,9 +208,9 @@
   let currentBiome = null; // { display, key }
 
   function updateImageModeStorage() {
-  const is360 = selectedImageMode === IMAGE_MODE.DEG360;
-  localStorage.setItem("selectedImageMode", is360 ? "360" : "normal");
-}
+    const is360 = selectedImageMode === IMAGE_MODE.DEG360;
+    localStorage.setItem("selectedImageMode", is360 ? "360" : "normal");
+  }
 
   function updateCreditsVisibility(isDashboard) {
     creditsBtn.style.display = isDashboard ? "inline-block" : "none";
@@ -266,13 +266,13 @@
     const table = "leaderboards";
     const biome = (gm.display || "").toLowerCase();
 
-let { data, error } = await supabase
-  .from(table)
-  .select("*")
-  .ilike("biome", biome)
-  .order("score", { ascending: false })
-  .order("time", { ascending: true })
-  .ilike("gamemode", selectedImageMode);
+    let { data, error } = await supabase
+      .from(table)
+      .select("*")
+      .ilike("biome", biome)
+      .order("score", { ascending: false })
+      .order("time", { ascending: true })
+      .ilike("gamemode", selectedImageMode);
 
     leaderboardBody.innerHTML = "";
 
@@ -301,6 +301,16 @@ let { data, error } = await supabase
     uniqueEntries.forEach((entry, i) => {
       const row = document.createElement("tr");
       row.innerHTML = `<td>${i + 1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
+
+      // HIGHLIGHT CURRENT USER
+      const currentUsername = sessionStorage.getItem("username");
+      if (entry.username === currentUsername) {
+        row.style.backgroundColor = "rgba(0, 255, 255, 0.2)";
+        row.style.fontWeight = "bold";
+        row.style.color = "#00ffff";
+        row.style.boxShadow = "0 0 12px rgba(0, 255, 255, 0.5)";
+      }
+
       leaderboardBody.appendChild(row);
     });
   }
