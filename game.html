@@ -277,13 +277,14 @@ async function waitForCondition(checkFn, interval = 40) {
 
   viewer.setPanorama(places[i].image, {
   position: {
-    yaw:   `${-places[i].yaw - 90}deg`,   
+    yaw:   `${places[i].yaw + 180}deg`,   
     pitch: `${-places[i].pitch}deg`  
   },
   sphereCorrection: {               
     roll: `${places[i].roll || 0}deg`
   },
-  zoom: 0
+  zoom: 0,
+  transition: false
 });
 
   current = i;
