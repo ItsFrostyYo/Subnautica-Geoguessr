@@ -166,7 +166,7 @@
     "Crash Zone": "crashZone",
     "Mountain Island": "mountainIsland",
     "Floating Island": "floatingIsland",
-    "Entire Map": "Entire Map",
+    "Entire Map": "entiremap",
   };
 
   const displayNames = [
@@ -209,7 +209,7 @@
 
   function updateImageModeStorage() {
   const is360 = selectedImageMode === IMAGE_MODE.DEG360;
-  localStorage.setItem("selectedImageMode", is360 ? "360" : "Normal Image");
+  localStorage.setItem("selectedImageMode", is360 ? "360" : "normal");
 }
 
   function updateCreditsVisibility(isDashboard) {
@@ -263,22 +263,14 @@
 
     leaderboardBody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
 
-    let data, error;
-    if (selectedImageMode === "360") {
-      ({ data, error } = await supabase
-        .from("leaderboards_360")
-        .select("*")
-        .ilike("biome", gm.display)
-        .order("score", { ascending: false })
-        .order("time", { ascending: true }));
-    } else {
-      ({ data, error } = await supabase
-        .from("leaderboards")
-        .select("*")
-        .ilike("biome", gm.display)
-        .order("score", { ascending: false })
-        .order("time", { ascending: true }));
-    }
+    const table = (selectedImageMode === "360") ? "leaderboards_360" : "leaderboards";
+    const biomeKey = (gm.key || "").toLowerCase();
+    const { data, error } = await supabase
+     .from(table)
+     .select("*")
+     .eq("biome_key", biomeKey)
+     .order("score", { ascending: false })
+     .order("time", { ascending: true });
 
     leaderboardBody.innerHTML = "";
 

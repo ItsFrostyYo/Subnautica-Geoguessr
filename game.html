@@ -77,9 +77,9 @@ import { GameMap } from './GameMap.js';
   let map = null;
   const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
   const times = [];
-  const selectedBiome = localStorage.getItem('selectedBiomeKey') || 'ssafeShallows';
+  const selectedBiome = localStorage.getItem('selectedBiomeKey') || 'safeShallows';
   const username = sessionStorage.getItem("username") || "Unknown";
-  let selectedImageMode = localStorage.getItem('selectedImageMode') || IMAGE_MODE.DEG360;
+  let selectedImageMode = localStorage.getItem('selectedImageMode') || '360';
   let mapLocked = false;
   let roundLocked = false;
   const MAX_ROUNDS = 5;
@@ -201,11 +201,11 @@ async function loadLocations() {
   summaryButtons.innerHTML='';
   const res = await fetch(`locations360.json?cacheBust=${Date.now()}`) 
   const data = await res.json();
-  const biomeTarget = (selectedBiome || "").trim().toLowerCase();
+  const biomeTarget = (selectedBiome || "").replace(/\s+/g,"").toLowerCase();
 
-  let source = biomeTarget === "entire map"
+  let source = biomeTarget === "entiremap"
     ? data
-    : data.filter(i => (i.biome || "").trim().toLowerCase() === biomeTarget);
+    : data.filter(i => (i.biome || "").replace(/\s+/g,"").toLowerCase() === biomeTarget); 
 
   if (!source.length) {
     alert(`No locations found for "${selectedBiome}".`);
@@ -342,7 +342,11 @@ async function waitForCondition(checkFn, interval = 40) {
     summaryText.innerHTML=`<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${selectedBiome}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
     summaryButtons.innerHTML='';
     if(totalScore<=MAX_SCORE_ALLOWED){
-      try{await saveScore(username,selectedBiome,totalScore,totalTimeSec);}catch(e){console.error("Error saving score:",e);}
+    try{
+      const biome_key = (selectedBiome || "").toLowerCase();
+      const biome_display = localStorage.getItem('selectedBiomeDisplay') || selectedBiome;
+      await saveScore({ username, biome_key, biome_display, mode: selectedImageMode, score: totalScore, time_sec: totalTimeSec });
+    }catch(e){console.error("Error saving score:",e);}
     }else console.warn("Rejected invalid total score:",totalScore);
     const again=document.createElement('button');again.textContent='Play Again';again.onclick=()=>{summaryOverlay.style.display='none';loadLocations();};
     const dash=document.createElement('button');dash.textContent='Return to Dashboard';dash.onclick=()=>window.location.href='index.html';
