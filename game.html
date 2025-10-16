@@ -218,6 +218,8 @@ async function loadLocations() {
   places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
     ...i,
     coords: { x: Number(i.x), z: Number(i.z) },
+    yaw: i.yaw,
+    pitch: i.pitch,
     biome: i.biome,
     image: `https://cdn.jsdelivr.net/gh/ItsFrostyYo/Subnautica-Geoguessr-Images@${sha}/${i.image}`,
     loaded: false
@@ -273,7 +275,16 @@ async function waitForCondition(checkFn, interval = 40) {
     viewer.navbar.hide();
   }
 
-  viewer.setPanorama(places[i].image).catch(console.error);
+  viewer.setPanorama(places[i].image, {
+  position: {
+    yaw:   `${-places[i].yaw - 90}deg`,   
+    pitch: `${-places[i].pitch}deg`  
+  },
+  sphereCorrection: {               
+    roll: `${places[i].roll || 0}deg`
+  },
+  zoom: 0
+});
 
   current = i;
   roundDisplay.textContent = `Round ${i + 1} / ${places.length}`;
