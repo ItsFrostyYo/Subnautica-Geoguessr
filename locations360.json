@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "x": -140.0,
+    "y": -17.0,
+    "z": -322.0,
+    "pitch": 60.0,
+    "yaw": -141.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-140;-17;-322;safeShallows.png"
+  }
+]
