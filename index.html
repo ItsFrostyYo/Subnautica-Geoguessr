@@ -49,7 +49,8 @@
     transition: all 0.3s ease;
   }
   #username-input:focus { box-shadow: 0 0 12px #00ffff; }
-  #set-username-btn, #credits-btn {
+
+  #credits-btn {
     background: none;
     border: 2px solid #00ffff;
     color: #00ffff;
@@ -59,7 +60,7 @@
     cursor: pointer;
     transition: 0.3s;
   }
-  #set-username-btn:hover, #credits-btn:hover { background: #00ffff; color: #0a0f14; transform: scale(1.05); }
+  #credits-btn:hover { background: #00ffff; color: #0a0f14; transform: scale(1.05); }
 
   .gamemode-container { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; max-width: 1200px; opacity: 1; transition: opacity 0.5s ease; }
   .gamemode-card {
@@ -110,7 +111,6 @@
   <p>Dive Into the Depths and Test Your Location Knowledge | Please Set a Username Below</p>
   <div class="username-container">
     <input id="username-input" type="text" placeholder="Enter username" />
-    <button id="set-username-btn" onclick="setUsername()">Set Username</button>
     <button id="credits-btn" onclick="showCredits()">Credits</button>
   </div>
 </header>
@@ -137,255 +137,183 @@
 </div>
 
 <script>
-  const SUPABASE_URL = "https://ayasirbxjxwslknhbsvn.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5YXNpcmJ4anh3c2xrbmhic3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjY1ODcsImV4cCI6MjA3NTYwMjU4N30.5E-ffTjzZ4pxkubtcBINHh_Jw9d6vltDs1kH8aAqB60";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = "https://ayasirbxjxwslknhbsvn.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5YXNpcmJ4anh3c2xrbmhic3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjY1ODcsImV4cCI6MjA3NTYwMjU4N30.5E-ffTjzZ4pxkubtcBINHh_Jw9d6vltDs1kH8aAqB60";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const toKey = (name) =>
-    name
-      .replace(/[^a-zA-Z0-9\s]/g, " ")
-      .trim()
-      .split(/\s+/)
-      .map((w, i) => (i === 0 ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase()))
-      .join("");
+const toKey = (name)=>name.replace(/[^a-zA-Z0-9\s]/g," ").trim().split(/\s+/).map((w,i)=>(i===0?w.toLowerCase():w[0].toUpperCase()+w.slice(1).toLowerCase())).join("");
 
-  const manualKeys = {
-    "Safe Shallows": "safeShallows",
-    "Kelp Forest": "kelpForest",
-    "Grassy Plateau": "grassyPlateau",
-    "Mushroom Forest": "mushroomForest",
-    "Bulb Zone": "bulbZone",
-    "Blood Kelp": "bloodKelp",
-    "Underwater Islands": "underwaterIslands",
-    "Crag Field": "cragField",
-    "Sparse Reef": "sparseReef",
-    "Mountains": "mountains",
-    "Grand Reef": "grandReef",
-    "Sea Treaders Path": "seaTreadersPath",
-    "Dunes": "dunes",
-    "Crash Zone": "crashZone",
-    "Mountain Island": "mountainIsland",
-    "Floating Island": "floatingIsland",
-    "Entire Map": "entiremap",
-  };
+const manualKeys = {
+"Safe Shallows":"safeShallows","Kelp Forest":"kelpForest","Grassy Plateau":"grassyPlateau","Mushroom Forest":"mushroomForest",
+"Bulb Zone":"bulbZone","Blood Kelp":"bloodKelp","Underwater Islands":"underwaterIslands","Crag Field":"cragField",
+"Sparse Reef":"sparseReef","Mountains":"mountains","Grand Reef":"grandReef","Sea Treaders Path":"seaTreadersPath",
+"Dunes":"dunes","Crash Zone":"crashZone","Mountain Island":"mountainIsland","Floating Island":"floatingIsland","Entire Map":"entiremap"
+};
 
-  const displayNames = [
-    "Safe Shallows",
-    "Kelp Forest",
-    "Grassy Plateau",
-    "Mushroom Forest",
-    "Bulb Zone",
-    "Blood Kelp",
-    "Underwater Islands",
-    "Crag Field",
-    "Sparse Reef",
-    "Mountains",
-    "Grand Reef",
-    "Sea Treaders Path",
-    "Dunes",
-    "Crash Zone",
-    "Mountain Island",
-    "Floating Island",
-  ];
+const displayNames = ["Safe Shallows","Kelp Forest","Grassy Plateau","Mushroom Forest","Bulb Zone","Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains","Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Mountain Island","Floating Island"];
 
-  const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
-  let selectedImageMode = IMAGE_MODE.NORMAL;
+const IMAGE_MODE={NORMAL:"normal", DEG360:"360"};
+let selectedImageMode=IMAGE_MODE.NORMAL;
+const gamemodes = displayNames.map(d=>({display:d, key:manualKeys[d]||toKey(d)}));
 
-  const gamemodes = displayNames.map((display) => ({ display, key: manualKeys[display] || toKey(display) }));
+const container=document.getElementById("gamemode-container");
+const leaderboard=document.getElementById("leaderboard");
+const leaderboardBody=document.getElementById("leaderboard-body");
+const selectedModeTitle=document.getElementById("selected-mode-title");
+const playBtn=document.getElementById("play-btn");
+const normalBtn=document.getElementById("normal-btn");
+const mode360Btn=document.getElementById("mode360-btn");
+const usernameInput=document.getElementById("username-input");
+const creditsBtn=document.getElementById("credits-btn");
+const defaultBackground="Background/DashboardBackground.png";
+const backgroundPath="Background";
+let currentBiome=null;
 
-  const container = document.getElementById("gamemode-container");
-  const leaderboard = document.getElementById("leaderboard");
-  const leaderboardBody = document.getElementById("leaderboard-body");
-  const selectedModeTitle = document.getElementById("selected-mode-title");
-  const playBtn = document.getElementById("play-btn");
-  const normalBtn = document.getElementById("normal-btn");
-  const mode360Btn = document.getElementById("mode360-btn");
-  const usernameInput = document.getElementById("username-input");
-  const creditsBtn = document.getElementById("credits-btn");
-  const defaultBackground = "Background/DashboardBackground.png";
-  const backgroundPath = "Background";
+function updateImageModeStorage(){const is360=selectedImageMode===IMAGE_MODE.DEG360; localStorage.setItem("selectedImageMode",is360?"360":"normal");}
+function updateCreditsVisibility(isDashboard){creditsBtn.style.display=isDashboard?"inline-block":"none";}
 
-  let currentBiome = null; // { display, key }
+window.addEventListener("DOMContentLoaded",()=>{
+  const savedUsername=sessionStorage.getItem("username");
+  if(savedUsername) usernameInput.value=savedUsername;
+  updateCreditsVisibility(true);
+});
 
-  function updateImageModeStorage() {
-    const is360 = selectedImageMode === IMAGE_MODE.DEG360;
-    localStorage.setItem("selectedImageMode", is360 ? "360" : "normal");
-  }
+gamemodes.forEach(gm=>{
+  const card=document.createElement("div");
+  card.className="gamemode-card";
+  card.textContent=gm.display;
+  card.style.backgroundImage=`url('${backgroundPath}/${gm.display}.jpg')`;
+  card.onclick=()=>showLeaderboard(gm);
+  container.appendChild(card);
+});
 
-  function updateCreditsVisibility(isDashboard) {
-    creditsBtn.style.display = isDashboard ? "inline-block" : "none";
-  }
+function formatTime(seconds){
+  const mins=Math.floor(seconds/60);
+  const secs=(seconds%60).toFixed(2);
+  return mins>0?`${mins}:${secs.padStart(5,"0")}`:`${secs}s`;
+}
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const savedUsername = sessionStorage.getItem("username");
-    if (savedUsername) usernameInput.value = savedUsername;
-    updateCreditsVisibility(true);
+async function showLeaderboard(gm){
+  const username=usernameInput.value.trim();
+  if(!username){ alert("Please enter a username before selecting a biome!"); return; }
+  sessionStorage.setItem("username", username);
+
+  usernameInput.disabled=true;
+  usernameInput.style.backgroundColor="rgba(10, 26, 32, 0.5)";
+  usernameInput.style.color="#888";
+  usernameInput.style.cursor="not-allowed";
+
+  currentBiome=gm;
+  document.body.style.backgroundImage=`url('${backgroundPath}/${gm.display}.jpg')`;
+  updateCreditsVisibility(false);
+  container.style.opacity="0";
+  document.querySelector(".entire-map").style.opacity="0";
+
+  setTimeout(()=>{
+    container.style.display="none";
+    document.querySelector(".entire-map").style.display="none";
+    leaderboard.style.display="flex";
+    setTimeout(()=>leaderboard.classList.add("active"),50);
+  },400);
+
+  selectedModeTitle.textContent=`🏆 ${gm.display} Leaderboard`;
+  leaderboardBody.innerHTML="<tr><td colspan='4'>Loading...</td></tr>";
+
+  const table="leaderboards";
+  const biome=(gm.display||"").toLowerCase();
+
+  let { data, error } = await supabase.from(table)
+    .select("*")
+    .ilike("biome", biome)
+    .order("score",{ascending:false})
+    .order("time",{ascending:true})
+    .ilike("gamemode", selectedImageMode);
+
+  leaderboardBody.innerHTML="";
+
+  if(error){ leaderboardBody.innerHTML="<tr><td colspan='4'>Error loading leaderboard</td></tr>"; console.error(error); return; }
+  if(!data||data.length===0){ leaderboardBody.innerHTML="<tr><td colspan='4'>No scores yet!</td></tr>"; return; }
+
+  const bestScores={};
+  data.forEach(entry=>{
+    const existing=bestScores[entry.username];
+    if(!existing || entry.score>existing.score || (entry.score===existing.score && entry.time<existing.time)){
+      bestScores[entry.username]=entry;
+    }
   });
 
-  gamemodes.forEach((gm) => {
-    const card = document.createElement("div");
-    card.className = "gamemode-card";
-    card.textContent = gm.display;
-    card.style.backgroundImage = `url('${backgroundPath}/${gm.display}.jpg')`;
-    card.onclick = () => showLeaderboard(gm);
-    container.appendChild(card);
+  const uniqueEntries=Object.values(bestScores)
+    .sort((a,b)=>b.score-a.score || a.time-b.time)
+    .slice(0,10);
+
+  uniqueEntries.forEach((entry,i)=>{
+    const row=document.createElement("tr");
+    row.innerHTML=`<td>${i+1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
+    const currentUsername=sessionStorage.getItem("username");
+    if(entry.username===currentUsername){
+      row.style.backgroundColor="rgba(0, 255, 255, 0.2)";
+      row.style.fontWeight="bold";
+      row.style.color="#00ffff";
+      row.style.boxShadow="0 0 12px rgba(0, 255, 255, 0.5)";
+    }
+    leaderboardBody.appendChild(row);
   });
+}
 
-  function formatTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = (seconds % 60).toFixed(2);
-    return mins > 0 ? `${mins}:${secs.padStart(5, "0")}` : `${secs}s`;
-  }
+normalBtn.onclick=()=>{
+  selectedImageMode=IMAGE_MODE.NORMAL;
+  normalBtn.classList.add("active");
+  mode360Btn.classList.remove("active");
+  updateImageModeStorage();
+  if(currentBiome) showLeaderboard(currentBiome);
+};
 
-  async function showLeaderboard(gm) {
-    const username = sessionStorage.getItem("username");
-    if (!username) {
-      alert("Please set a username first!");
-      return;
-    }
+mode360Btn.onclick=()=>{
+  selectedImageMode=IMAGE_MODE.DEG360;
+  mode360Btn.classList.add("active");
+  normalBtn.classList.remove("active");
+  updateImageModeStorage();
+  if(currentBiome) showLeaderboard(currentBiome);
+};
 
-    currentBiome = gm;
+document.querySelector(".entire-map").onclick=()=>showLeaderboard({display:"Entire Map", key:manualKeys["Entire Map"]});
 
-    document.body.style.backgroundImage = `url('${backgroundPath}/${gm.display}.jpg')`;
-
-    updateCreditsVisibility(false);
-    container.style.opacity = "0";
-    document.querySelector(".entire-map").style.opacity = "0";
-
-    setTimeout(() => {
-      container.style.display = "none";
-      document.querySelector(".entire-map").style.display = "none";
-      leaderboard.style.display = "flex";
-      setTimeout(() => leaderboard.classList.add("active"), 50);
-    }, 400);
-
-    selectedModeTitle.textContent = `🏆 ${gm.display} Leaderboard`;
-
-    leaderboardBody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
-
-    const table = "leaderboards";
-    const biome = (gm.display || "").toLowerCase();
-
-    let { data, error } = await supabase
-      .from(table)
-      .select("*")
-      .ilike("biome", biome)
-      .order("score", { ascending: false })
-      .order("time", { ascending: true })
-      .ilike("gamemode", selectedImageMode);
-
-    leaderboardBody.innerHTML = "";
-
-    if (error) {
-      leaderboardBody.innerHTML = "<tr><td colspan='4'>Error loading leaderboard</td></tr>";
-      console.error(error);
-      return;
-    }
-    if (!data || data.length === 0) {
-      leaderboardBody.innerHTML = "<tr><td colspan='4'>No scores yet!</td></tr>";
-      return;
-    }
-
-    const bestScores = {};
-    data.forEach((entry) => {
-      const existing = bestScores[entry.username];
-      if (!existing || entry.score > existing.score || (entry.score === existing.score && entry.time < existing.time)) {
-        bestScores[entry.username] = entry;
-      }
-    });
-
-    const uniqueEntries = Object.values(bestScores)
-      .sort((a, b) => b.score - a.score || a.time - b.time)
-      .slice(0, 10);
-
-    uniqueEntries.forEach((entry, i) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${i + 1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
-
-      // HIGHLIGHT CURRENT USER
-      const currentUsername = sessionStorage.getItem("username");
-      if (entry.username === currentUsername) {
-        row.style.backgroundColor = "rgba(0, 255, 255, 0.2)";
-        row.style.fontWeight = "bold";
-        row.style.color = "#00ffff";
-        row.style.boxShadow = "0 0 12px rgba(0, 255, 255, 0.5)";
-      }
-
-      leaderboardBody.appendChild(row);
-    });
-  }
-
-  normalBtn.onclick = () => {
-    selectedImageMode = IMAGE_MODE.NORMAL;
-    normalBtn.classList.add("active");
-    mode360Btn.classList.remove("active");
+playBtn.onclick=async()=>{
+  try{
+    const response=await fetch("locations360.json");
+    const locations=await response.json();
+    const hasBiome=currentBiome.display==="Entire Map"?true:locations.some(loc=>loc.biome===currentBiome.key || loc.biome===currentBiome.display);
+    if(!hasBiome){ alert(`No locations found for ${currentBiome.display}!`); return; }
     updateImageModeStorage();
-    if (currentBiome) showLeaderboard(currentBiome);
-  };
+    localStorage.setItem("selectedBiomeKey",currentBiome.key);
+    localStorage.setItem("selectedBiomeDisplay",currentBiome.display);
+    localStorage.setItem("selectedImageMode",selectedImageMode);
+    window.location.href="game.html";
+  }catch(err){ console.error(err); alert("Error loading locations.json"); }
+};
 
-  mode360Btn.onclick = () => {
-    selectedImageMode = IMAGE_MODE.DEG360;
-    mode360Btn.classList.add("active");
-    normalBtn.classList.remove("active");
-    updateImageModeStorage();
-    if (currentBiome) showLeaderboard(currentBiome);
-  };
+function returnToDashboard(){
+  leaderboard.classList.remove("active");
+  updateCreditsVisibility(true);
+  setTimeout(()=>{
+    leaderboard.style.display="none";
+    container.style.display="flex";
+    document.querySelector(".entire-map").style.display="inline-block";
+    document.body.style.backgroundImage=`url('${defaultBackground}')`;
 
-  document.querySelector(".entire-map").onclick = () => showLeaderboard({ display: "Entire Map", key: manualKeys["Entire Map"] });
+    usernameInput.disabled=false;
+    usernameInput.style.backgroundColor="#0a1a20cc";
+    usernameInput.style.color="#00ffff";
+    usernameInput.style.cursor="text";
 
-  playBtn.onclick = async () => {
-    try {
-      const response = await fetch("locations360.json");
-      const locations = await response.json();
+    setTimeout(()=>{
+      container.style.opacity="1";
+      document.querySelector(".entire-map").style.opacity="1";
+    },50);
+  },300);
+}
 
-      const hasBiome =
-        currentBiome.display === "Entire Map"
-          ? true
-          : locations.some((loc) => loc.biome === currentBiome.key || loc.biome === currentBiome.display);
-
-      if (!hasBiome) {
-        alert(`No locations found for ${currentBiome.display}!`);
-        return;
-      }
-
-      updateImageModeStorage();
-      localStorage.setItem("selectedBiomeKey", currentBiome.key);
-      localStorage.setItem("selectedBiomeDisplay", currentBiome.display);
-      localStorage.setItem("selectedImageMode", selectedImageMode);
-
-      window.location.href = "game.html";
-    } catch (err) {
-      console.error(err);
-      alert("Error loading locations.json");
-    }
-  };
-
-  function returnToDashboard() {
-    leaderboard.classList.remove("active");
-    updateCreditsVisibility(true);
-    setTimeout(() => {
-      leaderboard.style.display = "none";
-      container.style.display = "flex";
-      document.querySelector(".entire-map").style.display = "inline-block";
-      document.body.style.backgroundImage = `url('${defaultBackground}')`;
-      setTimeout(() => {
-        container.style.opacity = "1";
-        document.querySelector(".entire-map").style.opacity = "1";
-      }, 50);
-    }, 300);
-  }
-
-  function setUsername() {
-    const newUsername = usernameInput.value.trim();
-    if (newUsername !== "") {
-      sessionStorage.setItem("username", newUsername);
-      alert(`Username set to: ${newUsername}`);
-    } else alert("Please enter a valid username!");
-  }
-
-  function showCredits() {
-    alert("Credits placeholder");
-  }
+function showCredits(){ alert("Credits placeholder"); }
 </script>
 </body>
 </html>
