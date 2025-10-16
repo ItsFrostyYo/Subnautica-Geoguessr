@@ -398,5 +398,15 @@
     "roll": 0.0,
     "biome": "safeShallows",
     "image": "Images360/-158;-8;-30;safeShallows.png"
+  },
+  {
+    "x": -173.0,
+    "y": -15.0,
+    "z": 73.0,
+    "pitch": 4.0,
+    "yaw": 88.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-173;-15;73;safeShallows.png"
   }
 ]
