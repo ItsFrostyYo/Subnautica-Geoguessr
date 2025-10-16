@@ -264,11 +264,11 @@
     leaderboardBody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
 
     const table = (selectedImageMode === "360") ? "leaderboards_360" : "leaderboards";
-    const biomeKey = (gm.key || "").toLowerCase();
+    const biome = (gm.display || "").toLowerCase();
     const { data, error } = await supabase
      .from(table)
      .select("*")
-     .eq("biome_key", biomeKey)
+     .ilike("biome", biome)
      .order("score", { ascending: false })
      .order("time", { ascending: true });
 
