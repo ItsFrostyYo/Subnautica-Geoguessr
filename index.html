@@ -274,15 +274,6 @@ let { data, error } = await supabase
   .order("time", { ascending: true })
   .ilike("gamemode", selectedImageMode);
 
-if ((!data || data.length === 0) && !error) {
-  ({ data, error } = await supabase
-    .from(table)
-    .select("*")
-    .ilike("biome", biome)
-    .order("score", { ascending: false })
-    .order("time", { ascending: true }));
-}
-
     leaderboardBody.innerHTML = "";
 
     if (error) {
