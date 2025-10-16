@@ -688,5 +688,15 @@
     "roll": 0.0,
     "biome": "FloatingIsland",
     "image": "Images360/-863;12;-1035;FloatingIsland.png"
+  },
+  {
+    "x": -905.0,
+    "y": 34.0,
+    "z": -1010.0,
+    "pitch": 3.0,
+    "yaw": -179.0,
+    "roll": 0.0,
+    "biome": "FloatingIsland",
+    "image": "Images360/-905;34;-1010;FloatingIsland.png"
   }
 ]
