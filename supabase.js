@@ -6,9 +6,9 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-export async function saveScore(username, biome, score, time) {
+export async function saveScore(username, biome, score, time, gamemode) {
   const { error } = await supabase.from("leaderboards").insert([
-    { username, biome, score, time }
+    { username, biome, score, time, gamemode }
   ]);
   if (error) console.error("Error saving score:", error);
 }

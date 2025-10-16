@@ -339,13 +339,14 @@ async function waitForCondition(checkFn, interval = 40) {
   async function showFinalSummary(){
     const totalTimeSec=Number((totalElapsed/1000).toFixed(2));
     summaryOverlay.style.display='flex';
-    summaryText.innerHTML=`<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${selectedBiome}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
+    const biome_display = localStorage.getItem('selectedBiomeDisplay') || selectedBiome;
+    summaryText.innerHTML=`<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${biome_display}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
     summaryButtons.innerHTML='';
     if(totalScore<=MAX_SCORE_ALLOWED){
     try{
       const biome_key = (selectedBiome || "").toLowerCase();
-      const biome_display = localStorage.getItem('selectedBiomeDisplay') || selectedBiome;
-      await saveScore({ username, biome_key, biome_display, mode: selectedImageMode, score: totalScore, time_sec: totalTimeSec });
+      
+      await saveScore(username, biome_display, totalScore, totalTimeSec, selectedImageMode);
     }catch(e){console.error("Error saving score:",e);}
     }else console.warn("Rejected invalid total score:",totalScore);
     const again=document.createElement('button');again.textContent='Play Again';again.onclick=()=>{summaryOverlay.style.display='none';loadLocations();};

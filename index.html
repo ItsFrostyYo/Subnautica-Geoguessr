@@ -263,14 +263,25 @@
 
     leaderboardBody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
 
-    const table = (selectedImageMode === "360") ? "leaderboards_360" : "leaderboards";
+    const table = "leaderboards";
     const biome = (gm.display || "").toLowerCase();
-    const { data, error } = await supabase
-     .from(table)
-     .select("*")
-     .ilike("biome", biome)
-     .order("score", { ascending: false })
-     .order("time", { ascending: true });
+
+let { data, error } = await supabase
+  .from(table)
+  .select("*")
+  .ilike("biome", biome)
+  .order("score", { ascending: false })
+  .order("time", { ascending: true })
+  .ilike("gamemode", selectedImageMode);
+
+if ((!data || data.length === 0) && !error) {
+  ({ data, error } = await supabase
+    .from(table)
+    .select("*")
+    .ilike("biome", biome)
+    .order("score", { ascending: false })
+    .order("time", { ascending: true }));
+}
 
     leaderboardBody.innerHTML = "";
 
