@@ -1458,5 +1458,15 @@
     "roll": 0.0,
     "biome": "grassyPlateaus",
     "image": "Images360/-375;-54;-564;grassyPlateaus.png"
+  },
+  {
+    "x": -291.0,
+    "y": -48.0,
+    "z": -494.0,
+    "pitch": 1.0,
+    "yaw": 36.0,
+    "roll": 0.0,
+    "biome": "kelpForest",
+    "image": "Images360/-291;-48;-494;kelpForest.png"
   }
 ]
