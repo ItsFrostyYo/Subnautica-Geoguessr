@@ -798,5 +798,15 @@
     "roll": 0.0,
     "biome": "kelpForest",
     "image": "Images360/79;-35;336;kelpForest.png"
+  },
+  {
+    "x": 127.0,
+    "y": -35.0,
+    "z": 413.0,
+    "pitch": 44.0,
+    "yaw": 109.0,
+    "roll": 0.0,
+    "biome": "kelpForest",
+    "image": "Images360/127;-35;413;kelpForest.png"
   }
 ]
