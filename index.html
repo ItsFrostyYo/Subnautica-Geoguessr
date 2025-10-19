@@ -144,10 +144,24 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const toKey = (name)=>name.replace(/[^a-zA-Z0-9\s]/g," ").trim().split(/\s+/).map((w,i)=>(i===0?w.toLowerCase():w[0].toUpperCase()+w.slice(1).toLowerCase())).join("");
 
 const manualKeys = {
-"Safe Shallows":"safeShallows","Kelp Forest":"kelpForest","Grassy Plateau":"grassyPlateau","Mushroom Forest":"mushroomForest",
-"Bulb Zone":"bulbZone","Blood Kelp":"bloodKelp","Underwater Islands":"underwaterIslands","Crag Field":"cragField",
-"Sparse Reef":"sparseReef","Mountains":"mountains","Grand Reef":"grandReef","Sea Treaders Path":"seaTreadersPath",
-"Dunes":"dunes","Crash Zone":"crashZone","Mountain Island":"mountainIsland","Floating Island":"floatingIsland","Entire Map":"entiremap"
+  "Safe Shallows": "safeShallows",
+  "Kelp Forest": "kelpForest",
+  "Grassy Plateaus": "grassy Plateaus",
+  "GrassyPlateaus": "grassyPlateaus",
+  "Mushroom Forest": "mushroomForest",
+  "Bulb Zone": "bulbZone",
+  "Blood Kelp": "bloodKelp",
+  "Underwater Islands": "underwaterIslands",
+  "Crag Field": "cragField",
+  "Sparse Reef": "sparseReef",
+  "Mountains": "mountains",
+  "Grand Reef": "grandReef",
+  "Sea Treaders Path": "seaTreadersPath",
+  "Dunes": "dunes",
+  "Crash Zone": "crashZone",
+  "Mountain Island": "mountainIsland",
+  "Floating Island": "floatingIsland",
+  "Entire Map": "entiremap"
 };
 
 const displayNames = ["Safe Shallows","Kelp Forest","Grassy Plateau","Mushroom Forest","Bulb Zone","Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains","Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Mountain Island","Floating Island"];
