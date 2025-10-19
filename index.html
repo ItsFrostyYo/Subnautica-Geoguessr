@@ -62,7 +62,9 @@
   }
   #credits-btn:hover { background: #00ffff; color: #0a0f14; transform: scale(1.05); }
 
-  .gamemode-container { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; max-width: 1200px; opacity: 1; transition: opacity 0.5s ease; }
+  .gamemode-container { margin-top: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 1200px; opacity: 1; transition: opacity 0.5s ease; }
+  .gamemode-row { display: flex; justify-content: center; gap: 25px; }
+
   .gamemode-card {
     border: 2px solid #00ffff; border-radius: 15px; padding: 20px;
     width: 220px; height: 70px; text-align: center;
@@ -85,13 +87,13 @@
   }
   .entire-map:hover { transform: scale(1.05); box-shadow: 0 0 60px rgba(0, 255, 255, 0.6); background: radial-gradient(circle at center, #00ffff88, #00ffff33 80%); color: #0a0f14; }
 
-  .leaderboard {
+  .leaderboard, .credits {
     display: none; flex-direction: column; align-items: center;
     margin-top: 40px; background-color: #112029cc; border: 2px solid #00ffff;
     border-radius: 15px; padding: 20px; width: 500px; text-align: center;
     opacity: 0; transform: scale(0.98); transition: opacity 0.5s ease, transform 0.5s ease;
   }
-  .leaderboard.active { display: flex; opacity: 1; transform: scale(1); }
+  .leaderboard.active, .credits.active { display: flex; opacity: 1; transform: scale(1); }
 
   table { width: 100%; border-collapse: collapse; margin-top: 10px; }
   th, td { border-bottom: 1px solid #00ffff; padding: 8px; }
@@ -111,7 +113,7 @@
   <p>Dive Into the Depths and Test Your Location Knowledge | Please Set a Username Below</p>
   <div class="username-container">
     <input id="username-input" type="text" placeholder="Enter username" />
-    <button id="credits-btn" onclick="showCredits()">Credits</button>
+    <button id="credits-btn" onclick="showCredits(event)">Credits</button>
   </div>
 </header>
 
@@ -136,6 +138,12 @@
   </table>
 </div>
 
+<div class="credits" id="credits">
+  <h2>Credits</h2>
+  <p>Placeholder for your credits. You can add contributors, asset sources, and acknowledgements here.</p>
+  <button class="play-btn" onclick="returnToDashboard()">← Back</button>
+</div>
+
 <script>
 const SUPABASE_URL = "https://ayasirbxjxwslknhbsvn.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5YXNpcmJ4anh3c2xrbmhic3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjY1ODcsImV4cCI6MjA3NTYwMjU4N30.5E-ffTjzZ4pxkubtcBINHh_Jw9d6vltDs1kH8aAqB60";
@@ -147,9 +155,6 @@ const manualKeys = {
   "Safe Shallows": "safeShallows",
   "Kelp Forest": "kelpForest",
   "Grassy Plateaus": "grassyPlateaus",
-  "grassy Plateaus": "grassyPlateaus",
-  "GrassyPlateaus": "grassyPlateaus",
-  "grassyPlateaus": "grassyPlateaus",
   "Mushroom Forest": "mushroomForest",
   "Bulb Zone": "bulbZone",
   "Blood Kelp": "bloodKelp",
@@ -163,10 +168,26 @@ const manualKeys = {
   "Crash Zone": "crashZone",
   "Mountain Island": "mountainIsland",
   "Floating Island": "floatingIsland",
+  "Jelly Shroom Caves": "jellyShroomCaves",
+  "Lost River": "lostRiver",
+  "Inactive Lava Zone": "inactiveLavaZone",
+  "Active Lava Zone": "activeLavaZone",
   "Entire Map": "entiremap"
 };
 
-const displayNames = ["Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone","Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains","Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Mountain Island","Floating Island"];
+const displayNames = [
+  "Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone",
+  "Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains",
+  "Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Mountain Island",
+  "Floating Island","Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone"
+];
+
+const rowOrder = [
+  ["Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone"],
+  ["Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains"],
+  ["Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Mountain Island"],
+  ["Floating Island","Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone"]
+];
 
 const IMAGE_MODE={NORMAL:"normal", DEG360:"360"};
 let selectedImageMode=IMAGE_MODE.NORMAL;
@@ -180,35 +201,45 @@ const playBtn=document.getElementById("play-btn");
 const normalBtn=document.getElementById("normal-btn");
 const mode360Btn=document.getElementById("mode360-btn");
 const usernameInput=document.getElementById("username-input");
-const creditsBtn=document.getElementById("credits-btn");
+const creditsDiv=document.getElementById("credits");
 const defaultBackground="Background/DashboardBackground.png";
 const backgroundPath="Background";
 let currentBiome=null;
 
 function updateImageModeStorage(){const is360=selectedImageMode===IMAGE_MODE.DEG360; localStorage.setItem("selectedImageMode",is360?"360":"normal");}
-function updateCreditsVisibility(isDashboard){creditsBtn.style.display=isDashboard?"inline-block":"none";}
+
+// Render biomes in rows
+function renderBiomeRows() {
+  container.innerHTML = "";
+  rowOrder.forEach(row => {
+    const rowDiv = document.createElement("div");
+    rowDiv.className = "gamemode-row";
+    row.forEach(name => {
+      const card = document.createElement("div");
+      card.className = "gamemode-card";
+      card.textContent = name;
+      card.style.backgroundImage = `url('${backgroundPath}/${name}.jpg')`;
+      card.onclick = () => showLeaderboard({ display: name, key: manualKeys[name] });
+      rowDiv.appendChild(card);
+    });
+    container.appendChild(rowDiv);
+  });
+}
 
 window.addEventListener("DOMContentLoaded",()=>{
   const savedUsername=sessionStorage.getItem("username");
   if(savedUsername) usernameInput.value=savedUsername;
-  updateCreditsVisibility(true);
+  renderBiomeRows();
 });
 
-gamemodes.forEach(gm=>{
-  const card=document.createElement("div");
-  card.className="gamemode-card";
-  card.textContent=gm.display;
-  card.style.backgroundImage=`url('${backgroundPath}/${gm.display}.jpg')`;
-  card.onclick=()=>showLeaderboard(gm);
-  container.appendChild(card);
-});
-
+// Format leaderboard time
 function formatTime(seconds){
   const mins=Math.floor(seconds/60);
   const secs=(seconds%60).toFixed(2);
   return mins>0?`${mins}:${secs.padStart(5,"0")}`:`${secs}s`;
 }
 
+// Show leaderboard
 async function showLeaderboard(gm){
   const username=usernameInput.value.trim();
   if(!username){ alert("Please enter a username before selecting a biome!"); return; }
@@ -221,13 +252,13 @@ async function showLeaderboard(gm){
 
   currentBiome=gm;
   document.body.style.backgroundImage=`url('${backgroundPath}/${gm.display}.jpg')`;
-  updateCreditsVisibility(false);
   container.style.opacity="0";
   document.querySelector(".entire-map").style.opacity="0";
 
   setTimeout(()=>{
     container.style.display="none";
     document.querySelector(".entire-map").style.display="none";
+    creditsDiv.classList.remove("active");
     leaderboard.style.display="flex";
     setTimeout(()=>leaderboard.classList.add("active"),50);
   },400);
@@ -235,47 +266,49 @@ async function showLeaderboard(gm){
   selectedModeTitle.textContent=`🏆 ${gm.display} Leaderboard`;
   leaderboardBody.innerHTML="<tr><td colspan='4'>Loading...</td></tr>";
 
-  const table="leaderboards";
-  const biome=(gm.display||"").toLowerCase();
+  try {
+    const table="leaderboards";
+    const biome=(gm.display||"").toLowerCase();
+    let { data, error } = await supabase.from(table)
+      .select("*")
+      .ilike("biome", biome)
+      .order("score",{ascending:false})
+      .order("time",{ascending:true})
+      .ilike("gamemode", selectedImageMode);
 
-  let { data, error } = await supabase.from(table)
-    .select("*")
-    .ilike("biome", biome)
-    .order("score",{ascending:false})
-    .order("time",{ascending:true})
-    .ilike("gamemode", selectedImageMode);
+    leaderboardBody.innerHTML="";
 
-  leaderboardBody.innerHTML="";
+    if(error){ leaderboardBody.innerHTML="<tr><td colspan='4'>Error loading leaderboard</td></tr>"; console.error(error); return; }
+    if(!data||data.length===0){ leaderboardBody.innerHTML="<tr><td colspan='4'>No scores yet!</td></tr>"; return; }
 
-  if(error){ leaderboardBody.innerHTML="<tr><td colspan='4'>Error loading leaderboard</td></tr>"; console.error(error); return; }
-  if(!data||data.length===0){ leaderboardBody.innerHTML="<tr><td colspan='4'>No scores yet!</td></tr>"; return; }
+    const bestScores={};
+    data.forEach(entry=>{
+      const existing=bestScores[entry.username];
+      if(!existing || entry.score>existing.score || (entry.score===existing.score && entry.time<existing.time)){
+        bestScores[entry.username]=entry;
+      }
+    });
 
-  const bestScores={};
-  data.forEach(entry=>{
-    const existing=bestScores[entry.username];
-    if(!existing || entry.score>existing.score || (entry.score===existing.score && entry.time<existing.time)){
-      bestScores[entry.username]=entry;
-    }
-  });
+    const uniqueEntries=Object.values(bestScores)
+      .sort((a,b)=>b.score-a.score || a.time-b.time)
+      .slice(0,10);
 
-  const uniqueEntries=Object.values(bestScores)
-    .sort((a,b)=>b.score-a.score || a.time-b.time)
-    .slice(0,10);
-
-  uniqueEntries.forEach((entry,i)=>{
-    const row=document.createElement("tr");
-    row.innerHTML=`<td>${i+1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
-    const currentUsername=sessionStorage.getItem("username");
-    if(entry.username===currentUsername){
-      row.style.backgroundColor="rgba(0, 255, 255, 0.2)";
-      row.style.fontWeight="bold";
-      row.style.color="#00ffff";
-      row.style.boxShadow="0 0 12px rgba(0, 255, 255, 0.5)";
-    }
-    leaderboardBody.appendChild(row);
-  });
+    uniqueEntries.forEach((entry,i)=>{
+      const row=document.createElement("tr");
+      row.innerHTML=`<td>${i+1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
+      const currentUsername=sessionStorage.getItem("username");
+      if(entry.username===currentUsername){
+        row.style.backgroundColor="rgba(0, 255, 255, 0.2)";
+        row.style.fontWeight="bold";
+        row.style.color="#00ffff";
+        row.style.boxShadow="0 0 12px rgba(0, 255, 255, 0.5)";
+      }
+      leaderboardBody.appendChild(row);
+    });
+  } catch(e){ console.error(e); leaderboardBody.innerHTML="<tr><td colspan='4'>Error loading leaderboard</td></tr>"; }
 }
 
+// Image mode buttons
 normalBtn.onclick=()=>{
   selectedImageMode=IMAGE_MODE.NORMAL;
   normalBtn.classList.add("active");
@@ -283,7 +316,6 @@ normalBtn.onclick=()=>{
   updateImageModeStorage();
   if(currentBiome) showLeaderboard(currentBiome);
 };
-
 mode360Btn.onclick=()=>{
   selectedImageMode=IMAGE_MODE.DEG360;
   mode360Btn.classList.add("active");
@@ -292,8 +324,10 @@ mode360Btn.onclick=()=>{
   if(currentBiome) showLeaderboard(currentBiome);
 };
 
+// Entire map button
 document.querySelector(".entire-map").onclick=()=>showLeaderboard({display:"Entire Map", key:manualKeys["Entire Map"]});
 
+// Play button
 playBtn.onclick=async()=>{
   try{
     const response=await fetch("locations360.json");
@@ -308,11 +342,14 @@ playBtn.onclick=async()=>{
   }catch(err){ console.error(err); alert("Error loading locations.json"); }
 };
 
+// Return to dashboard
 function returnToDashboard(){
+  if(event && event.target.id==="credits-btn"){ return; } // avoid triggering when clicking Credits button
   leaderboard.classList.remove("active");
-  updateCreditsVisibility(true);
+  creditsDiv.classList.remove("active");
   setTimeout(()=>{
     leaderboard.style.display="none";
+    creditsDiv.style.display="none";
     container.style.display="flex";
     document.querySelector(".entire-map").style.display="inline-block";
     document.body.style.backgroundImage=`url('${defaultBackground}')`;
@@ -329,7 +366,15 @@ function returnToDashboard(){
   },300);
 }
 
-function showCredits(){ alert("Credits placeholder"); }
+// Credits tab
+function showCredits(e){
+  e.stopPropagation();
+  container.style.display="none";
+  document.querySelector(".entire-map").style.display="none";
+  leaderboard.classList.remove("active");
+  creditsDiv.style.display="flex";
+  setTimeout(()=>creditsDiv.classList.add("active"),50);
+}
 </script>
 </body>
 </html>
