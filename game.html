@@ -248,7 +248,7 @@ async function startRound(i) {
   if (!place.loaded) await waitForCondition(() => place.loaded);
   hideLoadingScreen();
 
-  // ✅ 2.3× faster movement and zoom
+  // ✅ faster movement and zoom
   if (selectedImageMode === '360') {
     viewer.setOption('mousemove', true);
     viewer.setOption('mousewheel', true);
