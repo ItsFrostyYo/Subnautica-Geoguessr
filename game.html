@@ -151,9 +151,6 @@ import { GameMap } from './GameMap.js';
   function distanceWorld(a,b,c,d){return Math.hypot(a-c,b-d);}
   function scoreFromDistance(d){const max=5000;if(d<=10)return max;return Math.round(Math.max(0,max-(d-10)*1.25));}
 
-  //function disableMapInteractions(){try{leafletMap.dragging.disable();leafletMap.scrollWheelZoom.disable();leafletMap.doubleClickZoom.disable();leafletMap.boxZoom.disable();leafletMap.keyboard.disable();leafletMap.touchZoom.disable();}catch{}}
-  //function enableMapInteractions(){try{leafletMap.dragging.enable();leafletMap.scrollWheelZoom.enable();leafletMap.doubleClickZoom.enable();leafletMap.boxZoom.enable();leafletMap.keyboard.enable();leafletMap.touchZoom.enable();}catch{}}
-
     async function getLatestCommitSha({
   owner = 'ItsFrostyYo',
   repo = 'Subnautica-Geoguessr-Images',
@@ -180,7 +177,7 @@ import { GameMap } from './GameMap.js';
     throw new Error('No SHA in response');
   } catch (e) {
     console.warn('Failed to get latest commit SHA, falling back to @main:', e);
-    return null; // signals fallback
+    return null;
   }
 }
 
@@ -238,37 +235,30 @@ async function loadLocations() {
 
   startRound(0);
 }
-  function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
-async function waitForCondition(checkFn, interval = 40) {
-  while (!checkFn()) {
-    await sleep(interval);
-  }
-}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+async function waitForCondition(checkFn, interval=40){while(!checkFn())await sleep(interval);}
 
- async function startRound(i) {
+async function startRound(i) {
   if (i >= MAX_ROUNDS || i >= places.length) return;
 
   const place = places[i];
   showLoadingScreen();
 
-  if (!place.loaded) {
-    await waitForCondition(() => place.loaded);
-  }
-
+  if (!place.loaded) await waitForCondition(() => place.loaded);
   hideLoadingScreen();
 
-    if (selectedImageMode === '360')
-  {
+  // ✅ 2.3× faster movement and zoom
+  if (selectedImageMode === '360') {
     viewer.setOption('mousemove', true);
     viewer.setOption('mousewheel', true);
     viewer.setOption('touchmoveTwoFingers', true);
+    viewer.setOption('mousemoveSpeed', 2.3);
+    viewer.setOption('mousewheelSpeed', 2.3);
+    viewer.setOption('zoomSpeed', 2.3);
+    viewer.setOption('friction', 0.88);
     viewer.navbar.show();
-  }
-  else
-  {
+  } else {
     viewer.setOption('mousemove', false);
     viewer.setOption('mousewheel', false);
     viewer.setOption('touchmoveTwoFingers', false);
@@ -276,16 +266,16 @@ async function waitForCondition(checkFn, interval = 40) {
   }
 
   viewer.setPanorama(places[i].image, {
-  position: {
-    yaw:   `${places[i].yaw + 180}deg`,   
-    pitch: `${-places[i].pitch}deg`  
-  },
-  sphereCorrection: {               
-    roll: `${places[i].roll || 0}deg`
-  },
-  zoom: 0,
-  transition: false
-});
+    position: {
+      yaw: `${places[i].yaw + 180}deg`,
+      pitch: `${-places[i].pitch}deg`
+    },
+    sphereCorrection: {
+      roll: `${places[i].roll || 0}deg`
+    },
+    zoom: 0,
+    transition: false
+  });
 
   current = i;
   roundDisplay.textContent = `Round ${i + 1} / ${places.length}`;
@@ -305,129 +295,101 @@ async function waitForCondition(checkFn, interval = 40) {
   startTimer();
 }
 
-  function showSummaryRound(d,s){
-    stopTimer();
-    summaryButtons.innerHTML=''; 
-    summaryOverlay.style.display='flex';
-    summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Loading next round...</p>`;
-    roundLocked=true;
-    summaryOverlay.onclick=null;
-    document.removeEventListener('keydown',nextRoundKey);
-    setTimeout(()=>{
-      roundLocked=false;
-      summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Press Space or Click to Continue</p>`;
-      document.addEventListener('keydown',nextRoundKey,{once:true});
-      summaryOverlay.onclick=()=>{document.removeEventListener('keydown',nextRoundKey);nextRound();};
-    },500);
-  }
+function showSummaryRound(d,s){
+  stopTimer();
+  summaryButtons.innerHTML=''; 
+  summaryOverlay.style.display='flex';
+  summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Loading next round...</p>`;
+  roundLocked=true;
+  summaryOverlay.onclick=null;
+  document.removeEventListener('keydown',nextRoundKey);
+  setTimeout(()=>{
+    roundLocked=false;
+    summaryText.innerHTML=`<h2>Round ${current+1} Complete</h2><p>Distance: ${Math.round(d)} m</p><p>Score: ${s}</p><p>Press Space or Click to Continue</p>`;
+    document.addEventListener('keydown',nextRoundKey,{once:true});
+    summaryOverlay.onclick=()=>{document.removeEventListener('keydown',nextRoundKey);nextRound();};
+  },500);
+}
 
-  function nextRoundKey(e){if(e.code==='Space'&&!roundLocked)nextRound();}
-  function nextRound(){
-    if(roundLocked)return;
-    summaryOverlay.onclick=null;
-    summaryOverlay.style.display='none';
-    summaryButtons.innerHTML='';
-    current++;
-    if(current<places.length&&current<MAX_ROUNDS)startRound(current);
-    else
-  {
-    showFinalSummary();
-    places.forEach(p => URL.revokeObjectURL(p.image));
-  }
-  }
+function nextRoundKey(e){if(e.code==='Space'&&!roundLocked)nextRound();}
+function nextRound(){
+  if(roundLocked)return;
+  summaryOverlay.onclick=null;
+  summaryOverlay.style.display='none';
+  summaryButtons.innerHTML='';
+  current++;
+  if(current<places.length&&current<MAX_ROUNDS)startRound(current);
+  else {showFinalSummary();places.forEach(p=>URL.revokeObjectURL(p.image));}
+}
 
-  async function showFinalSummary(){
-    const totalTimeSec=Number((totalElapsed/1000).toFixed(2));
-    summaryOverlay.style.display='flex';
-    const biome_display = localStorage.getItem('selectedBiomeDisplay') || selectedBiome;
-    summaryText.innerHTML=`<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${biome_display}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
-    summaryButtons.innerHTML='';
-    if(totalScore<=MAX_SCORE_ALLOWED){
+async function showFinalSummary(){
+  const totalTimeSec=Number((totalElapsed/1000).toFixed(2));
+  summaryOverlay.style.display='flex';
+  const biome_display=localStorage.getItem('selectedBiomeDisplay')||selectedBiome;
+  summaryText.innerHTML=`<h2>Game Over</h2><p>Username: ${username}</p><p>Biome: ${biome_display}</p><p>Total Score: ${totalScore}</p><p>Total Time: ${formatTime(totalElapsed)}</p>`;
+  summaryButtons.innerHTML='';
+  if(totalScore<=MAX_SCORE_ALLOWED){
     try{
-      const biome_key = (selectedBiome || "").toLowerCase();
-      
-      await saveScore(username, biome_display, totalScore, totalTimeSec, selectedImageMode);
+      const biome_key=(selectedBiome||"").toLowerCase();
+      await saveScore(username,biome_display,totalScore,totalTimeSec,selectedImageMode);
     }catch(e){console.error("Error saving score:",e);}
-    }else console.warn("Rejected invalid total score:",totalScore);
-    const again=document.createElement('button');again.textContent='Play Again';again.onclick=()=>{summaryOverlay.style.display='none';loadLocations();};
-    const dash=document.createElement('button');dash.textContent='Return to Dashboard';dash.onclick=()=>window.location.href='index.html';
-    summaryButtons.appendChild(again);summaryButtons.appendChild(dash);
+  }else console.warn("Rejected invalid total score:",totalScore);
+  const again=document.createElement('button');again.textContent='Play Again';again.onclick=()=>{summaryOverlay.style.display='none';loadLocations();};
+  const dash=document.createElement('button');dash.textContent='Return to Dashboard';dash.onclick=()=>window.location.href='index.html';
+  summaryButtons.appendChild(again);summaryButtons.appendChild(dash);
+}
+
+function submitGuess(){
+  if(mapLocked||roundLocked)return;
+  if(!map.guessMarker)return;
+  mapLocked=true;roundLocked=true;
+  const actual=places[current].coords;
+  const d=distanceWorld(actual.x,actual.z,map.guessMarker.x,map.guessMarker.y);
+  const s=scoreFromDistance(d);
+  totalScore+=s;
+  result.textContent=`Distance: ${Math.round(d)} m — Score: ${s}`;
+
+  if(map){
+    map.clearActualMarker();
+    map.setActualMarker(actual.x,actual.z);
+    map.drawActualMarker=true;
+    map.drawLine=true;
+    map.flyTo([actual.z,actual.x],0.75,{duration:0.5,easeLinearity:0.25});
   }
+  setTimeout(()=>showSummaryRound(d,s),400);
+}
 
-  function submitGuess(){
-    if(mapLocked||roundLocked)return;
-    if(!map.guessMarker)return;
-    mapLocked=true;roundLocked=true;
-    //disableMapInteractions();
-    const actual=places[current].coords;
-    const d=distanceWorld(actual.x, actual.z, map.guessMarker.x, map.guessMarker.y);
-    const s=scoreFromDistance(d);
-    totalScore+=s;
-    result.textContent=`Distance: ${Math.round(d)} m — Score: ${s}`;
-
-    if(map){
-      map.clearActualMarker();
-      map.setActualMarker(actual.x, actual.z);
-      map.drawActualMarker = true;
-      map.drawLine = true;
-      map.flyTo([actual.z,actual.x], 0.75, {duration: 0.5, easeLinearity: 0.25}); // smooth zoom-in animation
-    }
-    setTimeout(()=>showSummaryRound(d,s),400);
-  }
-
-  function initMap(){
-    const m1 = Object.assign(new Image(), { src: 'Marker1.png', style: { width: '300px', height: 'auto' } });
-    const m2 = Object.assign(new Image(), { src: 'Marker2.png', style: { width: '300px', height: 'auto' } });
-    
-
-     map = new GameMap(canvas, {
-        worldMin: -2048,
-        worldMax:  2048,
-        zoomSpeed: 1.15,
-        zoomLerpSpeed: 0.1,
-        minZoom: 0.1,
-        maxZoom: 10,
-        guessMarkerOffset: { x: 0, y: -10 },
-        actualMarkerOffset: { x: 0, y: -10 },
-        guessMarkerImage: m2,
-        actualMarkerImage: m1
-    });
-
-    const resizeCanvas = () => {
-        const rect = canvas.getBoundingClientRect();
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width  = Math.round(rect.width  * dpr);
-        canvas.height = Math.round(rect.height * dpr);
-      };
-      resizeCanvas();
-      new ResizeObserver(resizeCanvas).observe(document.body);
-
-      select.addEventListener('change', () => {
-        const key = select.value;
-        map.guessMarker = null;
-        map.clearActualMarker?.();
-
-        map.setMap({ imageSrc: map.IMAGES[key], recenter: true });
-
-        map.flyToWorld?.(map.camera.x, map.camera.y, null, { duration: 0.35, easeLinearity: 0.25 });
-      });
-
-      function getLocal(e) {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width  / rect.width;
-        const scaleY = canvas.height / rect.height;
-        return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
-      }
-  }
-
-  document.getElementById('submit').addEventListener('click',submitGuess);
-  document.addEventListener('keydown',e=>{
-    if(e.code==='Space'&&summaryOverlay.style.display==='none'&&!roundLocked)submitGuess();
+function initMap(){
+  const m1=Object.assign(new Image(),{src:'Marker1.png'});
+  const m2=Object.assign(new Image(),{src:'Marker2.png'});
+  map=new GameMap(canvas,{
+    worldMin:-2048,worldMax:2048,
+    zoomSpeed:1.15,zoomLerpSpeed:0.1,
+    minZoom:0.1,maxZoom:10,
+    guessMarkerOffset:{x:0,y:-10},
+    actualMarkerOffset:{x:0,y:-10},
+    guessMarkerImage:m2,
+    actualMarkerImage:m1
   });
 
-  const img=new Image();
-  img.onload=()=>{initMap();loadLocations();};
-  img.src='map_main.webp';
+  const resizeCanvas=()=>{const r=canvas.getBoundingClientRect();const dpr=window.devicePixelRatio||1;canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);};
+  resizeCanvas();new ResizeObserver(resizeCanvas).observe(document.body);
+
+  select.addEventListener('change',()=>{
+    const key=select.value;
+    map.guessMarker=null;
+    map.clearActualMarker?.();
+    map.setMap({imageSrc:map.IMAGES[key],recenter:true});
+    map.flyToWorld?.(map.camera.x,map.camera.y,null,{duration:0.35,easeLinearity:0.25});
+  });
+}
+
+document.getElementById('submit').addEventListener('click',submitGuess);
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&summaryOverlay.style.display==='none'&&!roundLocked)submitGuess();});
+
+const img=new Image();
+img.onload=()=>{initMap();loadLocations();};
+img.src='map_main.webp';
 })();
 </script>
 </body>
