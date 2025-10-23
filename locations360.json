@@ -2338,5 +2338,15 @@
     "roll": 1.0,
     "biome": "mushroomForest",
     "image": "Images360/-869;-48;587;mushroomForest.png"
+  },
+  {
+    "x": -908.0,
+    "y": -136.0,
+    "z": 561.0,
+    "pitch": 36.0,
+    "yaw": -163.0,
+    "roll": 1.0,
+    "biome": "mushroomForest",
+    "image": "Images360/-908;-136;561;mushroomForest.png"
   }
 ]
