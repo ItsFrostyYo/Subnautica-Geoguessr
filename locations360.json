@@ -2678,5 +2678,15 @@
     "roll": -7.0,
     "biome": "kooshZone",
     "image": "Images360/1142;-451;896;kooshZone.png"
+  },
+  {
+    "x": -475.0,
+    "y": -226.0,
+    "z": 1088.0,
+    "pitch": 6.0,
+    "yaw": -64.0,
+    "roll": 0.0,
+    "biome": "bloodKelpTwo",
+    "image": "Images360/-475;-226;1088;bloodKelpTwo.png"
   }
 ]
