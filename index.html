@@ -321,16 +321,29 @@ playBtn.onclick = async () => {
   try {
     const response = await fetch("locations360.json");
     const locations = await response.json();
-    const selectedBiomes = biomeKeys[currentBiome.display] || [currentBiome.display];
-    const hasBiome = currentBiome.display === "Entire Map"
-      ? true
-      : locations.some(loc => selectedBiomes.includes(loc.biome));
-    if (!hasBiome) { alert(`No locations found for ${currentBiome.display}!`); return; }
 
+    let selectedBiomes;
+    if (currentBiome.display === "Entire Map") {
+      // ✅ Collect ALL biome names from biomeKeys
+      selectedBiomes = Object.values(biomeKeys).flat();
+    } else {
+      selectedBiomes = biomeKeys[currentBiome.display] || [currentBiome.display];
+    }
+
+    // ✅ Check that at least one location matches
+    const hasBiome = locations.some(loc => selectedBiomes.includes(loc.biome));
+    if (!hasBiome) {
+      alert(`No locations found for ${currentBiome.display}!`);
+      return;
+    }
+
+    // ✅ Save all biomes to storage so the game can use them
     updateImageModeStorage();
-    localStorage.setItem("selectedBiomeKey", selectedBiomes[0]);
+    localStorage.setItem("selectedBiomeKeys", JSON.stringify(selectedBiomes));
     localStorage.setItem("selectedBiomeDisplay", currentBiome.display);
     localStorage.setItem("selectedImageMode", selectedImageMode);
+
+    // ✅ Redirect to game
     window.location.href = "game.html";
   } catch (err) {
     console.error(err);
