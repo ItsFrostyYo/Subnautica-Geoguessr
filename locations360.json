@@ -2898,5 +2898,15 @@
     "roll": -7.0,
     "biome": "BloodKelp_Trench",
     "image": "Images360/-1211;-345;-384;BloodKelp_Trench.png"
+  },
+  {
+    "x": -1162.0,
+    "y": -243.0,
+    "z": -412.0,
+    "pitch": 26.0,
+    "yaw": 135.0,
+    "roll": -8.0,
+    "biome": "bloodKelp",
+    "image": "Images360/-1162;-243;-412;bloodKelp.png"
   }
 ]
