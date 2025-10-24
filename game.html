@@ -195,23 +195,36 @@ async function loadImageToMemory(place) {
 }
 
 async function loadLocations() {
-  summaryButtons.innerHTML='';
-  const res = await fetch(`locations360.json?cacheBust=${Date.now()}`) 
-  const data = await res.json();
-  const biomeTarget = (selectedBiome || "").replace(/\s+/g,"").toLowerCase();
+  summaryButtons.innerHTML = '';
 
-  let source = biomeTarget === "entiremap"
-    ? data
-    : data.filter(i => (i.biome || "").replace(/\s+/g,"").toLowerCase() === biomeTarget); 
+  // Load all available locations
+  const res = await fetch(`locations360.json?cacheBust=${Date.now()}`);
+  const data = await res.json();
+
+  // Get selected biome(s)
+  const selectedBiomeDisplay = localStorage.getItem("selectedBiomeDisplay") || selectedBiome;
+  const selectedBiomeKeys = JSON.parse(localStorage.getItem("selectedBiomeKeys") || "[]");
+
+  let source;
+
+  // ✅ If "Entire Map" is selected, use *all* biomes
+  if (selectedBiomeDisplay === "Entire Map" || selectedBiomeKeys.length === 0) {
+    source = data;
+  } else {
+    // ✅ Otherwise, use the saved biome list
+    source = data.filter(i => selectedBiomeKeys.includes(i.biome));
+  }
 
   if (!source.length) {
-    alert(`No locations found for "${selectedBiome}".`);
+    alert(`No locations found for "${selectedBiomeDisplay}".`);
     return;
   }
 
+  // Fetch latest commit for image versioning
   const sha = await getLatestCommitSha();
-  const shuffled = source.sort(() => 0.5 - Math.random());
 
+  // Shuffle and select up to MAX_ROUNDS
+  const shuffled = source.sort(() => 0.5 - Math.random());
   places = shuffled.slice(0, Math.min(MAX_ROUNDS, shuffled.length)).map(i => ({
     ...i,
     coords: { x: Number(i.x), z: Number(i.z) },
@@ -221,11 +234,12 @@ async function loadLocations() {
     image: `https://cdn.jsdelivr.net/gh/ItsFrostyYo/Subnautica-Geoguessr-Images@${sha}/${i.image}`,
     loaded: false
   }));
-  
+
+  // Preload each image before starting
   (async () => {
     for (const p of places) {
       await loadImageToMemory(p);
-      console.log(`Loaded: ${p.image}`);
+      console.log(`Loaded: ${p.biome} -> ${p.image}`);
     }
   })();
 
