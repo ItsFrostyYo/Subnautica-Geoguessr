@@ -119,7 +119,7 @@
 
 <div class="gamemode-container" id="gamemode-container"></div>
 
-<button class="entire-map" onclick="showLeaderboard({ display: 'Entire Map', key: manualKeys['Entire Map'] })">🌍 Play the Entire Subnautica Map 🌍</button>
+<button class="entire-map" onclick="showLeaderboard({ display: 'Entire Map', key: 'Entire Map' })">🌍 Play the Entire Subnautica Map 🌍</button>
 
 <div class="leaderboard" id="leaderboard">
   <h2 id="selected-mode-title">🏆 Leaderboard</h2>
@@ -130,9 +130,7 @@
   </div>
   <table>
     <thead>
-      <tr>
-        <th>Rank</th><th>Username</th><th>Score</th><th>Time</th>
-      </tr>
+      <tr><th>Rank</th><th>Username</th><th>Score</th><th>Time</th></tr>
     </thead>
     <tbody id="leaderboard-body"></tbody>
   </table>
@@ -146,69 +144,62 @@
 
 <script>
 const SUPABASE_URL = "https://ayasirbxjxwslknhbsvn.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5YXNpcmJ4anh3c2xrbmhic3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjY1ODcsImV4cCI6MjA3NTYwMjU4N30.5E-ffTjzZ4pxkubtcBINHh_Jw9d6vltDs1kH8aAqB60";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const toKey = (name)=>name.replace(/[^a-zA-Z0-9\s]/g," ").trim().split(/\s+/).map((w,i)=>(i===0?w.toLowerCase():w[0].toUpperCase()+w.slice(1).toLowerCase())).join("");
-
-const manualKeys = {
-  "Safe Shallows": "safeShallows",
-  "Kelp Forest": "kelpForest",
-  "Grassy Plateaus": "grassyPlateaus",
-  "Mushroom Forest": "mushroomForest",
-  "kooshZone": "KooshZone",
-  "Blood Kelp": "bloodKelp",
-  "Underwater Islands": "underwaterIslands",
-  "Crag Field": "cragField",
-  "Sparse Reef": "sparseReef",
-  "Mountains": "mountains",
-  "Grand Reef": "grandReef",
-  "Sea Treaders Path": "seaTreadersPath",
-  "Dunes": "dunes",
-  "Crash Zone": "crashZone",
-  "Mountain Island": "mountainIsland",
-  "Floating Island": "floatingIsland",
-  "Jelly Shroom Caves": "jellyShroomCaves",
-  "Lost River": "lostRiver",
-  "Inactive Lava Zone": "inactiveLavaZone",
-  "Active Lava Zone": "activeLavaZone",
-  "Entire Map": "entiremap"
+// Biome name mapping (Display → possible internal names)
+const biomeKeys = {
+  "Safe Shallows": ["Safe Shallows", "safeShallows"],
+  "Kelp Forest": ["Kelp Forest", "kelpForest"],
+  "Grassy Plateaus": ["Grassy Plateaus", "GrassyPlateus", "grassyPlateaus"],
+  "Mushroom Forest": ["Mushroom Forest", "mushroomForest"],
+  "Bulb Zone": ["Koosh Zone", "kooshZone"],
+  "Blood Kelp": ["Blood Kelp", "bloodKelp", "Blood Kelp Two", "bloodKelpTwo", "BloodKelpTwo_Cave"],
+  "Underwater Islands": ["Underwater Islands", "underwaterIslands"],
+  "Crag Field": ["Crag Field", "CragField", "cragField"],
+  "Sparse Reef": ["Sparse Reef", "SparseReef", "sparseReef"],
+  "Mountains": ["Mountains", "mountains"],
+  "Grand Reef": ["Grand Reef", "GrandReef", "grandReef", "deepGrandReef"],
+  "Sea Treaders Path": ["Sea Treaders Path", "SeaTreaderPath", "seaTreaderPath"],
+  "Dunes": ["Dunes", "dunes"],
+  "Crash Zone": ["Crash Zone", "CrashZone", "crashZone"],
+  "Floating Island": ["Floating Island", "FloatingIsland", "floatingIsland"],
+  "Jellyshroom Caves": ["Jellyshroom Caves", "JellyshroomCaves", "JellyShroomCaves"],
+  "Lost River": ["LostRiver_Junction", "LostRiver_Corridor", "LostRiver_GhostTree_Lower", "LostRiver_GhostTree_Skeleton", "LostRiver_GhostTree", "LostRiver_TreeCove", "LostRiver_BonesField", "LostRiver_Canyon", "LostRiver_SkeletonCave"],
+  "Inactive Lava Zone": ["ILZCastleChamber", "ILZCastleTunnel", "ILZChamber", "ILZChamber_Dragon", "LavaPit", "ILZCorridor"],
+  "Active Lava Zone": ["LavaFalls", "LavaLakes", "ALZChamber", "LavaPit"],
+  "Alien Base": ["Alien", "Base"],
+  "Entire Map": ["Entire Map"]
 };
 
-const displayNames = [
-  "Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone",
-  "Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains",
-  "Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Mountain Island",
-  "Floating Island","Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone"
-];
-
+const displayNames = Object.keys(biomeKeys);
 const rowOrder = [
   ["Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone"],
   ["Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains"],
-  ["Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Mountain Island"],
-  ["Floating Island","Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone"]
+  ["Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Floating Island"],
+  ["Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone","Alien Base"]
 ];
 
-const IMAGE_MODE={NORMAL:"normal", DEG360:"360"};
-let selectedImageMode=IMAGE_MODE.NORMAL;
-const gamemodes = displayNames.map(d=>({display:d, key:manualKeys[d]||toKey(d)}));
+const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
+let selectedImageMode = IMAGE_MODE.NORMAL;
+const container = document.getElementById("gamemode-container");
+const leaderboard = document.getElementById("leaderboard");
+const leaderboardBody = document.getElementById("leaderboard-body");
+const selectedModeTitle = document.getElementById("selected-mode-title");
+const playBtn = document.getElementById("play-btn");
+const normalBtn = document.getElementById("normal-btn");
+const mode360Btn = document.getElementById("mode360-btn");
+const usernameInput = document.getElementById("username-input");
+const creditsDiv = document.getElementById("credits");
+const defaultBackground = "Background/DashboardBackground.png";
+const backgroundPath = "Background";
+let currentBiome = null;
 
-const container=document.getElementById("gamemode-container");
-const leaderboard=document.getElementById("leaderboard");
-const leaderboardBody=document.getElementById("leaderboard-body");
-const selectedModeTitle=document.getElementById("selected-mode-title");
-const playBtn=document.getElementById("play-btn");
-const normalBtn=document.getElementById("normal-btn");
-const mode360Btn=document.getElementById("mode360-btn");
-const usernameInput=document.getElementById("username-input");
-const creditsDiv=document.getElementById("credits");
-const defaultBackground="Background/DashboardBackground.png";
-const backgroundPath="Background";
-let currentBiome=null;
+function updateImageModeStorage() {
+  localStorage.setItem("selectedImageMode", selectedImageMode);
+}
 
-function updateImageModeStorage(){const is360=selectedImageMode===IMAGE_MODE.DEG360; localStorage.setItem("selectedImageMode",is360?"360":"normal");}
-
-// Render biomes in rows
+// Render Biome Cards
 function renderBiomeRows() {
   container.innerHTML = "";
   rowOrder.forEach(row => {
@@ -219,161 +210,164 @@ function renderBiomeRows() {
       card.className = "gamemode-card";
       card.textContent = name;
       card.style.backgroundImage = `url('${backgroundPath}/${name}.jpg')`;
-      card.onclick = () => showLeaderboard({ display: name, key: manualKeys[name] });
+      card.onclick = () => showLeaderboard({ display: name });
       rowDiv.appendChild(card);
     });
     container.appendChild(rowDiv);
   });
 }
 
-window.addEventListener("DOMContentLoaded",()=>{
-  const savedUsername=sessionStorage.getItem("username");
-  if(savedUsername) usernameInput.value=savedUsername;
+window.addEventListener("DOMContentLoaded", () => {
+  const savedUsername = sessionStorage.getItem("username");
+  if (savedUsername) usernameInput.value = savedUsername;
   renderBiomeRows();
 });
 
-// Format leaderboard time
-function formatTime(seconds){
-  const mins=Math.floor(seconds/60);
-  const secs=(seconds%60).toFixed(2);
-  return mins>0?`${mins}:${secs.padStart(5,"0")}`:`${secs}s`;
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = (seconds % 60).toFixed(2);
+  return mins > 0 ? `${mins}:${secs.padStart(5,"0")}` : `${secs}s`;
 }
 
-// Show leaderboard
-async function showLeaderboard(gm){
-  const username=usernameInput.value.trim();
-  if(!username){ alert("Please enter a username before selecting a biome!"); return; }
+async function showLeaderboard(gm) {
+  const username = usernameInput.value.trim();
+  if (!username) { alert("Please enter a username before selecting a biome!"); return; }
   sessionStorage.setItem("username", username);
 
-  usernameInput.disabled=true;
-  usernameInput.style.backgroundColor="rgba(10, 26, 32, 0.5)";
-  usernameInput.style.color="#888";
-  usernameInput.style.cursor="not-allowed";
+  usernameInput.disabled = true;
+  usernameInput.style.backgroundColor = "rgba(10, 26, 32, 0.5)";
+  usernameInput.style.color = "#888";
+  usernameInput.style.cursor = "not-allowed";
 
-  currentBiome=gm;
-  document.body.style.backgroundImage=`url('${backgroundPath}/${gm.display}.jpg')`;
-  container.style.opacity="0";
-  document.querySelector(".entire-map").style.opacity="0";
+  currentBiome = gm;
+  document.body.style.backgroundImage = `url('${backgroundPath}/${gm.display}.jpg')`;
+  container.style.opacity = "0";
+  document.querySelector(".entire-map").style.opacity = "0";
 
-  setTimeout(()=>{
-    container.style.display="none";
-    document.querySelector(".entire-map").style.display="none";
+  setTimeout(() => {
+    container.style.display = "none";
+    document.querySelector(".entire-map").style.display = "none";
     creditsDiv.classList.remove("active");
-    leaderboard.style.display="flex";
-    setTimeout(()=>leaderboard.classList.add("active"),50);
-  },400);
+    leaderboard.style.display = "flex";
+    setTimeout(() => leaderboard.classList.add("active"), 50);
+  }, 400);
 
-  selectedModeTitle.textContent=`🏆 ${gm.display} Leaderboard`;
-  leaderboardBody.innerHTML="<tr><td colspan='4'>Loading...</td></tr>";
+  selectedModeTitle.textContent = `🏆 ${gm.display} Leaderboard`;
+  leaderboardBody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
 
   try {
-    const table="leaderboards";
-    const biome=(gm.display||"").toLowerCase();
-    let { data, error } = await supabase.from(table)
+    const { data, error } = await supabase
+      .from("leaderboards")
       .select("*")
-      .ilike("biome", biome)
-      .order("score",{ascending:false})
-      .order("time",{ascending:true})
+      .ilike("biome", gm.display.toLowerCase())
+      .order("score", { ascending: false })
+      .order("time", { ascending: true })
       .ilike("gamemode", selectedImageMode);
 
-    leaderboardBody.innerHTML="";
+    leaderboardBody.innerHTML = "";
 
-    if(error){ leaderboardBody.innerHTML="<tr><td colspan='4'>Error loading leaderboard</td></tr>"; console.error(error); return; }
-    if(!data||data.length===0){ leaderboardBody.innerHTML="<tr><td colspan='4'>No scores yet!</td></tr>"; return; }
+    if (error) throw error;
+    if (!data || data.length === 0) {
+      leaderboardBody.innerHTML = "<tr><td colspan='4'>No scores yet!</td></tr>";
+      return;
+    }
 
-    const bestScores={};
-    data.forEach(entry=>{
-      const existing=bestScores[entry.username];
-      if(!existing || entry.score>existing.score || (entry.score===existing.score && entry.time<existing.time)){
-        bestScores[entry.username]=entry;
+    const bestScores = {};
+    data.forEach(entry => {
+      const existing = bestScores[entry.username];
+      if (!existing || entry.score > existing.score || (entry.score === existing.score && entry.time < existing.time)) {
+        bestScores[entry.username] = entry;
       }
     });
 
-    const uniqueEntries=Object.values(bestScores)
-      .sort((a,b)=>b.score-a.score || a.time-b.time)
-      .slice(0,10);
-
-    uniqueEntries.forEach((entry,i)=>{
-      const row=document.createElement("tr");
-      row.innerHTML=`<td>${i+1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
-      const currentUsername=sessionStorage.getItem("username");
-      if(entry.username===currentUsername){
-        row.style.backgroundColor="rgba(0, 255, 255, 0.2)";
-        row.style.fontWeight="bold";
-        row.style.color="#00ffff";
-        row.style.boxShadow="0 0 12px rgba(0, 255, 255, 0.5)";
-      }
-      leaderboardBody.appendChild(row);
-    });
-  } catch(e){ console.error(e); leaderboardBody.innerHTML="<tr><td colspan='4'>Error loading leaderboard</td></tr>"; }
+    Object.values(bestScores)
+      .sort((a,b) => b.score - a.score || a.time - b.time)
+      .slice(0, 10)
+      .forEach((entry, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${i+1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
+        if (entry.username === username) {
+          row.style.backgroundColor = "rgba(0,255,255,0.2)";
+          row.style.fontWeight = "bold";
+          row.style.color = "#00ffff";
+          row.style.boxShadow = "0 0 12px rgba(0,255,255,0.5)";
+        }
+        leaderboardBody.appendChild(row);
+      });
+  } catch (e) {
+    console.error(e);
+    leaderboardBody.innerHTML = "<tr><td colspan='4'>Error loading leaderboard</td></tr>";
+  }
 }
 
-// Image mode buttons
-normalBtn.onclick=()=>{
-  selectedImageMode=IMAGE_MODE.NORMAL;
+// Mode buttons
+normalBtn.onclick = () => {
+  selectedImageMode = IMAGE_MODE.NORMAL;
   normalBtn.classList.add("active");
   mode360Btn.classList.remove("active");
   updateImageModeStorage();
-  if(currentBiome) showLeaderboard(currentBiome);
+  if (currentBiome) showLeaderboard(currentBiome);
 };
-mode360Btn.onclick=()=>{
-  selectedImageMode=IMAGE_MODE.DEG360;
+mode360Btn.onclick = () => {
+  selectedImageMode = IMAGE_MODE.DEG360;
   mode360Btn.classList.add("active");
   normalBtn.classList.remove("active");
   updateImageModeStorage();
-  if(currentBiome) showLeaderboard(currentBiome);
+  if (currentBiome) showLeaderboard(currentBiome);
 };
 
-// Entire map button
-document.querySelector(".entire-map").onclick=()=>showLeaderboard({display:"Entire Map", key:manualKeys["Entire Map"]});
+// Play button with biomeKeys logic
+playBtn.onclick = async () => {
+  try {
+    const response = await fetch("locations360.json");
+    const locations = await response.json();
+    const selectedBiomes = biomeKeys[currentBiome.display] || [currentBiome.display];
+    const hasBiome = currentBiome.display === "Entire Map"
+      ? true
+      : locations.some(loc => selectedBiomes.includes(loc.biome));
+    if (!hasBiome) { alert(`No locations found for ${currentBiome.display}!`); return; }
 
-// Play button
-playBtn.onclick=async()=>{
-  try{
-    const response=await fetch("locations360.json");
-    const locations=await response.json();
-    const hasBiome=currentBiome.display==="Entire Map"?true:locations.some(loc=>loc.biome===currentBiome.key || loc.biome===currentBiome.display);
-    if(!hasBiome){ alert(`No locations found for ${currentBiome.display}!`); return; }
     updateImageModeStorage();
-    localStorage.setItem("selectedBiomeKey",currentBiome.key);
-    localStorage.setItem("selectedBiomeDisplay",currentBiome.display);
-    localStorage.setItem("selectedImageMode",selectedImageMode);
-    window.location.href="game.html";
-  }catch(err){ console.error(err); alert("Error loading locations.json"); }
+    localStorage.setItem("selectedBiomeKey", selectedBiomes[0]);
+    localStorage.setItem("selectedBiomeDisplay", currentBiome.display);
+    localStorage.setItem("selectedImageMode", selectedImageMode);
+    window.location.href = "game.html";
+  } catch (err) {
+    console.error(err);
+    alert("Error loading locations360.json");
+  }
 };
 
-// Return to dashboard
-function returnToDashboard(){
-  if(event && event.target.id==="credits-btn"){ return; } // avoid triggering when clicking Credits button
+function returnToDashboard() {
+  if (event && event.target.id === "credits-btn") return;
   leaderboard.classList.remove("active");
   creditsDiv.classList.remove("active");
-  setTimeout(()=>{
-    leaderboard.style.display="none";
-    creditsDiv.style.display="none";
-    container.style.display="flex";
-    document.querySelector(".entire-map").style.display="inline-block";
-    document.body.style.backgroundImage=`url('${defaultBackground}')`;
+  setTimeout(() => {
+    leaderboard.style.display = "none";
+    creditsDiv.style.display = "none";
+    container.style.display = "flex";
+    document.querySelector(".entire-map").style.display = "inline-block";
+    document.body.style.backgroundImage = `url('${defaultBackground}')`;
 
-    usernameInput.disabled=false;
-    usernameInput.style.backgroundColor="#0a1a20cc";
-    usernameInput.style.color="#00ffff";
-    usernameInput.style.cursor="text";
+    usernameInput.disabled = false;
+    usernameInput.style.backgroundColor = "#0a1a20cc";
+    usernameInput.style.color = "#00ffff";
+    usernameInput.style.cursor = "text";
 
-    setTimeout(()=>{
-      container.style.opacity="1";
-      document.querySelector(".entire-map").style.opacity="1";
-    },50);
-  },300);
+    setTimeout(() => {
+      container.style.opacity = "1";
+      document.querySelector(".entire-map").style.opacity = "1";
+    }, 50);
+  }, 300);
 }
 
-// Credits tab
-function showCredits(e){
+function showCredits(e) {
   e.stopPropagation();
-  container.style.display="none";
-  document.querySelector(".entire-map").style.display="none";
+  container.style.display = "none";
+  document.querySelector(".entire-map").style.display = "none";
   leaderboard.classList.remove("active");
-  creditsDiv.style.display="flex";
-  setTimeout(()=>creditsDiv.classList.add("active"),50);
+  creditsDiv.style.display = "flex";
+  setTimeout(() => creditsDiv.classList.add("active"), 50);
 }
 </script>
 </body>
