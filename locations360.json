@@ -2958,5 +2958,15 @@
     "roll": -8.0,
     "biome": "BloodKelp_Trench",
     "image": "Images360/-1272;-616;-329;BloodKelp_Trench.png"
+  },
+  {
+    "x": -49.0,
+    "y": -35.0,
+    "z": 607.0,
+    "pitch": 1.0,
+    "yaw": 164.0,
+    "roll": 0.0,
+    "biome": "underwaterIslands",
+    "image": "Images360/-49;-35;607;underwaterIslands.png"
   }
 ]
