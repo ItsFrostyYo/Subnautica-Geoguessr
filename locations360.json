@@ -3328,5 +3328,15 @@
     "roll": 0.0,
     "biome": "CragField",
     "image": "Images360/-181;-84;-733;CragField.png"
+  },
+  {
+    "x": -161.0,
+    "y": -85.0,
+    "z": -691.0,
+    "pitch": 33.0,
+    "yaw": 56.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-161;-85;-691;CragField.png"
   }
 ]
