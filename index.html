@@ -1,9 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Subnautica GeoGuessr</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Title & Description -->
+  <title>Subnautica GeoGuessr | Guess Locations Across the Subnautica Map!</title>
+  <meta name="description" content="Dive into the depths of Subnautica and test your location knowledge! Explore biomes, compete on leaderboards, and play the entire map." />
+  <meta name="keywords" content="Subnautica, GeoGuessr, Subnautica Game, Biomes, Leaderboard, 360 Images, Exploration, Ocean Game" />
+  <meta name="author" content="ItsFrosti, Sprinter_31" />
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:title" content="Subnautica GeoGuessr | Guess Locations Across the Subnautica Map!" />
+  <meta property="og:description" content="Dive into the depths of Subnautica and test your location knowledge! Explore biomes, compete on leaderboards, and play the entire map." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://your-username.github.io/Subnautica-Geoguessr/" />
+  <meta property="og:image" content="https://your-username.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
+  <meta property="og:site_name" content="Subnautica GeoGuessr" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Subnautica GeoGuessr | Guess Locations Across the Subnautica Map!" />
+  <meta name="twitter:description" content="Dive into the depths of Subnautica and test your location knowledge! Explore biomes, compete on leaderboards, and play the entire map." />
+  <meta name="twitter:image" content="https://your-username.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
+  <meta name="twitter:site" content="@YourTwitterHandle" />
+  <meta name="twitter:creator" content="@YourTwitterHandle" />
+
+  <!-- Favicon & Mobile Icons -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="theme-color" content="#00ffff" />
+
+  <!-- Your Scripts & Styles -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   body {
@@ -128,12 +162,14 @@
     <button class="mode-btn" id="mode360-btn">360 Image</button>
     <button class="play-btn" id="play-btn">Play</button>
   </div>
-  <table>
-    <thead>
-      <tr><th>Rank</th><th>Username</th><th>Score</th><th>Time</th></tr>
-    </thead>
-    <tbody id="leaderboard-body"></tbody>
-  </table>
+  <div id="leaderboard-content">
+    <table>
+      <thead>
+        <tr><th>Rank</th><th>Username</th><th>Score</th><th>Time</th></tr>
+      </thead>
+      <tbody id="leaderboard-body"></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="credits" id="credits">
@@ -150,7 +186,7 @@ const SUPABASE_URL = "https://ayasirbxjxwslknhbsvn.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5YXNpcmJ4anh3c2xrbmhic3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjY1ODcsImV4cCI6MjA3NTYwMjU4N30.5E-ffTjzZ4pxkubtcBINHh_Jw9d6vltDs1kH8aAqB60";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Biome name mapping (Display → possible internal names)
+// Biome name mapping
 const biomeKeys = {
   "Safe Shallows": ["Safe Shallows", "safeShallows"],
   "Kelp Forest": ["Kelp Forest", "kelpForest"],
@@ -175,7 +211,6 @@ const biomeKeys = {
   "Entire Map": ["Entire Map"]
 };
 
-const displayNames = Object.keys(biomeKeys);
 const rowOrder = [
   ["Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone"],
   ["Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains"],
@@ -188,6 +223,7 @@ let selectedImageMode = IMAGE_MODE.NORMAL;
 const container = document.getElementById("gamemode-container");
 const leaderboard = document.getElementById("leaderboard");
 const leaderboardBody = document.getElementById("leaderboard-body");
+const leaderboardContent = document.getElementById("leaderboard-content");
 const selectedModeTitle = document.getElementById("selected-mode-title");
 const playBtn = document.getElementById("play-btn");
 const normalBtn = document.getElementById("normal-btn");
@@ -202,7 +238,6 @@ function updateImageModeStorage() {
   localStorage.setItem("selectedImageMode", selectedImageMode);
 }
 
-// Render Biome Cards
 function renderBiomeRows() {
   container.innerHTML = "";
   rowOrder.forEach(row => {
@@ -255,8 +290,22 @@ async function showLeaderboard(gm) {
     setTimeout(() => leaderboard.classList.add("active"), 50);
   }, 400);
 
+  // Alien Base special case
+  if (gm.display === "Alien Base") {
+    selectedModeTitle.textContent = "Coming in Future Update";
+    leaderboardContent.innerHTML = "<p>Coming in Future Update</p>";
+    return;
+  }
+
   selectedModeTitle.textContent = `🏆 ${gm.display} Leaderboard`;
-  leaderboardBody.innerHTML = "<tr><td colspan='4'>Loading...</td></tr>";
+  leaderboardContent.innerHTML = `
+    <table>
+      <thead>
+        <tr><th>Rank</th><th>Username</th><th>Score</th><th>Time</th></tr>
+      </thead>
+      <tbody id="leaderboard-body"></tbody>
+    </table>
+  `;
 
   try {
     const { data, error } = await supabase
@@ -267,6 +316,7 @@ async function showLeaderboard(gm) {
       .order("time", { ascending: true })
       .ilike("gamemode", selectedImageMode);
 
+    const leaderboardBody = document.getElementById("leaderboard-body");
     leaderboardBody.innerHTML = "";
 
     if (error) throw error;
@@ -299,6 +349,7 @@ async function showLeaderboard(gm) {
       });
   } catch (e) {
     console.error(e);
+    const leaderboardBody = document.getElementById("leaderboard-body");
     leaderboardBody.innerHTML = "<tr><td colspan='4'>Leaderboard Coming in Future Update</td></tr>";
   }
 }
@@ -319,7 +370,7 @@ mode360Btn.onclick = () => {
   if (currentBiome) showLeaderboard(currentBiome);
 };
 
-// Play button with biomeKeys logic
+// Play button
 playBtn.onclick = async () => {
   try {
     const response = await fetch("locations360.json");
@@ -327,26 +378,22 @@ playBtn.onclick = async () => {
 
     let selectedBiomes;
     if (currentBiome.display === "Entire Map") {
-      // ✅ Collect ALL biome names from biomeKeys
       selectedBiomes = Object.values(biomeKeys).flat();
     } else {
       selectedBiomes = biomeKeys[currentBiome.display] || [currentBiome.display];
     }
 
-    // ✅ Check that at least one location matches
     const hasBiome = locations.some(loc => selectedBiomes.includes(loc.biome));
     if (!hasBiome) {
       alert(`No locations found for ${currentBiome.display}!`);
       return;
     }
 
-    // ✅ Save all biomes to storage so the game can use them
     updateImageModeStorage();
     localStorage.setItem("selectedBiomeKeys", JSON.stringify(selectedBiomes));
     localStorage.setItem("selectedBiomeDisplay", currentBiome.display);
     localStorage.setItem("selectedImageMode", selectedImageMode);
 
-    // ✅ Redirect to game
     window.location.href = "game.html";
   } catch (err) {
     console.error(err);
