@@ -149,7 +149,7 @@ import { GameMap } from './GameMap.js';
   }
 
   function distanceWorld(a,b,c,d){return Math.hypot(a-c,b-d);}
-  function scoreFromDistance(d){const max=5000;if(d<=10)return max;return Math.round(Math.max(0,max-(d-10)*1.25));}
+  function scoreFromDistance(d){const max=5000;if(d<=10)return max;return Math.round(Math.max(0,max-(d-10)*4.50));}
 
     async function getLatestCommitSha({
   owner = 'ItsFrostyYo',
