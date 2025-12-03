@@ -3148,5 +3148,555 @@
     "roll": -5.0,
     "biome": "underwaterIslands",
     "image": "Images360/8;-127;785;underwaterIslands.png"
+  },
+  {
+    "x": 131.0,
+    "y": -34.0,
+    "z": 28.0,
+    "pitch": 11.0,
+    "yaw": -102.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/131;-34;28;safeShallows.png"
+  },
+  {
+    "x": -14.0,
+    "y": -24.0,
+    "z": -97.0,
+    "pitch": 6.0,
+    "yaw": -125.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-14;-24;-97;safeShallows.png"
+  },
+  {
+    "x": -72.0,
+    "y": -1.0,
+    "z": -156.0,
+    "pitch": 12.0,
+    "yaw": -26.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-72;-1;-156;safeShallows.png"
+  },
+  {
+    "x": -146.0,
+    "y": -21.0,
+    "z": -133.0,
+    "pitch": 19.0,
+    "yaw": 168.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-146;-21;-133;safeShallows.png"
+  },
+  {
+    "x": -142.0,
+    "y": -3.0,
+    "z": 161.0,
+    "pitch": 13.0,
+    "yaw": 122.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-142;-3;161;safeShallows.png"
+  },
+  {
+    "x": 36.0,
+    "y": -15.0,
+    "z": -30.0,
+    "pitch": 8.0,
+    "yaw": -179.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/36;-15;-30;safeShallows.png"
+  },
+  {
+    "x": 153.0,
+    "y": -22.0,
+    "z": -233.0,
+    "pitch": 16.0,
+    "yaw": -168.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/153;-22;-233;safeShallows.png"
+  },
+  {
+    "x": -18.0,
+    "y": -9.0,
+    "z": -303.0,
+    "pitch": 22.0,
+    "yaw": 43.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-18;-9;-303;safeShallows.png"
+  },
+  {
+    "x": 13.0,
+    "y": -8.0,
+    "z": -348.0,
+    "pitch": 25.0,
+    "yaw": 104.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/13;-8;-348;safeShallows.png"
+  },
+  {
+    "x": -78.0,
+    "y": -41.0,
+    "z": -445.0,
+    "pitch": 79.0,
+    "yaw": 176.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-78;-41;-445;safeShallows.png"
+  },
+  {
+    "x": -151.0,
+    "y": -20.0,
+    "z": -439.0,
+    "pitch": 13.0,
+    "yaw": -109.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-151;-20;-439;safeShallows.png"
+  },
+  {
+    "x": -144.0,
+    "y": -16.0,
+    "z": -465.0,
+    "pitch": 60.0,
+    "yaw": -132.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-144;-16;-465;safeShallows.png"
+  },
+  {
+    "x": -129.0,
+    "y": -28.0,
+    "z": -349.0,
+    "pitch": 19.0,
+    "yaw": 16.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-129;-28;-349;safeShallows.png"
+  },
+  {
+    "x": -145.0,
+    "y": -5.0,
+    "z": -280.0,
+    "pitch": 22.0,
+    "yaw": 99.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-145;-5;-280;safeShallows.png"
+  },
+  {
+    "x": -143.0,
+    "y": -22.0,
+    "z": -218.0,
+    "pitch": 25.0,
+    "yaw": -115.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-143;-22;-218;safeShallows.png"
+  },
+  {
+    "x": -211.0,
+    "y": -43.0,
+    "z": -649.0,
+    "pitch": 26.0,
+    "yaw": 84.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-211;-43;-649;CragField.png"
+  },
+  {
+    "x": -190.0,
+    "y": -77.0,
+    "z": -701.0,
+    "pitch": 32.0,
+    "yaw": -84.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-190;-77;-701;CragField.png"
+  },
+  {
+    "x": -181.0,
+    "y": -84.0,
+    "z": -733.0,
+    "pitch": 22.0,
+    "yaw": 93.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-181;-84;-733;CragField.png"
+  },
+  {
+    "x": -161.0,
+    "y": -85.0,
+    "z": -691.0,
+    "pitch": 33.0,
+    "yaw": 56.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-161;-85;-691;CragField.png"
+  },
+  {
+    "x": -124.0,
+    "y": -177.0,
+    "z": -807.0,
+    "pitch": -29.0,
+    "yaw": -58.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-124;-177;-807;CragField.png"
+  },
+  {
+    "x": -85.0,
+    "y": -169.0,
+    "z": -987.0,
+    "pitch": 1.0,
+    "yaw": -24.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-85;-169;-987;CragField.png"
+  },
+  {
+    "x": -45.0,
+    "y": -141.0,
+    "z": -1011.0,
+    "pitch": 48.0,
+    "yaw": -158.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-45;-141;-1011;CragField.png"
+  },
+  {
+    "x": -46.0,
+    "y": -178.0,
+    "z": -1033.0,
+    "pitch": 17.0,
+    "yaw": -116.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-46;-178;-1033;CragField.png"
+  },
+  {
+    "x": -57.0,
+    "y": -180.0,
+    "z": -1040.0,
+    "pitch": 10.0,
+    "yaw": 27.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-57;-180;-1040;CragField.png"
+  },
+  {
+    "x": -57.0,
+    "y": -181.0,
+    "z": -1040.0,
+    "pitch": 68.0,
+    "yaw": -167.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/-57;-181;-1040;CragField.png"
+  },
+  {
+    "x": -64.0,
+    "y": -184.0,
+    "z": -1070.0,
+    "pitch": -5.0,
+    "yaw": 12.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/-64;-184;-1070;CragField.png"
+  },
+  {
+    "x": -39.0,
+    "y": -158.0,
+    "z": -1144.0,
+    "pitch": 17.0,
+    "yaw": 176.0,
+    "roll": 2.0,
+    "biome": "CragField",
+    "image": "Images360/-39;-158;-1144;CragField.png"
+  },
+  {
+    "x": -194.0,
+    "y": -185.0,
+    "z": -1104.0,
+    "pitch": 35.0,
+    "yaw": -68.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/-194;-185;-1104;CragField.png"
+  },
+  {
+    "x": -81.0,
+    "y": -290.0,
+    "z": -1367.0,
+    "pitch": 3.0,
+    "yaw": -1.0,
+    "roll": 4.0,
+    "biome": "CragField",
+    "image": "Images360/-81;-290;-1367;CragField.png"
+  },
+  {
+    "x": -81.0,
+    "y": -291.0,
+    "z": -1352.0,
+    "pitch": 1.0,
+    "yaw": 180.0,
+    "roll": 4.0,
+    "biome": "CragField",
+    "image": "Images360/-81;-291;-1352;CragField.png"
+  },
+  {
+    "x": -39.0,
+    "y": -285.0,
+    "z": -1410.0,
+    "pitch": 7.0,
+    "yaw": -33.0,
+    "roll": 8.0,
+    "biome": "CragField",
+    "image": "Images360/-39;-285;-1410;CragField.png"
+  },
+  {
+    "x": -121.0,
+    "y": -293.0,
+    "z": -1400.0,
+    "pitch": 3.0,
+    "yaw": 43.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/-121;-293;-1400;CragField.png"
+  },
+  {
+    "x": -81.0,
+    "y": -199.0,
+    "z": -1290.0,
+    "pitch": -1.0,
+    "yaw": -11.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/-81;-199;-1290;CragField.png"
+  },
+  {
+    "x": 83.0,
+    "y": -164.0,
+    "z": -1212.0,
+    "pitch": 34.0,
+    "yaw": 152.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/83;-164;-1212;CragField.png"
+  },
+  {
+    "x": 132.0,
+    "y": -170.0,
+    "z": -1152.0,
+    "pitch": 22.0,
+    "yaw": 49.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/132;-170;-1152;CragField.png"
+  },
+  {
+    "x": 31.0,
+    "y": -170.0,
+    "z": -972.0,
+    "pitch": -6.0,
+    "yaw": 70.0,
+    "roll": 5.0,
+    "biome": "CragField",
+    "image": "Images360/31;-170;-972;CragField.png"
+  },
+  {
+    "x": 48.0,
+    "y": -154.0,
+    "z": -907.0,
+    "pitch": -5.0,
+    "yaw": 65.0,
+    "roll": 3.0,
+    "biome": "CragField",
+    "image": "Images360/48;-154;-907;CragField.png"
+  },
+  {
+    "x": -110.0,
+    "y": -145.0,
+    "z": -727.0,
+    "pitch": -4.0,
+    "yaw": 73.0,
+    "roll": 4.0,
+    "biome": "GrassyPlateaus",
+    "image": "Images360/-110;-145;-727;GrassyPlateaus.png"
+  },
+  {
+    "x": -215.0,
+    "y": -113.0,
+    "z": -759.0,
+    "pitch": 40.0,
+    "yaw": -76.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/-215;-113;-759;CragField.png"
+  },
+  {
+    "x": -221.0,
+    "y": -187.0,
+    "z": -995.0,
+    "pitch": 38.0,
+    "yaw": -74.0,
+    "roll": 6.0,
+    "biome": "CragField",
+    "image": "Images360/-221;-187;-995;CragField.png"
+  },
+  {
+    "x": -161.0,
+    "y": -198.0,
+    "z": -1019.0,
+    "pitch": 10.0,
+    "yaw": -98.0,
+    "roll": 4.0,
+    "biome": "CragField",
+    "image": "Images360/-161;-198;-1019;CragField.png"
+  },
+  {
+    "x": -184.0,
+    "y": -201.0,
+    "z": -1026.0,
+    "pitch": 22.0,
+    "yaw": 76.0,
+    "roll": 5.0,
+    "biome": "CragField",
+    "image": "Images360/-184;-201;-1026;CragField.png"
+  },
+  {
+    "x": -167.0,
+    "y": -209.0,
+    "z": -1021.0,
+    "pitch": -27.0,
+    "yaw": -94.0,
+    "roll": 3.0,
+    "biome": "CragField",
+    "image": "Images360/-167;-209;-1021;CragField.png"
+  },
+  {
+    "x": -131.0,
+    "y": -135.0,
+    "z": -1155.0,
+    "pitch": 46.0,
+    "yaw": -1.0,
+    "roll": 5.0,
+    "biome": "CragField",
+    "image": "Images360/-131;-135;-1155;CragField.png"
+  },
+  {
+    "x": -133.0,
+    "y": -174.0,
+    "z": -1157.0,
+    "pitch": 3.0,
+    "yaw": 58.0,
+    "roll": 3.0,
+    "biome": "CragField",
+    "image": "Images360/-133;-174;-1157;CragField.png"
+  },
+  {
+    "x": -87.0,
+    "y": -171.0,
+    "z": -1124.0,
+    "pitch": 14.0,
+    "yaw": 36.0,
+    "roll": 4.0,
+    "biome": "CragField",
+    "image": "Images360/-87;-171;-1124;CragField.png"
+  },
+  {
+    "x": -70.0,
+    "y": -173.0,
+    "z": -1098.0,
+    "pitch": 1.0,
+    "yaw": -145.0,
+    "roll": 3.0,
+    "biome": "CragField",
+    "image": "Images360/-70;-173;-1098;CragField.png"
+  },
+  {
+    "x": -118.0,
+    "y": -227.0,
+    "z": -1294.0,
+    "pitch": 48.0,
+    "yaw": -159.0,
+    "roll": 5.0,
+    "biome": "CragField",
+    "image": "Images360/-118;-227;-1294;CragField.png"
+  },
+  {
+    "x": -12.0,
+    "y": -284.0,
+    "z": -1397.0,
+    "pitch": 7.0,
+    "yaw": -58.0,
+    "roll": 3.0,
+    "biome": "CragField",
+    "image": "Images360/-12;-284;-1397;CragField.png"
+  },
+  {
+    "x": 59.0,
+    "y": -322.0,
+    "z": -1436.0,
+    "pitch": -6.0,
+    "yaw": -83.0,
+    "roll": 3.0,
+    "biome": "CragField",
+    "image": "Images360/59;-322;-1436;CragField.png"
+  },
+  {
+    "x": 372.0,
+    "y": -282.0,
+    "z": -1414.0,
+    "pitch": -11.0,
+    "yaw": 128.0,
+    "roll": 3.0,
+    "biome": "CragField",
+    "image": "Images360/372;-282;-1414;CragField.png"
+  },
+  {
+    "x": 344.0,
+    "y": -280.0,
+    "z": -1394.0,
+    "pitch": -13.0,
+    "yaw": -61.0,
+    "roll": 2.0,
+    "biome": "CragField",
+    "image": "Images360/344;-280;-1394;CragField.png"
+  },
+  {
+    "x": 286.0,
+    "y": -283.0,
+    "z": -1363.0,
+    "pitch": -14.0,
+    "yaw": 115.0,
+    "roll": 2.0,
+    "biome": "CragField",
+    "image": "Images360/286;-283;-1363;CragField.png"
+  },
+  {
+    "x": 458.0,
+    "y": -272.0,
+    "z": -1473.0,
+    "pitch": -9.0,
+    "yaw": -49.0,
+    "roll": 2.0,
+    "biome": "CragField",
+    "image": "Images360/458;-272;-1473;CragField.png"
+  },
+  {
+    "x": -805.0,
+    "y": -130.0,
+    "z": -149.0,
+    "pitch": 68.0,
+    "yaw": 143.0,
+    "roll": 0.0,
+    "biome": "GrassyPlateaus",
+    "image": "Images360/-805;-130;-149;GrassyPlateaus.png"
   }
 ]
