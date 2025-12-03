@@ -342,7 +342,7 @@ async function showFinalSummary(){
   if(totalScore<=MAX_SCORE_ALLOWED){
     try{
       const biome_key=(selectedBiome||"").toLowerCase();
-      await saveScore(username,biome_display,totalScore,totalTimeSec,selectedImageMode);
+      //await saveScore(username,biome_display,totalScore,totalTimeSec,selectedImageMode);
     }catch(e){console.error("Error saving score:",e);}
   }else console.warn("Rejected invalid total score:",totalScore);
   const again=document.createElement('button');again.textContent='Play Again';again.onclick=()=>{summaryOverlay.style.display='none';loadLocations();};
