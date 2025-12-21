@@ -38,10 +38,7 @@ body::before {
   z-index: 0;
 }
 
-* {
-  position: relative;
-  z-index: 1;
-}
+* { position: relative; z-index: 1; }
 
 /* ===============================
    SCALE WRAPPER
@@ -77,17 +74,12 @@ header h1 {
   margin-top: -22px;
   margin-bottom: 6px;
   letter-spacing: 2px;
-  line-height: 1;
 }
 
-header p {
-  font-size: 1.1rem;
-  margin-top: 0;
-}
+header p { font-size: 1.1rem; }
 
 .username-container {
   display: flex;
-  gap: 12px;
   justify-content: center;
 }
 
@@ -109,7 +101,6 @@ header p {
   display: flex;
   flex-direction: column;
   gap: 22px;
-  opacity: 1;
   transition: opacity 0.4s ease;
 }
 
@@ -130,7 +121,6 @@ header p {
   justify-content: center;
 
   font-weight: bold;
-  font-size: 1.05rem;
   cursor: pointer;
 
   background-size: cover;
@@ -154,25 +144,21 @@ header p {
   display: flex;
   justify-content: center;
   width: 100%;
-  opacity: 1;
   transition: opacity 0.4s ease;
 }
 
 .entire-map {
   width: 640px;
   padding: 38px 0;
-
   font-size: 1.9rem;
   font-weight: bold;
 
   border: 3px solid #00ffff;
   border-radius: 28px;
-
   background: radial-gradient(circle, #00ffff66, #00ffff22);
+
   color: #00ffff;
   cursor: pointer;
-  text-align: center;
-
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -190,7 +176,6 @@ header p {
   transform: translateY(-50%);
   text-align: right;
   font-size: 0.95rem;
-  line-height: 1.4;
   opacity: 0.85;
 }
 
@@ -202,12 +187,6 @@ header p {
   background: none;
   color: #00ffff;
   cursor: pointer;
-  font-size: 0.85rem;
-}
-
-.version-inline button:hover {
-  background: #00ffff;
-  color: #0a0f14;
 }
 
 /* RIGHT — CREDITS */
@@ -218,9 +197,7 @@ header p {
   top: 50%;
   transform: translateY(-50%);
   font-size: 0.95rem;
-  line-height: 1.4;
   opacity: 0.85;
-  white-space: nowrap;
 }
 
 /* ===============================
@@ -249,6 +226,37 @@ header p {
   transform: scale(1);
 }
 
+/* MODE BUTTONS */
+
+.mode-buttons {
+  display: flex;
+  gap: 16px;
+  margin: 14px 0;
+}
+
+.mode-btn {
+  border: 2px solid #00ffff;
+  background: none;
+  color: #00ffff;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  background: #00ffff;
+  color: #0a0f14;
+}
+
+.play-btn {
+  background: #00ffff;
+  color: #0a0f14;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
 /* ===============================
    BACK BUTTON
 ================================ */
@@ -262,7 +270,6 @@ header p {
   border: 2px solid #00ffff;
   border-radius: 12px;
   padding: 8px 18px;
-
   background: none;
   color: #00ffff;
   cursor: pointer;
@@ -305,34 +312,47 @@ header p {
     Main Devs – ItsFrosti, Sprinter_31<br>
     Testers – Spudato_64
   </div>
-
 </div>
 
+<!-- LEADERBOARD / PLAY PANEL -->
 <div class="panel" id="leaderboard">
   <h2 id="panel-title"></h2>
+
+  <div class="mode-buttons">
+    <button class="mode-btn active" id="normal-btn">No 360</button>
+    <button class="mode-btn" id="mode360-btn">360</button>
+    <button class="play-btn" id="play-btn">Play</button>
+  </div>
+
   <p>Leaderboard Coming in Future Update</p>
 </div>
 
 <div class="panel" id="update-notes">
-  <h1>Update Notes</h1>
-  <h3>Version 0.2.27-Beta of December 21, 2025</h3>
-  <p>• Currently Added Biomes - Safe Shallows, Kelp Forest, Grassy Plateaus, Mushroom Forest, Bulb Zone, Blood Kelp, Underwater Islands, Crag Fields.</p>
-  <p>• The other Biomes are to be Added in the Future, and Current Biomes do not have the Best Coverage of Images, it will be updated in the Future.</p>
-  <p>• Currently the Underwater Islands Biome is in my opinion not good with very poor coverage of images and is difficult.</p>
+  <h2>Update Notes</h2>
+  <p>Version 0.2.27-Beta – December 21, 2025</p>
 </div>
 
 </div>
 </div>
 
 <script>
+const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
+let selectedImageMode = IMAGE_MODE.NORMAL;
+let currentBiome = null;
+
 const defaultBg = "Background/DashboardBackground.png";
+
 const container = document.getElementById("gamemode-container");
 const entireWrapper = document.getElementById("entire-map-wrapper");
 const leaderboard = document.getElementById("leaderboard");
 const updateNotes = document.getElementById("update-notes");
-const usernameContainer = document.getElementById("username-container");
+const usernameInput = document.getElementById("username-input");
 const backButton = document.getElementById("back-button");
 const panelTitle = document.getElementById("panel-title");
+
+const normalBtn = document.getElementById("normal-btn");
+const mode360Btn = document.getElementById("mode360-btn");
+const playBtn = document.getElementById("play-btn");
 
 const rows = [
   ["Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone"],
@@ -367,7 +387,12 @@ function fadeOutDashboard() {
 }
 
 function selectBiome(name) {
-  fadeOutDashboard();
+  if (!usernameInput.value.trim()) {
+    alert("Please enter a username first!");
+    return;
+  }
+
+  currentBiome = name;
   backButton.style.display = "block";
 
   document.body.style.backgroundImage =
@@ -375,18 +400,36 @@ function selectBiome(name) {
       ? `url('${defaultBg}')`
       : `url('Background/${name}.jpg')`;
 
+  fadeOutDashboard();
+
   setTimeout(() => {
     leaderboard.style.display = "flex";
     leaderboard.classList.add("active");
-    panelTitle.textContent = `${name} Leaderboard`;
+    panelTitle.textContent = `${name} Mode Selection`;
   }, 400);
 }
+
+normalBtn.onclick = () => {
+  selectedImageMode = IMAGE_MODE.NORMAL;
+  normalBtn.classList.add("active");
+  mode360Btn.classList.remove("active");
+};
+
+mode360Btn.onclick = () => {
+  selectedImageMode = IMAGE_MODE.DEG360;
+  mode360Btn.classList.add("active");
+  normalBtn.classList.remove("active");
+};
+
+playBtn.onclick = () => {
+  localStorage.setItem("selectedBiome", currentBiome);
+  localStorage.setItem("selectedImageMode", selectedImageMode);
+  window.location.href = "game.html";
+};
 
 function openUpdateNotes() {
   fadeOutDashboard();
   backButton.style.display = "block";
-  usernameContainer.style.display = "none";
-
   setTimeout(() => {
     updateNotes.style.display = "flex";
     updateNotes.classList.add("active");
@@ -402,7 +445,6 @@ function returnToDashboard() {
     updateNotes.style.display = "none";
 
     document.body.style.backgroundImage = `url('${defaultBg}')`;
-    usernameContainer.style.display = "flex";
     backButton.style.display = "none";
 
     container.style.display = "flex";
