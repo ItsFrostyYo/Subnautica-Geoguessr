@@ -1,214 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Primary Title & Description -->
-  <title>Subnautica GeoGuessr | Guess Locations Across the Subnautica Map!</title>
-  <meta name="description" content="Dive into the depths of Subnautica and test your location knowledge! Explore biomes, compete on leaderboards, and play the entire map." />
-  <meta name="keywords" content="Subnautica, GeoGuessr, Subnautica Game, Biomes, Leaderboard, 360 Images, Exploration, Ocean Game" />
-  <meta name="author" content="ItsFrosti, Sprinter_31" />
+<title>Geonautica | Guess Locations Across the Subnautica Map!</title>
 
-  <!-- Open Graph / Facebook / LinkedIn / Discord -->
-  <meta property="og:title" content="Subnautica GeoGuessr | Guess Locations Across the Subnautica Map!" />
-  <meta property="og:description" content="Dive into the depths of Subnautica and test your location knowledge! Explore biomes, compete on leaderboards, and play the entire map." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://your-username.github.io/Subnautica-Geoguessr/" />
-  <meta property="og:image" content="https://your-username.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
-  <meta property="og:site_name" content="Subnautica GeoGuessr" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Subnautica GeoGuessr | Guess Locations Across the Subnautica Map!" />
-  <meta name="twitter:description" content="Dive into the depths of Subnautica and test your location knowledge! Explore biomes, compete on leaderboards, and play the entire map." />
-  <meta name="twitter:image" content="https://your-username.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
-  <meta name="twitter:site" content="@YourTwitterHandle" />
-  <meta name="twitter:creator" content="@YourTwitterHandle" />
-
-  <!-- Favicon & Mobile Icons -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
-  <link rel="manifest" href="site.webmanifest" />
-  <meta name="theme-color" content="#00ffff" />
-
-  <!-- Your Scripts & Styles -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  body {
-    margin: 0;
-    color: #00ffff;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    overflow-x: hidden;
-    background: url("Background/DashboardBackground.png") no-repeat center center fixed;
-    background-size: cover;
-    position: relative;
-    transition: background-image 0.5s ease-in-out;
-  }
-  body::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10, 15, 20, 0.75);
-    z-index: 0;
-  }
-  * { position: relative; z-index: 1; }
+/* ===============================
+   BODY / BACKGROUND
+================================ */
 
-  header { margin-top: 10px; text-align: center; cursor: pointer; user-select: none; transition: color 0.3s; }
-  h1 { font-size: 2.5rem; margin-bottom: 10px; transition: color 0.3s, transform 0.3s; }
-  h1:hover { color: #00cccc; transform: scale(1.03); }
-  p { margin-bottom: 10px; }
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
 
-  .username-container { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; }
-  #username-input {
-    background: #0a1a20cc;
-    border: 2px solid #00ffff;
-    border-radius: 10px;
-    color: #00ffff;
-    padding: 10px 15px;
-    font-size: 1rem;
-    width: 200px;
-    text-align: center;
-    outline: none;
-    transition: all 0.3s ease;
-  }
-  #username-input:focus { box-shadow: 0 0 12px #00ffff; }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  #credits-btn {
-    background: none;
-    border: 2px solid #00ffff;
-    color: #00ffff;
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  #credits-btn:hover { background: #00ffff; color: #0a0f14; transform: scale(1.05); }
+  color: #00ffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
-  .gamemode-container { margin-top: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 1200px; opacity: 1; transition: opacity 0.5s ease; }
-  .gamemode-row { display: flex; justify-content: center; gap: 25px; }
+  background: url("Background/DashboardBackground.png") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
 
-  .gamemode-card {
-    border: 2px solid #00ffff; border-radius: 15px; padding: 20px;
-    width: 220px; height: 70px; text-align: center;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.15);
-    cursor: pointer; transition: all 0.25s ease;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; font-weight: bold; color: #00ffff;
-    background-size: cover; background-position: center;
-    text-shadow: 0 0 6px #000, 0 0 10px #000;
-  }
-  .gamemode-card:hover { transform: scale(1.07); box-shadow: 0 0 25px rgba(0, 255, 255, 0.35); background-color: #0e1b22cc; }
+  /* 🔥 background fade */
+  transition: background-image 0.5s ease-in-out;
+}
 
-  .entire-map {
-    margin-top: 40px; width: 80%; max-width: 600px;
-    background: radial-gradient(circle at center, #00ffff55, #00ffff22 80%);
-    border: 3px solid #00ffff; color: #00ffff; border-radius: 25px;
-    padding: 40px 0; font-size: 1.8rem; letter-spacing: 1px; font-weight: bold;
-    cursor: pointer; text-align: center; transition: all 0.4s ease;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.25); margin-bottom: 15px;
-  }
-  .entire-map:hover { transform: scale(1.05); box-shadow: 0 0 60px rgba(0, 255, 255, 0.6); background: radial-gradient(circle at center, #00ffff88, #00ffff33 80%); color: #0a0f14; }
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10,15,20,0.75);
+  z-index: 0;
+}
 
-  .leaderboard, .credits {
-    display: none; flex-direction: column; align-items: center;
-    margin-top: 40px; background-color: #112029cc; border: 2px solid #00ffff;
-    border-radius: 15px; padding: 20px; width: 500px; text-align: center;
-    opacity: 0; transform: scale(0.98); transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .leaderboard.active, .credits.active { display: flex; opacity: 1; transform: scale(1); }
+* {
+  position: relative;
+  z-index: 1;
+}
 
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-  th, td { border-bottom: 1px solid #00ffff; padding: 8px; }
-  th { color: #00ffff; } td { color: white; }
+/* ===============================
+   SCALE WRAPPER
+================================ */
 
-  .mode-buttons { display: flex; justify-content: center; gap: 15px; align-items: center; margin-bottom: 15px; }
-  .mode-btn { border: 2px solid #00ffff; color: #00ffff; background: none; font-size: 1.1rem; font-weight: bold; padding: 8px 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
-  .mode-btn:hover, .mode-btn.active { background: #00ffff; color: #0a0f14; transform: scale(1.05); }
+#scale-wrapper {
+  transform: scale(1.08);
+  transform-origin: center;
+}
 
-  .play-btn { background-color: #00ffff; border: none; color: #0a0f14; font-size: 1.1rem; font-weight: bold; padding: 8px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
-  .play-btn:hover { transform: scale(1.05); box-shadow: 0 0 12px #00ffff; }
+/* ===============================
+   MAIN UI
+================================ */
+
+#main-ui {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+header {
+  text-align: center;
+  cursor: pointer;
+}
+
+header h1 {
+  font-size: 6rem;
+  margin-top: -22px;
+  margin-bottom: 6px;
+  letter-spacing: 2px;
+  line-height: 1;
+  /* ❌ NO GLOW */
+}
+
+header p {
+  font-size: 1.1rem;
+  margin-top: 0;
+}
+
+.username-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+#username-input {
+  background: #0a1a20cc;
+  border: 2px solid #00ffff;
+  border-radius: 12px;
+  color: #00ffff;
+  padding: 12px;
+  width: 220px;
+  text-align: center;
+}
+
+#credits-btn {
+  background: none;
+  border: 2px solid #00ffff;
+  color: #00ffff;
+  border-radius: 12px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#credits-btn:hover {
+  background: #00ffff;
+  color: #0a0f14;
+}
+
+/* ===============================
+   BIOME GRID
+================================ */
+
+.gamemode-container {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.gamemode-row {
+  display: flex;
+  gap: 26px;
+  justify-content: center;
+}
+
+.gamemode-card {
+  width: 240px;
+  height: 78px;
+  border: 2px solid #00ffff;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 1.05rem;
+
+  cursor: pointer;
+
+  background-size: cover;
+  background-position: center;
+  text-shadow: 0 0 8px #000;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gamemode-card:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 18px #00ffff;
+}
+
+/* ===============================
+   ENTIRE MAP BUTTON
+================================ */
+
+.entire-map {
+  margin-top: 22px;
+  width: 640px;
+  padding: 38px 0;
+
+  font-size: 1.9rem;
+  font-weight: bold;
+
+  border: 3px solid #00ffff;
+  border-radius: 28px;
+
+  background: radial-gradient(circle, #00ffff66, #00ffff22);
+  color: #00ffff;
+  cursor: pointer;
+  text-align: center;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.4s ease;
+}
+
+.entire-map:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 30px #00ffff;
+}
+
+/* ===============================
+   LEADERBOARD / CREDITS
+================================ */
+
+.leaderboard,
+.credits {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+
+  background: #112029cc;
+  border: 2px solid #00ffff;
+  border-radius: 16px;
+
+  padding: 22px;
+  width: 520px;
+
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.leaderboard.active,
+.credits.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.mode-btn {
+  border: 2px solid #00ffff;
+  background: none;
+  color: #00ffff;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  background: #00ffff;
+  color: #0a0f14;
+}
+
+.play-btn {
+  background: #00ffff;
+  color: #0a0f14;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 10px;
+  cursor: pointer;
+}
 </style>
 </head>
+
 <body>
+
+<div id="scale-wrapper">
+<div id="main-ui">
+
 <header onclick="returnToDashboard()">
-  <h1>Subnautica GeoGuessr</h1>
-  <p>Dive Into the Depths and Test Your Location Knowledge | Please Set a Username Below</p>
+  <h1>Geonautica</h1>
+  <p>Please Set a Username Below</p>
+
   <div class="username-container">
-    <input id="username-input" type="text" placeholder="Enter username" />
+    <input id="username-input" placeholder="Enter username">
     <button id="credits-btn" onclick="showCredits(event)">Credits</button>
   </div>
 </header>
 
 <div class="gamemode-container" id="gamemode-container"></div>
 
-<button class="entire-map" onclick="showLeaderboard({ display: 'Entire Map', key: 'Entire Map' })">🌍 Play the Entire Subnautica Map 🌍</button>
+<button class="entire-map" onclick="selectBiome('Entire Map')">
+🌍 Play the Entire Subnautica Map 🌍
+</button>
 
 <div class="leaderboard" id="leaderboard">
-  <h2 id="selected-mode-title">🏆 Leaderboard</h2>
+  <h2 id="selected-mode-title"></h2>
+
   <div class="mode-buttons">
-    <button class="mode-btn active" id="normal-btn">Normal Image</button>
-    <button class="mode-btn" id="mode360-btn">360 Image</button>
+    <button class="mode-btn active" id="normal-btn">Normal</button>
+    <button class="mode-btn" id="mode360-btn">360</button>
     <button class="play-btn" id="play-btn">Play</button>
   </div>
-  <div id="leaderboard-content">
-    <table>
-      <thead>
-        <tr><th>Rank</th><th>Username</th><th>Score</th><th>Time</th></tr>
-      </thead>
-      <tbody id="leaderboard-body"></tbody>
-    </table>
-  </div>
+
+  <p>Leaderboard Coming in Future Update</p>
 </div>
 
 <div class="credits" id="credits">
   <h2>Credits</h2>
-  <p>
-    Creators - ItsFrosti, Sprinter_31<br>
-    Testers - Spudato_64
-  </p>
+  <p>ItsFrosti, Sprinter_31<br>Tester: Spudato_64</p>
   <button class="play-btn" onclick="returnToDashboard()">← Back</button>
 </div>
 
-<script>
-const SUPABASE_URL = "https://ayasirbxjxwslknhbsvn.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5YXNpcmJ4anh3c2xrbmhic3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjY1ODcsImV4cCI6MjA3NTYwMjU4N30.5E-ffTjzZ4pxkubtcBINHh_Jw9d6vltDs1kH8aAqB60";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</div>
+</div>
 
-// Biome name mapping
+<script>
+/* ===============================
+   CONSTANTS & STATE
+================================ */
+
+const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
+let selectedImageMode = IMAGE_MODE.NORMAL;
+let currentBiome = null;
+
+const defaultBackground = "Background/DashboardBackground.png";
+
+/* ===============================
+   ELEMENTS
+================================ */
+
+const container = document.getElementById("gamemode-container");
+const leaderboard = document.getElementById("leaderboard");
+const creditsDiv = document.getElementById("credits");
+const usernameInput = document.getElementById("username-input");
+
+const normalBtn = document.getElementById("normal-btn");
+const mode360Btn = document.getElementById("mode360-btn");
+const playBtn = document.getElementById("play-btn");
+const selectedModeTitle = document.getElementById("selected-mode-title");
+
+/* ===============================
+   BIOME DATA
+================================ */
+
 const biomeKeys = {
-  "Safe Shallows": ["Safe Shallows", "safeShallows"],
-  "Kelp Forest": ["Kelp Forest", "kelpForest"],
-  "Grassy Plateaus": ["Grassy Plateaus", "GrassyPlateus", "grassyPlateaus"],
-  "Mushroom Forest": ["Mushroom Forest", "mushroomForest"],
-  "Bulb Zone": ["Koosh Zone", "kooshZone"],
-  "Blood Kelp": ["Blood Kelp", "bloodKelp", "Blood Kelp Two", "bloodKelpTwo", "BloodKelpTwo_Cave", "Bloodkelp_DeepTrench", "BloodKelp_Cave", "BloodKelp_Trench"],
-  "Underwater Islands": ["Underwater Islands", "underwaterIslands"],
-  "Crag Field": ["Crag Field", "CragField", "cragField"],
-  "Sparse Reef": ["Sparse Reef", "SparseReef", "sparseReef", "SparseReef_Deep"],
-  "Mountains": ["Mountains", "mountains"],
-  "Grand Reef": ["Grand Reef", "GrandReef", "grandReef", "deepGrandReef"],
-  "Sea Treaders Path": ["Sea Treaders Path", "SeaTreaderPath", "seaTreaderPath"],
-  "Dunes": ["Dunes", "dunes"],
-  "Crash Zone": ["Crash Zone", "CrashZone", "crashZone"],
-  "Floating Island": ["Floating Island", "FloatingIsland", "floatingIsland"],
-  "Jellyshroom Caves": ["Jellyshroom Caves", "JellyshroomCaves", "JellyShroomCaves"],
-  "Lost River": ["LostRiver_Junction", "LostRiver_Corridor", "LostRiver_GhostTree_Lower", "LostRiver_GhostTree_Skeleton", "LostRiver_GhostTree", "LostRiver_TreeCove", "LostRiver_BonesField", "LostRiver_Canyon", "LostRiver_SkeletonCave"],
-  "Inactive Lava Zone": ["ILZCastleChamber", "ILZCastleTunnel", "ILZChamber", "ILZChamber_Dragon", "LavaPit", "ILZCorridor"],
-  "Active Lava Zone": ["LavaFalls", "LavaLakes", "ALZChamber", "LavaPit"],
-  "Alien Base": ["Alien", "Base"],
-  "Entire Map": ["Entire Map"]
+  "Safe Shallows": ["Safe Shallows","safeShallows"],
+  "Kelp Forest": ["Kelp Forest","kelpForest"],
+  "Grassy Plateaus": ["Grassy Plateaus","grassyPlateaus"],
+  "Mushroom Forest": ["Mushroom Forest","mushroomForest"],
+  "Bulb Zone": ["Koosh Zone","kooshZone"],
+  "Blood Kelp": ["Blood Kelp","bloodKelp"],
+  "Underwater Islands": ["Underwater Islands","underwaterIslands"],
+  "Crag Field": ["Crag Field","cragField"],
+  "Sparse Reef": ["Sparse Reef","sparseReef"],
+  "Mountains": ["Mountains","mountains"],
+  "Grand Reef": ["Grand Reef","grandReef"],
+  "Sea Treaders Path": ["Sea Treaders Path","seaTreaderPath"],
+  "Dunes": ["Dunes","dunes"],
+  "Crash Zone": ["Crash Zone","crashZone"],
+  "Floating Island": ["Floating Island","floatingIsland"],
+  "Jellyshroom Caves": ["Jellyshroom Caves","jellyshroomCaves"],
+  "Lost River": ["Lost River"],
+  "Inactive Lava Zone": ["Inactive Lava Zone"],
+  "Active Lava Zone": ["Active Lava Zone"],
+  "Alien Base": ["Alien Base"],
+  "Entire Map": Object.values(this).flat
 };
 
 const rowOrder = [
@@ -218,204 +352,112 @@ const rowOrder = [
   ["Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone","Alien Base"]
 ];
 
-const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
-let selectedImageMode = IMAGE_MODE.NORMAL;
-const container = document.getElementById("gamemode-container");
-const leaderboard = document.getElementById("leaderboard");
-const leaderboardBody = document.getElementById("leaderboard-body");
-const leaderboardContent = document.getElementById("leaderboard-content");
-const selectedModeTitle = document.getElementById("selected-mode-title");
-const playBtn = document.getElementById("play-btn");
-const normalBtn = document.getElementById("normal-btn");
-const mode360Btn = document.getElementById("mode360-btn");
-const usernameInput = document.getElementById("username-input");
-const creditsDiv = document.getElementById("credits");
-const defaultBackground = "Background/DashboardBackground.png";
-const backgroundPath = "Background";
-let currentBiome = null;
-
-function updateImageModeStorage() {
-  localStorage.setItem("selectedImageMode", selectedImageMode);
-}
+/* ===============================
+   RENDER BIOMES
+================================ */
 
 function renderBiomeRows() {
   container.innerHTML = "";
   rowOrder.forEach(row => {
-    const rowDiv = document.createElement("div");
-    rowDiv.className = "gamemode-row";
+    const r = document.createElement("div");
+    r.className = "gamemode-row";
+
     row.forEach(name => {
-      const card = document.createElement("div");
-      card.className = "gamemode-card";
-      card.textContent = name;
-      card.style.backgroundImage = `url('${backgroundPath}/${name}.jpg')`;
-      card.onclick = () => showLeaderboard({ display: name });
-      rowDiv.appendChild(card);
+      const c = document.createElement("div");
+      c.className = "gamemode-card";
+      c.textContent = name;
+      c.style.backgroundImage = `url('Background/${name}.jpg')`;
+      c.onclick = () => selectBiome(name);
+      r.appendChild(c);
     });
-    container.appendChild(rowDiv);
+
+    container.appendChild(r);
   });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  const savedUsername = sessionStorage.getItem("username");
-  if (savedUsername) usernameInput.value = savedUsername;
-  renderBiomeRows();
-});
+/* ===============================
+   BIOME SELECTION (FADE)
+================================ */
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = (seconds % 60).toFixed(2);
-  return mins > 0 ? `${mins}:${secs.padStart(5,"0")}` : `${secs}s`;
-}
+function selectBiome(name) {
+  if (!usernameInput.value.trim()) {
+    alert("Please enter a username first!");
+    return;
+  }
 
-async function showLeaderboard(gm) {
-  const username = usernameInput.value.trim();
-  if (!username) { alert("Please enter a username before selecting a biome!"); return; }
-  sessionStorage.setItem("username", username);
+  sessionStorage.setItem("username", usernameInput.value.trim());
+  currentBiome = name;
 
-  usernameInput.disabled = true;
-  usernameInput.style.backgroundColor = "rgba(10, 26, 32, 0.5)";
-  usernameInput.style.color = "#888";
-  usernameInput.style.cursor = "not-allowed";
+  document.body.style.backgroundImage =
+    name === "Entire Map"
+      ? `url('${defaultBackground}')`
+      : `url('Background/${name}.jpg')`;
 
-  currentBiome = gm;
-  document.body.style.backgroundImage = `url('${backgroundPath}/${gm.display}.jpg')`;
   container.style.opacity = "0";
   document.querySelector(".entire-map").style.opacity = "0";
 
   setTimeout(() => {
     container.style.display = "none";
     document.querySelector(".entire-map").style.display = "none";
-    creditsDiv.classList.remove("active");
+
     leaderboard.style.display = "flex";
-    setTimeout(() => leaderboard.classList.add("active"), 50);
+    leaderboard.classList.add("active");
+
+    selectedModeTitle.textContent = `${name} Leaderboard`;
   }, 400);
-
-  // Alien Base special case
-  if (gm.display === "Alien Base") {
-    selectedModeTitle.textContent = "Coming in Future Update";
-    leaderboardContent.innerHTML = "<p>Coming in Future Update</p>";
-    return;
-  }
-
-  selectedModeTitle.textContent = `🏆 ${gm.display} Leaderboard`;
-  leaderboardContent.innerHTML = `
-    <table>
-      <thead>
-        <tr><th>Rank</th><th>Username</th><th>Score</th><th>Time</th></tr>
-      </thead>
-      <tbody id="leaderboard-body"></tbody>
-    </table>
-  `;
-
-  try {
-    const { data, error } = await supabase
-      .from("leaderboards")
-      .select("*")
-      .ilike("biome", gm.display.toLowerCase())
-      .order("score", { ascending: false })
-      .order("time", { ascending: true })
-      .ilike("gamemode", selectedImageMode);
-
-    const leaderboardBody = document.getElementById("leaderboard-body");
-    leaderboardBody.innerHTML = "";
-
-    if (error) throw error;
-    if (!data || data.length === 0) {
-      leaderboardBody.innerHTML = "<tr><td colspan='4'>No scores yet!</td></tr>";
-      return;
-    }
-
-    const bestScores = {};
-    data.forEach(entry => {
-      const existing = bestScores[entry.username];
-      if (!existing || entry.score > existing.score || (entry.score === existing.score && entry.time < existing.time)) {
-        bestScores[entry.username] = entry;
-      }
-    });
-
-    Object.values(bestScores)
-      .sort((a,b) => b.score - a.score || a.time - b.time)
-      .slice(0, 10)
-      .forEach((entry, i) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td>${i+1}</td><td>${entry.username}</td><td>${entry.score}</td><td>${formatTime(entry.time)}</td>`;
-        if (entry.username === username) {
-          row.style.backgroundColor = "rgba(0,255,255,0.2)";
-          row.style.fontWeight = "bold";
-          row.style.color = "#00ffff";
-          row.style.boxShadow = "0 0 12px rgba(0,255,255,0.5)";
-        }
-        leaderboardBody.appendChild(row);
-      });
-  } catch (e) {
-    console.error(e);
-    const leaderboardBody = document.getElementById("leaderboard-body");
-    leaderboardBody.innerHTML = "<tr><td colspan='4'>Leaderboard Coming in Future Update</td></tr>";
-  }
 }
 
-// Mode buttons
+/* ===============================
+   MODE BUTTONS (FIXED)
+================================ */
+
 normalBtn.onclick = () => {
   selectedImageMode = IMAGE_MODE.NORMAL;
   normalBtn.classList.add("active");
   mode360Btn.classList.remove("active");
-  updateImageModeStorage();
-  if (currentBiome) showLeaderboard(currentBiome);
 };
+
 mode360Btn.onclick = () => {
   selectedImageMode = IMAGE_MODE.DEG360;
   mode360Btn.classList.add("active");
   normalBtn.classList.remove("active");
-  updateImageModeStorage();
-  if (currentBiome) showLeaderboard(currentBiome);
 };
 
-// Play button
-playBtn.onclick = async () => {
-  try {
-    const response = await fetch("locations360.json");
-    const locations = await response.json();
+/* ===============================
+   PLAY BUTTON (FIXED)
+================================ */
 
-    let selectedBiomes;
-    if (currentBiome.display === "Entire Map") {
-      selectedBiomes = Object.values(biomeKeys).flat();
-    } else {
-      selectedBiomes = biomeKeys[currentBiome.display] || [currentBiome.display];
-    }
+playBtn.onclick = () => {
+  if (!currentBiome) return;
 
-    const hasBiome = locations.some(loc => selectedBiomes.includes(loc.biome));
-    if (!hasBiome) {
-      alert(`No locations found for ${currentBiome.display}!`);
-      return;
-    }
+  const selectedBiomes =
+    currentBiome === "Entire Map"
+      ? Object.values(biomeKeys).flat()
+      : biomeKeys[currentBiome] || [currentBiome];
 
-    updateImageModeStorage();
-    localStorage.setItem("selectedBiomeKeys", JSON.stringify(selectedBiomes));
-    localStorage.setItem("selectedBiomeDisplay", currentBiome.display);
-    localStorage.setItem("selectedImageMode", selectedImageMode);
+  localStorage.setItem("selectedBiomeKeys", JSON.stringify(selectedBiomes));
+  localStorage.setItem("selectedBiomeDisplay", currentBiome);
+  localStorage.setItem("selectedImageMode", selectedImageMode);
 
-    window.location.href = "game.html";
-  } catch (err) {
-    console.error(err);
-    alert("Error loading locations360.json");
-  }
+  window.location.href = "game.html";
 };
+
+/* ===============================
+   NAVIGATION
+================================ */
 
 function returnToDashboard() {
-  if (event && event.target.id === "credits-btn") return;
   leaderboard.classList.remove("active");
   creditsDiv.classList.remove("active");
+
   setTimeout(() => {
     leaderboard.style.display = "none";
     creditsDiv.style.display = "none";
-    container.style.display = "flex";
-    document.querySelector(".entire-map").style.display = "inline-block";
-    document.body.style.backgroundImage = `url('${defaultBackground}')`;
 
-    usernameInput.disabled = false;
-    usernameInput.style.backgroundColor = "#0a1a20cc";
-    usernameInput.style.color = "#00ffff";
-    usernameInput.style.cursor = "text";
+    container.style.display = "flex";
+    document.querySelector(".entire-map").style.display = "block";
+
+    document.body.style.backgroundImage = `url('${defaultBackground}')`;
 
     setTimeout(() => {
       container.style.opacity = "1";
@@ -428,10 +470,16 @@ function showCredits(e) {
   e.stopPropagation();
   container.style.display = "none";
   document.querySelector(".entire-map").style.display = "none";
-  leaderboard.classList.remove("active");
   creditsDiv.style.display = "flex";
   setTimeout(() => creditsDiv.classList.add("active"), 50);
 }
+
+/* ===============================
+   INIT
+================================ */
+
+renderBiomeRows();
 </script>
+
 </body>
 </html>
