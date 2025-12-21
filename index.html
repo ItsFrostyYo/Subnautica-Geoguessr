@@ -27,7 +27,6 @@ body {
   background-size: cover;
   position: relative;
 
-  /* 🔥 background fade */
   transition: background-image 0.5s ease-in-out;
 }
 
@@ -79,7 +78,6 @@ header h1 {
   margin-bottom: 6px;
   letter-spacing: 2px;
   line-height: 1;
-  /* ❌ NO GLOW */
 }
 
 header p {
@@ -101,21 +99,6 @@ header p {
   padding: 12px;
   width: 220px;
   text-align: center;
-}
-
-#credits-btn {
-  background: none;
-  border: 2px solid #00ffff;
-  color: #00ffff;
-  border-radius: 12px;
-  padding: 12px 24px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-#credits-btn:hover {
-  background: #00ffff;
-  color: #0a0f14;
 }
 
 /* ===============================
@@ -164,11 +147,17 @@ header p {
 }
 
 /* ===============================
-   ENTIRE MAP BUTTON
+   ENTIRE MAP + CREDITS ROW
 ================================ */
 
+.entire-map-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  transition: opacity 0.4s ease;
+}
+
 .entire-map {
-  margin-top: 22px;
   width: 640px;
   padding: 38px 0;
 
@@ -183,7 +172,7 @@ header p {
   cursor: pointer;
   text-align: center;
 
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.4s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .entire-map:hover {
@@ -191,12 +180,19 @@ header p {
   box-shadow: 0 0 30px #00ffff;
 }
 
+.credits-inline {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  opacity: 0.85;
+  text-align: left;
+  white-space: nowrap;
+}
+
 /* ===============================
-   LEADERBOARD / CREDITS
+   LEADERBOARD
 ================================ */
 
-.leaderboard,
-.credits {
+.leaderboard {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -213,8 +209,7 @@ header p {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.leaderboard.active,
-.credits.active {
+.leaderboard.active {
   opacity: 1;
   transform: scale(1);
 }
@@ -247,10 +242,31 @@ header p {
   border-radius: 10px;
   cursor: pointer;
 }
+
+/* ===============================
+   BACK BUTTON
+================================ */
+
+#back-button {
+  position: fixed;
+  top: 20px;
+  left: 22px;
+  display: none;
+
+  border: 2px solid #00ffff;
+  border-radius: 12px;
+  padding: 8px 18px;
+
+  background: none;
+  color: #00ffff;
+  cursor: pointer;
+}
 </style>
 </head>
 
 <body>
+
+<button id="back-button" onclick="returnToDashboard()">← Back</button>
 
 <div id="scale-wrapper">
 <div id="main-ui">
@@ -261,15 +277,22 @@ header p {
 
   <div class="username-container">
     <input id="username-input" placeholder="Enter username">
-    <button id="credits-btn" onclick="showCredits(event)">Credits</button>
   </div>
 </header>
 
 <div class="gamemode-container" id="gamemode-container"></div>
 
-<button class="entire-map" onclick="selectBiome('Entire Map')">
-🌍 Play the Entire Subnautica Map 🌍
-</button>
+<div class="entire-map-row">
+  <button class="entire-map" onclick="selectBiome('Entire Map')">
+    The Entire Subnautica Map 🗺️
+  </button>
+
+  <div class="credits-inline">
+    <strong>Credits</strong><br>
+    Main Devs – ItsFrosti, Sprinter_31<br>
+    Testers – Spudato_64
+  </div>
+</div>
 
 <div class="leaderboard" id="leaderboard">
   <h2 id="selected-mode-title"></h2>
@@ -283,43 +306,25 @@ header p {
   <p>Leaderboard Coming in Future Update</p>
 </div>
 
-<div class="credits" id="credits">
-  <h2>Credits</h2>
-  <p>ItsFrosti, Sprinter_31<br>Tester: Spudato_64</p>
-  <button class="play-btn" onclick="returnToDashboard()">← Back</button>
-</div>
-
 </div>
 </div>
 
 <script>
-/* ===============================
-   CONSTANTS & STATE
-================================ */
-
 const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
 let selectedImageMode = IMAGE_MODE.NORMAL;
 let currentBiome = null;
 
 const defaultBackground = "Background/DashboardBackground.png";
 
-/* ===============================
-   ELEMENTS
-================================ */
-
 const container = document.getElementById("gamemode-container");
 const leaderboard = document.getElementById("leaderboard");
-const creditsDiv = document.getElementById("credits");
 const usernameInput = document.getElementById("username-input");
+const backButton = document.getElementById("back-button");
 
 const normalBtn = document.getElementById("normal-btn");
 const mode360Btn = document.getElementById("mode360-btn");
 const playBtn = document.getElementById("play-btn");
 const selectedModeTitle = document.getElementById("selected-mode-title");
-
-/* ===============================
-   BIOME DATA
-================================ */
 
 const biomeKeys = {
   "Safe Shallows": ["Safe Shallows","safeShallows"],
@@ -352,10 +357,6 @@ const rowOrder = [
   ["Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone","Alien Base"]
 ];
 
-/* ===============================
-   RENDER BIOMES
-================================ */
-
 function renderBiomeRows() {
   container.innerHTML = "";
   rowOrder.forEach(row => {
@@ -375,18 +376,14 @@ function renderBiomeRows() {
   });
 }
 
-/* ===============================
-   BIOME SELECTION (FADE)
-================================ */
-
 function selectBiome(name) {
   if (!usernameInput.value.trim()) {
     alert("Please enter a username first!");
     return;
   }
 
-  sessionStorage.setItem("username", usernameInput.value.trim());
   currentBiome = name;
+  backButton.style.display = "block";
 
   document.body.style.backgroundImage =
     name === "Entire Map"
@@ -394,11 +391,11 @@ function selectBiome(name) {
       : `url('Background/${name}.jpg')`;
 
   container.style.opacity = "0";
-  document.querySelector(".entire-map").style.opacity = "0";
+  document.querySelector(".entire-map-row").style.opacity = "0";
 
   setTimeout(() => {
     container.style.display = "none";
-    document.querySelector(".entire-map").style.display = "none";
+    document.querySelector(".entire-map-row").style.display = "none";
 
     leaderboard.style.display = "flex";
     leaderboard.classList.add("active");
@@ -406,10 +403,6 @@ function selectBiome(name) {
     selectedModeTitle.textContent = `${name} Leaderboard`;
   }, 400);
 }
-
-/* ===============================
-   MODE BUTTONS (FIXED)
-================================ */
 
 normalBtn.onclick = () => {
   selectedImageMode = IMAGE_MODE.NORMAL;
@@ -422,10 +415,6 @@ mode360Btn.onclick = () => {
   mode360Btn.classList.add("active");
   normalBtn.classList.remove("active");
 };
-
-/* ===============================
-   PLAY BUTTON (FIXED)
-================================ */
 
 playBtn.onclick = () => {
   if (!currentBiome) return;
@@ -442,41 +431,23 @@ playBtn.onclick = () => {
   window.location.href = "game.html";
 };
 
-/* ===============================
-   NAVIGATION
-================================ */
-
 function returnToDashboard() {
   leaderboard.classList.remove("active");
-  creditsDiv.classList.remove("active");
+  backButton.style.display = "none";
 
   setTimeout(() => {
     leaderboard.style.display = "none";
-    creditsDiv.style.display = "none";
 
     container.style.display = "flex";
-    document.querySelector(".entire-map").style.display = "block";
-
+    document.querySelector(".entire-map-row").style.display = "flex";
     document.body.style.backgroundImage = `url('${defaultBackground}')`;
 
     setTimeout(() => {
       container.style.opacity = "1";
-      document.querySelector(".entire-map").style.opacity = "1";
+      document.querySelector(".entire-map-row").style.opacity = "1";
     }, 50);
   }, 300);
 }
-
-function showCredits(e) {
-  e.stopPropagation();
-  container.style.display = "none";
-  document.querySelector(".entire-map").style.display = "none";
-  creditsDiv.style.display = "flex";
-  setTimeout(() => creditsDiv.classList.add("active"), 50);
-}
-
-/* ===============================
-   INIT
-================================ */
 
 renderBiomeRows();
 </script>
