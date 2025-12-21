@@ -147,13 +147,14 @@ header p {
 }
 
 /* ===============================
-   ENTIRE MAP + CREDITS ROW
+   ENTIRE MAP (CENTERED) + CREDITS
 ================================ */
 
-.entire-map-row {
+.entire-map-wrapper {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 28px;
+  justify-content: center;
+  width: 100%;
   transition: opacity 0.4s ease;
 }
 
@@ -181,10 +182,14 @@ header p {
 }
 
 .credits-inline {
+  position: absolute;
+  left: calc(50% + 360px);
+  top: 50%;
+  transform: translateY(-50%);
+
   font-size: 0.95rem;
   line-height: 1.4;
   opacity: 0.85;
-  text-align: left;
   white-space: nowrap;
 }
 
@@ -273,16 +278,16 @@ header p {
 
 <header onclick="returnToDashboard()">
   <h1>Geonautica</h1>
-  <p>Please Set a Username Below</p>
+  <p>Guess Subnautica Locations Across the Entire Subnautica Map</p>
 
   <div class="username-container">
-    <input id="username-input" placeholder="Enter username">
+    <input id="username-input" placeholder="Please Enter Username to Continue">
   </div>
 </header>
 
 <div class="gamemode-container" id="gamemode-container"></div>
 
-<div class="entire-map-row">
+<div class="entire-map-wrapper">
   <button class="entire-map" onclick="selectBiome('Entire Map')">
     The Entire Subnautica Map 🗺️
   </button>
@@ -298,7 +303,7 @@ header p {
   <h2 id="selected-mode-title"></h2>
 
   <div class="mode-buttons">
-    <button class="mode-btn active" id="normal-btn">Normal</button>
+    <button class="mode-btn active" id="normal-btn">No 360</button>
     <button class="mode-btn" id="mode360-btn">360</button>
     <button class="play-btn" id="play-btn">Play</button>
   </div>
@@ -391,11 +396,11 @@ function selectBiome(name) {
       : `url('Background/${name}.jpg')`;
 
   container.style.opacity = "0";
-  document.querySelector(".entire-map-row").style.opacity = "0";
+  document.querySelector(".entire-map-wrapper").style.opacity = "0";
 
   setTimeout(() => {
     container.style.display = "none";
-    document.querySelector(".entire-map-row").style.display = "none";
+    document.querySelector(".entire-map-wrapper").style.display = "none";
 
     leaderboard.style.display = "flex";
     leaderboard.classList.add("active");
@@ -439,12 +444,12 @@ function returnToDashboard() {
     leaderboard.style.display = "none";
 
     container.style.display = "flex";
-    document.querySelector(".entire-map-row").style.display = "flex";
+    document.querySelector(".entire-map-wrapper").style.display = "flex";
     document.body.style.backgroundImage = `url('${defaultBackground}')`;
 
     setTimeout(() => {
       container.style.opacity = "1";
-      document.querySelector(".entire-map-row").style.opacity = "1";
+      document.querySelector(".entire-map-wrapper").style.opacity = "1";
     }, 50);
   }, 300);
 }
