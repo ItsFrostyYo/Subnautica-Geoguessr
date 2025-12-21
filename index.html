@@ -27,7 +27,7 @@ body {
   background-size: cover;
   position: relative;
 
-  transition: background-image 0.5s ease-in-out;
+  transition: background-image 0.6s ease-in-out;
 }
 
 body::before {
@@ -131,7 +131,6 @@ header p {
 
   font-weight: bold;
   font-size: 1.05rem;
-
   cursor: pointer;
 
   background-size: cover;
@@ -147,7 +146,7 @@ header p {
 }
 
 /* ===============================
-   ENTIRE MAP (CENTERED) + CREDITS
+   ENTIRE MAP + SIDE INFO
 ================================ */
 
 .entire-map-wrapper {
@@ -155,6 +154,7 @@ header p {
   display: flex;
   justify-content: center;
   width: 100%;
+  opacity: 1;
   transition: opacity 0.4s ease;
 }
 
@@ -181,12 +181,42 @@ header p {
   box-shadow: 0 0 30px #00ffff;
 }
 
+/* LEFT — VERSION */
+
+.version-inline {
+  position: absolute;
+  right: calc(50% + 360px);
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.version-inline button {
+  margin-top: 8px;
+  padding: 6px 14px;
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  background: none;
+  color: #00ffff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.version-inline button:hover {
+  background: #00ffff;
+  color: #0a0f14;
+}
+
+/* RIGHT — CREDITS */
+
 .credits-inline {
   position: absolute;
   left: calc(50% + 360px);
   top: 50%;
   transform: translateY(-50%);
-
   font-size: 0.95rem;
   line-height: 1.4;
   opacity: 0.85;
@@ -194,10 +224,10 @@ header p {
 }
 
 /* ===============================
-   LEADERBOARD
+   PANELS
 ================================ */
 
-.leaderboard {
+.panel {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -207,45 +237,16 @@ header p {
   border-radius: 16px;
 
   padding: 22px;
-  width: 520px;
+  width: 600px;
 
   opacity: 0;
-  transform: scale(0.98);
+  transform: scale(0.97);
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.leaderboard.active {
+.panel.active {
   opacity: 1;
   transform: scale(1);
-}
-
-.mode-buttons {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.mode-btn {
-  border: 2px solid #00ffff;
-  background: none;
-  color: #00ffff;
-  padding: 10px 18px;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-.mode-btn.active {
-  background: #00ffff;
-  color: #0a0f14;
-}
-
-.play-btn {
-  background: #00ffff;
-  color: #0a0f14;
-  border: none;
-  padding: 10px 26px;
-  border-radius: 10px;
-  cursor: pointer;
 }
 
 /* ===============================
@@ -279,15 +280,22 @@ header p {
 <header onclick="returnToDashboard()">
   <h1>Geonautica</h1>
   <p>Guess Subnautica Locations Across the Entire Subnautica Map</p>
-
-  <div class="username-container">
+  <div class="username-container" id="username-container">
     <input id="username-input" placeholder="Please Enter Username to Continue">
   </div>
 </header>
 
 <div class="gamemode-container" id="gamemode-container"></div>
 
-<div class="entire-map-wrapper">
+<div class="entire-map-wrapper" id="entire-map-wrapper">
+
+  <div class="version-inline">
+    <strong>Version</strong><br>
+    0.2.27-Beta<br>
+    December 21, 2025<br>
+    <button onclick="openUpdateNotes()">Update Notes</button>
+  </div>
+
   <button class="entire-map" onclick="selectBiome('Entire Map')">
     The Entire Subnautica Map 🗺️
   </button>
@@ -297,65 +305,36 @@ header p {
     Main Devs – ItsFrosti, Sprinter_31<br>
     Testers – Spudato_64
   </div>
+
 </div>
 
-<div class="leaderboard" id="leaderboard">
-  <h2 id="selected-mode-title"></h2>
-
-  <div class="mode-buttons">
-    <button class="mode-btn active" id="normal-btn">No 360</button>
-    <button class="mode-btn" id="mode360-btn">360</button>
-    <button class="play-btn" id="play-btn">Play</button>
-  </div>
-
+<div class="panel" id="leaderboard">
+  <h2 id="panel-title"></h2>
   <p>Leaderboard Coming in Future Update</p>
+</div>
+
+<div class="panel" id="update-notes">
+  <h1>Update Notes</h1>
+  <h3>Version 0.2.27-Beta of December 21, 2025</h3>
+  <p>• Currently Added Biomes - Safe Shallows, Kelp Forest, Grassy Plateaus, Mushroom Forest, Bulb Zone, Blood Kelp, Underwater Islands, Crag Fields.</p>
+  <p>• The other Biomes are to be Added in the Future, and Current Biomes do not have the Best Coverage of Images, it will be updated in the Future.</p>
+  <p>• Currently the Underwater Islands Biome is in my opinion not good with very poor coverage of images and is difficult.</p>
 </div>
 
 </div>
 </div>
 
 <script>
-const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
-let selectedImageMode = IMAGE_MODE.NORMAL;
-let currentBiome = null;
-
-const defaultBackground = "Background/DashboardBackground.png";
-
+const defaultBg = "Background/DashboardBackground.png";
 const container = document.getElementById("gamemode-container");
+const entireWrapper = document.getElementById("entire-map-wrapper");
 const leaderboard = document.getElementById("leaderboard");
-const usernameInput = document.getElementById("username-input");
+const updateNotes = document.getElementById("update-notes");
+const usernameContainer = document.getElementById("username-container");
 const backButton = document.getElementById("back-button");
+const panelTitle = document.getElementById("panel-title");
 
-const normalBtn = document.getElementById("normal-btn");
-const mode360Btn = document.getElementById("mode360-btn");
-const playBtn = document.getElementById("play-btn");
-const selectedModeTitle = document.getElementById("selected-mode-title");
-
-const biomeKeys = {
-  "Safe Shallows": ["Safe Shallows","safeShallows"],
-  "Kelp Forest": ["Kelp Forest","kelpForest"],
-  "Grassy Plateaus": ["Grassy Plateaus","grassyPlateaus"],
-  "Mushroom Forest": ["Mushroom Forest","mushroomForest"],
-  "Bulb Zone": ["Koosh Zone","kooshZone"],
-  "Blood Kelp": ["Blood Kelp","bloodKelp"],
-  "Underwater Islands": ["Underwater Islands","underwaterIslands"],
-  "Crag Field": ["Crag Field","cragField"],
-  "Sparse Reef": ["Sparse Reef","sparseReef"],
-  "Mountains": ["Mountains","mountains"],
-  "Grand Reef": ["Grand Reef","grandReef"],
-  "Sea Treaders Path": ["Sea Treaders Path","seaTreaderPath"],
-  "Dunes": ["Dunes","dunes"],
-  "Crash Zone": ["Crash Zone","crashZone"],
-  "Floating Island": ["Floating Island","floatingIsland"],
-  "Jellyshroom Caves": ["Jellyshroom Caves","jellyshroomCaves"],
-  "Lost River": ["Lost River"],
-  "Inactive Lava Zone": ["Inactive Lava Zone"],
-  "Active Lava Zone": ["Active Lava Zone"],
-  "Alien Base": ["Alien Base"],
-  "Entire Map": Object.values(this).flat
-};
-
-const rowOrder = [
+const rows = [
   ["Safe Shallows","Kelp Forest","Grassy Plateaus","Mushroom Forest","Bulb Zone"],
   ["Blood Kelp","Underwater Islands","Crag Field","Sparse Reef","Mountains"],
   ["Grand Reef","Sea Treaders Path","Dunes","Crash Zone","Floating Island"],
@@ -363,11 +342,9 @@ const rowOrder = [
 ];
 
 function renderBiomeRows() {
-  container.innerHTML = "";
-  rowOrder.forEach(row => {
+  rows.forEach(row => {
     const r = document.createElement("div");
     r.className = "gamemode-row";
-
     row.forEach(name => {
       const c = document.createElement("div");
       c.className = "gamemode-card";
@@ -376,80 +353,64 @@ function renderBiomeRows() {
       c.onclick = () => selectBiome(name);
       r.appendChild(c);
     });
-
     container.appendChild(r);
   });
 }
 
-function selectBiome(name) {
-  if (!usernameInput.value.trim()) {
-    alert("Please enter a username first!");
-    return;
-  }
+function fadeOutDashboard() {
+  container.style.opacity = "0";
+  entireWrapper.style.opacity = "0";
+  setTimeout(() => {
+    container.style.display = "none";
+    entireWrapper.style.display = "none";
+  }, 400);
+}
 
-  currentBiome = name;
+function selectBiome(name) {
+  fadeOutDashboard();
   backButton.style.display = "block";
 
   document.body.style.backgroundImage =
     name === "Entire Map"
-      ? `url('${defaultBackground}')`
+      ? `url('${defaultBg}')`
       : `url('Background/${name}.jpg')`;
 
-  container.style.opacity = "0";
-  document.querySelector(".entire-map-wrapper").style.opacity = "0";
-
   setTimeout(() => {
-    container.style.display = "none";
-    document.querySelector(".entire-map-wrapper").style.display = "none";
-
     leaderboard.style.display = "flex";
     leaderboard.classList.add("active");
-
-    selectedModeTitle.textContent = `${name} Leaderboard`;
+    panelTitle.textContent = `${name} Leaderboard`;
   }, 400);
 }
 
-normalBtn.onclick = () => {
-  selectedImageMode = IMAGE_MODE.NORMAL;
-  normalBtn.classList.add("active");
-  mode360Btn.classList.remove("active");
-};
+function openUpdateNotes() {
+  fadeOutDashboard();
+  backButton.style.display = "block";
+  usernameContainer.style.display = "none";
 
-mode360Btn.onclick = () => {
-  selectedImageMode = IMAGE_MODE.DEG360;
-  mode360Btn.classList.add("active");
-  normalBtn.classList.remove("active");
-};
-
-playBtn.onclick = () => {
-  if (!currentBiome) return;
-
-  const selectedBiomes =
-    currentBiome === "Entire Map"
-      ? Object.values(biomeKeys).flat()
-      : biomeKeys[currentBiome] || [currentBiome];
-
-  localStorage.setItem("selectedBiomeKeys", JSON.stringify(selectedBiomes));
-  localStorage.setItem("selectedBiomeDisplay", currentBiome);
-  localStorage.setItem("selectedImageMode", selectedImageMode);
-
-  window.location.href = "game.html";
-};
+  setTimeout(() => {
+    updateNotes.style.display = "flex";
+    updateNotes.classList.add("active");
+  }, 400);
+}
 
 function returnToDashboard() {
   leaderboard.classList.remove("active");
-  backButton.style.display = "none";
+  updateNotes.classList.remove("active");
 
   setTimeout(() => {
     leaderboard.style.display = "none";
+    updateNotes.style.display = "none";
+
+    document.body.style.backgroundImage = `url('${defaultBg}')`;
+    usernameContainer.style.display = "flex";
+    backButton.style.display = "none";
 
     container.style.display = "flex";
-    document.querySelector(".entire-map-wrapper").style.display = "flex";
-    document.body.style.backgroundImage = `url('${defaultBackground}')`;
+    entireWrapper.style.display = "flex";
 
     setTimeout(() => {
       container.style.opacity = "1";
-      document.querySelector(".entire-map-wrapper").style.opacity = "1";
+      entireWrapper.style.opacity = "1";
     }, 50);
   }, 300);
 }
