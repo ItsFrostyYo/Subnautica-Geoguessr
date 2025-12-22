@@ -4058,5 +4058,15 @@
     "roll": 1.0,
     "biome": "sparseReef",
     "image": "Images360/-859;-198;-712;sparseReef.png"
+  },
+  {
+    "x": -806.0,
+    "y": -219.0,
+    "z": -715.0,
+    "pitch": 25.0,
+    "yaw": -92.0,
+    "roll": 1.0,
+    "biome": "sparseReef",
+    "image": "Images360/-806;-219;-715;sparseReef.png"
   }
 ]
