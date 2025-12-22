@@ -3698,5 +3698,225 @@
     "roll": 0.0,
     "biome": "GrassyPlateaus",
     "image": "Images360/-805;-130;-149;GrassyPlateaus.png"
+  },
+  {
+    "x": 181.0,
+    "y": -17.0,
+    "z": -227.0,
+    "pitch": 16.0,
+    "yaw": -167.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/181;-17;-227;safeShallows.png"
+  },
+  {
+    "x": 122.0,
+    "y": -35.0,
+    "z": -268.0,
+    "pitch": 31.0,
+    "yaw": -89.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/122;-35;-268;safeShallows.png"
+  },
+  {
+    "x": 199.0,
+    "y": -15.0,
+    "z": -174.0,
+    "pitch": 36.0,
+    "yaw": 10.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/199;-15;-174;safeShallows.png"
+  },
+  {
+    "x": 294.0,
+    "y": -20.0,
+    "z": -160.0,
+    "pitch": 42.0,
+    "yaw": -10.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/294;-20;-160;safeShallows.png"
+  },
+  {
+    "x": 276.0,
+    "y": -32.0,
+    "z": -174.0,
+    "pitch": 13.0,
+    "yaw": 13.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/276;-32;-174;safeShallows.png"
+  },
+  {
+    "x": 303.0,
+    "y": -26.0,
+    "z": -97.0,
+    "pitch": 18.0,
+    "yaw": 161.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/303;-26;-97;safeShallows.png"
+  },
+  {
+    "x": 330.0,
+    "y": -26.0,
+    "z": -151.0,
+    "pitch": 15.0,
+    "yaw": -5.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/330;-26;-151;safeShallows.png"
+  },
+  {
+    "x": 350.0,
+    "y": -23.0,
+    "z": -212.0,
+    "pitch": 18.0,
+    "yaw": -78.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/350;-23;-212;safeShallows.png"
+  },
+  {
+    "x": 338.0,
+    "y": -32.0,
+    "z": -232.0,
+    "pitch": 9.0,
+    "yaw": -20.0,
+    "roll": -1.0,
+    "biome": "safeShallows",
+    "image": "Images360/338;-32;-232;safeShallows.png"
+  },
+  {
+    "x": 392.0,
+    "y": -13.0,
+    "z": -189.0,
+    "pitch": 33.0,
+    "yaw": -143.0,
+    "roll": -1.0,
+    "biome": "safeShallows",
+    "image": "Images360/392;-13;-189;safeShallows.png"
+  },
+  {
+    "x": 394.0,
+    "y": -47.0,
+    "z": -50.0,
+    "pitch": -7.0,
+    "yaw": 139.0,
+    "roll": -1.0,
+    "biome": "safeShallows",
+    "image": "Images360/394;-47;-50;safeShallows.png"
+  },
+  {
+    "x": 453.0,
+    "y": -14.0,
+    "z": -123.0,
+    "pitch": 56.0,
+    "yaw": -139.0,
+    "roll": -1.0,
+    "biome": "safeShallows",
+    "image": "Images360/453;-14;-123;safeShallows.png"
+  },
+  {
+    "x": 507.0,
+    "y": -28.0,
+    "z": -46.0,
+    "pitch": 0.0,
+    "yaw": -109.0,
+    "roll": -1.0,
+    "biome": "crashZone",
+    "image": "Images360/507;-28;-46;crashZone.png"
+  },
+  {
+    "x": 489.0,
+    "y": -16.0,
+    "z": -50.0,
+    "pitch": 47.0,
+    "yaw": 68.0,
+    "roll": -1.0,
+    "biome": "crashZone",
+    "image": "Images360/489;-16;-50;crashZone.png"
+  },
+  {
+    "x": 490.0,
+    "y": -16.0,
+    "z": -35.0,
+    "pitch": 4.0,
+    "yaw": 165.0,
+    "roll": -1.0,
+    "biome": "safeShallows",
+    "image": "Images360/490;-16;-35;safeShallows.png"
+  },
+  {
+    "x": 273.0,
+    "y": -19.0,
+    "z": -228.0,
+    "pitch": 7.0,
+    "yaw": 72.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/273;-19;-228;safeShallows.png"
+  },
+  {
+    "x": 157.0,
+    "y": -27.0,
+    "z": -251.0,
+    "pitch": 18.0,
+    "yaw": 77.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/157;-27;-251;safeShallows.png"
+  },
+  {
+    "x": 161.0,
+    "y": -46.0,
+    "z": -299.0,
+    "pitch": -1.0,
+    "yaw": -8.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/161;-46;-299;safeShallows.png"
+  },
+  {
+    "x": -144.0,
+    "y": -16.0,
+    "z": -466.0,
+    "pitch": 34.0,
+    "yaw": -16.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-144;-16;-466;safeShallows.png"
+  },
+  {
+    "x": -46.0,
+    "y": -26.0,
+    "z": -402.0,
+    "pitch": 37.0,
+    "yaw": 108.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/-46;-26;-402;safeShallows.png"
+  },
+  {
+    "x": 19.0,
+    "y": -14.0,
+    "z": -354.0,
+    "pitch": 18.0,
+    "yaw": 165.0,
+    "roll": 0.0,
+    "biome": "safeShallows",
+    "image": "Images360/19;-14;-354;safeShallows.png"
+  },
+  {
+    "x": 73.0,
+    "y": -28.0,
+    "z": -391.0,
+    "pitch": 1.0,
+    "yaw": -50.0,
+    "roll": 0.0,
+    "biome": "kelpForest",
+    "image": "Images360/73;-28;-391;kelpForest.png"
   }
 ]
