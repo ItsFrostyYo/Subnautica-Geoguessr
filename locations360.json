@@ -3908,5 +3908,15 @@
     "roll": 0.0,
     "biome": "safeShallows",
     "image": "Images360/19;-14;-354;safeShallows.png"
+  },
+  {
+    "x": 73.0,
+    "y": -28.0,
+    "z": -391.0,
+    "pitch": 1.0,
+    "yaw": -50.0,
+    "roll": 0.0,
+    "biome": "kelpForest",
+    "image": "Images360/73;-28;-391;kelpForest.png"
   }
 ]
