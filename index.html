@@ -7,26 +7,18 @@
 <title>Geonautica | Guess Locations Across the Subnautica Map!</title>
 
 <style>
-/* ===============================
-   BODY / BACKGROUND
-================================ */
-
 body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   color: #00ffff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
   background: url("Background/DashboardBackground.png") no-repeat center center fixed;
   background-size: cover;
   position: relative;
-
   transition: background-image 0.6s ease-in-out;
 }
 
@@ -40,18 +32,10 @@ body::before {
 
 * { position: relative; z-index: 1; }
 
-/* ===============================
-   SCALE WRAPPER
-================================ */
-
 #scale-wrapper {
   transform: scale(1.08);
   transform-origin: center;
 }
-
-/* ===============================
-   MAIN UI
-================================ */
 
 #main-ui {
   display: flex;
@@ -59,10 +43,6 @@ body::before {
   align-items: center;
   gap: 24px;
 }
-
-/* ===============================
-   HEADER
-================================ */
 
 header {
   text-align: center;
@@ -93,10 +73,6 @@ header p { font-size: 1.1rem; }
   text-align: center;
 }
 
-/* ===============================
-   BIOME GRID
-================================ */
-
 .gamemode-container {
   display: flex;
   flex-direction: column;
@@ -115,18 +91,14 @@ header p { font-size: 1.1rem; }
   height: 78px;
   border: 2px solid #00ffff;
   border-radius: 16px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-weight: bold;
   cursor: pointer;
-
   background-size: cover;
   background-position: center;
   text-shadow: 0 0 8px #000;
-
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -134,10 +106,6 @@ header p { font-size: 1.1rem; }
   transform: scale(1.06);
   box-shadow: 0 0 18px #00ffff;
 }
-
-/* ===============================
-   ENTIRE MAP + SIDE INFO
-================================ */
 
 .entire-map-wrapper {
   position: relative;
@@ -152,11 +120,9 @@ header p { font-size: 1.1rem; }
   padding: 38px 0;
   font-size: 1.9rem;
   font-weight: bold;
-
   border: 3px solid #00ffff;
   border-radius: 28px;
   background: radial-gradient(circle, #00ffff66, #00ffff22);
-
   color: #00ffff;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -166,8 +132,6 @@ header p { font-size: 1.1rem; }
   transform: scale(1.04);
   box-shadow: 0 0 30px #00ffff;
 }
-
-/* LEFT — VERSION */
 
 .version-inline {
   position: absolute;
@@ -189,8 +153,6 @@ header p { font-size: 1.1rem; }
   cursor: pointer;
 }
 
-/* RIGHT — CREDITS */
-
 .credits-inline {
   position: absolute;
   left: calc(50% + 360px);
@@ -200,22 +162,15 @@ header p { font-size: 1.1rem; }
   opacity: 0.85;
 }
 
-/* ===============================
-   PANELS
-================================ */
-
 .panel {
   display: none;
   flex-direction: column;
   align-items: center;
-
   background: #112029cc;
   border: 2px solid #00ffff;
   border-radius: 16px;
-
   padding: 22px;
   width: 600px;
-
   opacity: 0;
   transform: scale(0.97);
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -225,8 +180,6 @@ header p { font-size: 1.1rem; }
   opacity: 1;
   transform: scale(1);
 }
-
-/* MODE BUTTONS */
 
 .mode-buttons {
   display: flex;
@@ -257,16 +210,11 @@ header p { font-size: 1.1rem; }
   cursor: pointer;
 }
 
-/* ===============================
-   BACK BUTTON
-================================ */
-
 #back-button {
   position: fixed;
   top: 20px;
   left: 22px;
   display: none;
-
   border: 2px solid #00ffff;
   border-radius: 12px;
   padding: 8px 18px;
@@ -295,10 +243,9 @@ header p { font-size: 1.1rem; }
 <div class="gamemode-container" id="gamemode-container"></div>
 
 <div class="entire-map-wrapper" id="entire-map-wrapper">
-
   <div class="version-inline">
     <strong>Version</strong><br>
-    0.2.28-Beta<br>
+    0.2.29-Beta<br>
     December 21, 2025<br>
     <button onclick="openUpdateNotes()">Update Notes</button>
   </div>
@@ -314,22 +261,19 @@ header p { font-size: 1.1rem; }
   </div>
 </div>
 
-<!-- LEADERBOARD / PLAY PANEL -->
 <div class="panel" id="leaderboard">
   <h2 id="panel-title"></h2>
-
   <div class="mode-buttons">
     <button class="mode-btn active" id="normal-btn">No 360</button>
     <button class="mode-btn" id="mode360-btn">360</button>
     <button class="play-btn" id="play-btn">Play</button>
   </div>
-
   <p>Leaderboard Coming in Future Update</p>
 </div>
 
 <div class="panel" id="update-notes">
- <h1>Update Notes</h1>
-  <h3>Version 0.2.28-Beta of December 21, 2025</h3>
+  <h1>Update Notes</h1>
+  <h3>Version 0.2.29-Beta of December 21, 2025</h3>
   <p>• Currently Added Biomes - Safe Shallows, Kelp Forest, Grassy Plateaus, Mushroom Forest, Bulb Zone, Blood Kelp, Underwater Islands, Crag Fields.</p>
   <p>• The other Biomes are to be Added in the Future, and Current Biomes do not have the Best Coverage of Images, it will be updated in the Future.</p>
   <p>• Currently the Underwater Islands Biome is in my opinion not good with very poor coverage of images and is difficult.</p>
@@ -343,7 +287,16 @@ const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
 let selectedImageMode = IMAGE_MODE.NORMAL;
 let currentBiome = null;
 
-const defaultBg = "Background/DashboardBackground.png";
+const BIOME_KEY_MAP = {
+  "Safe Shallows":"safeShallows","Kelp Forest":"kelpForest","Grassy Plateaus":"grassyPlateaus",
+  "Mushroom Forest":"mushroomForest","Bulb Zone":"bulbZone","Blood Kelp":"bloodKelp",
+  "Underwater Islands":"underwaterIslands","Crag Field":"cragField","Sparse Reef":"sparseReef",
+  "Mountains":"mountains","Grand Reef":"grandReef","Sea Treaders Path":"seaTreadersPath",
+  "Dunes":"dunes","Crash Zone":"crashZone","Floating Island":"floatingIsland",
+  "Jellyshroom Caves":"jellyshroom","Lost River":"lostRiver",
+  "Inactive Lava Zone":"inactiveLavaZone","Active Lava Zone":"lavaLakes",
+  "Alien Base":"alienBase","Entire Map":"entire_map"
+};
 
 const container = document.getElementById("gamemode-container");
 const entireWrapper = document.getElementById("entire-map-wrapper");
@@ -364,103 +317,92 @@ const rows = [
   ["Jellyshroom Caves","Lost River","Inactive Lava Zone","Active Lava Zone","Alien Base"]
 ];
 
-function renderBiomeRows() {
-  rows.forEach(row => {
-    const r = document.createElement("div");
-    r.className = "gamemode-row";
-    row.forEach(name => {
-      const c = document.createElement("div");
-      c.className = "gamemode-card";
-      c.textContent = name;
-      c.style.backgroundImage = `url('Background/${name}.jpg')`;
-      c.onclick = () => selectBiome(name);
-      r.appendChild(c);
-    });
-    container.appendChild(r);
+rows.forEach(row=>{
+  const r=document.createElement("div");r.className="gamemode-row";
+  row.forEach(name=>{
+    const c=document.createElement("div");
+    c.className="gamemode-card";
+    c.textContent=name;
+    c.style.backgroundImage=`url('Background/${name}.jpg')`;
+    c.onclick=()=>selectBiome(name);
+    r.appendChild(c);
   });
+  container.appendChild(r);
+});
+
+function fadeOutDashboard(){
+  container.style.opacity="0";
+  entireWrapper.style.opacity="0";
+  setTimeout(()=>{
+    container.style.display="none";
+    entireWrapper.style.display="none";
+  },400);
 }
 
-function fadeOutDashboard() {
-  container.style.opacity = "0";
-  entireWrapper.style.opacity = "0";
-  setTimeout(() => {
-    container.style.display = "none";
-    entireWrapper.style.display = "none";
-  }, 400);
-}
-
-function selectBiome(name) {
-  if (!usernameInput.value.trim()) {
+function selectBiome(name){
+  if(!usernameInput.value.trim()){
     alert("Please enter a username first!");
     return;
   }
-
-  currentBiome = name;
-  backButton.style.display = "block";
-
-  document.body.style.backgroundImage =
-    name === "Entire Map"
-      ? `url('${defaultBg}')`
-      : `url('Background/${name}.jpg')`;
-
+  currentBiome=name;
+  backButton.style.display="block";
+  document.body.style.backgroundImage=
+    name==="Entire Map"?"url('Background/DashboardBackground.png')":`url('Background/${name}.jpg')`;
   fadeOutDashboard();
-
-  setTimeout(() => {
-    leaderboard.style.display = "flex";
+  setTimeout(()=>{
+    leaderboard.style.display="flex";
     leaderboard.classList.add("active");
-    panelTitle.textContent = `${name} Mode Selection`;
-  }, 400);
+    panelTitle.textContent=`${name} Mode Selection`;
+  },400);
 }
 
-normalBtn.onclick = () => {
-  selectedImageMode = IMAGE_MODE.NORMAL;
+normalBtn.onclick=()=>{
+  selectedImageMode=IMAGE_MODE.NORMAL;
   normalBtn.classList.add("active");
   mode360Btn.classList.remove("active");
 };
 
-mode360Btn.onclick = () => {
-  selectedImageMode = IMAGE_MODE.DEG360;
+mode360Btn.onclick=()=>{
+  selectedImageMode=IMAGE_MODE.DEG360;
   mode360Btn.classList.add("active");
   normalBtn.classList.remove("active");
 };
 
-playBtn.onclick = () => {
-  localStorage.setItem("selectedBiome", currentBiome);
-  localStorage.setItem("selectedImageMode", selectedImageMode);
-  window.location.href = "game.html";
+playBtn.onclick=()=>{
+  const biomeKey=BIOME_KEY_MAP[currentBiome]||"safeShallows";
+  sessionStorage.setItem("username",usernameInput.value.trim()||"Unknown");
+  localStorage.setItem("selectedImageMode",selectedImageMode==="360"?"360":"normal");
+  localStorage.setItem("selectedBiomeDisplay",currentBiome);
+  localStorage.setItem("selectedBiomeKey",biomeKey==="entire_map"?"safeShallows":biomeKey);
+  localStorage.setItem("selectedBiomeKeys",JSON.stringify(biomeKey==="entire_map"?[]:[biomeKey]));
+  window.location.href="game.html";
 };
 
-function openUpdateNotes() {
+function openUpdateNotes(){
   fadeOutDashboard();
-  backButton.style.display = "block";
-  setTimeout(() => {
-    updateNotes.style.display = "flex";
+  backButton.style.display="block";
+  setTimeout(()=>{
+    updateNotes.style.display="flex";
     updateNotes.classList.add("active");
-  }, 400);
+  },400);
 }
 
-function returnToDashboard() {
+function returnToDashboard(){
   leaderboard.classList.remove("active");
   updateNotes.classList.remove("active");
-
-  setTimeout(() => {
-    leaderboard.style.display = "none";
-    updateNotes.style.display = "none";
-
-    document.body.style.backgroundImage = `url('${defaultBg}')`;
-    backButton.style.display = "none";
-
-    container.style.display = "flex";
-    entireWrapper.style.display = "flex";
-
-    setTimeout(() => {
-      container.style.opacity = "1";
-      entireWrapper.style.opacity = "1";
-    }, 50);
-  }, 300);
+  setTimeout(()=>{
+    leaderboard.style.display="none";
+    updateNotes.style.display="none";
+    document.body.style.backgroundImage="url('Background/DashboardBackground.png')";
+    backButton.style.display="none";
+    container.style.display="flex";
+    entireWrapper.style.display="flex";
+    setTimeout(()=>{
+      container.style.opacity="1";
+      entireWrapper.style.opacity="1";
+    },50);
+  },300);
 }
-
-renderBiomeRows();
 </script>
 
 </body>
