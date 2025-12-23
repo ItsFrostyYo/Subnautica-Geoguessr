@@ -4388,5 +4388,15 @@
     "roll": -5.0,
     "biome": "UnderwaterIslands",
     "image": "Images360/-407;-186;841;UnderwaterIslands.png"
+  },
+  {
+    "x": -768.0,
+    "y": -189.0,
+    "z": 999.0,
+    "pitch": 58.0,
+    "yaw": 74.0,
+    "roll": -5.0,
+    "biome": "bloodKelpTwo",
+    "image": "Images360/-768;-189;999;bloodKelpTwo.png"
   }
 ]
