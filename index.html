@@ -179,6 +179,45 @@ header p { font-size: 1.1rem; }
   cursor: pointer;
 }
 
+.version-inline button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 18px #00ffff;
+}
+
+.discord-inline {
+  position: absolute;
+  right: calc(50% + 520px); /* slightly LEFT of version */
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.discord-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 2px solid #5865F2; /* Discord brand color */
+  border-radius: 12px;
+  background: none;
+  color: #5865F2;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.discord-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.discord-button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 16px #5865F2;
+}
+
 .credits-inline {
   position: absolute;
   left: calc(50% + 360px);
@@ -329,6 +368,16 @@ header p { font-size: 1.1rem; }
     <button onclick="openUpdateNotes()">Update Notes</button>
   </div>
 
+  <div class="discord-inline">
+  <button
+    class="discord-button"
+    onclick="window.open('https://discord.gg/mgBkWZeGpG', '_blank')"
+  >
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" alt="Discord">
+    Join the Discord!
+  </button>
+</div>
+  
   <button class="entire-map" onclick="selectBiome('Entire Map')">
     The Entire Subnautica Map 🗺️
   </button>
