@@ -6,13 +6,13 @@
 
   <!-- Primary Title & Description -->
   <title>Guess Locations Across the Subnautica Map!</title>
-  <meta name="description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.2.30-Beta)" />
+  <meta name="description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.3.1-Beta)" />
   <meta name="keywords" content="Subnautica, GeoGuessr, Subnautica GeoGuessr, SubnauticaGeoguessr, Subnautica Biomes, SubnauticaBiomes, Subnautica Game, Subnautica Fan Game, Subnautica FanGame, Exploration, Ocean Game" />
   <meta name="author" content="ItsFrosti, Sprinter_31" />
 
   <!-- Open Graph / Discord / Facebook -->
   <meta property="og:title" content="Geonautica | Guess Locations Across the Subnautica Map!" />
-  <meta property="og:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.2.30-Beta)" />
+  <meta property="og:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.3.1-Beta)" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://geonautica.netlify.app/" />
   <meta property="og:image" content="https://itsfrostyyo.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
@@ -21,7 +21,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Geonautica | Guess Locations Across the Subnautica Map!" />
-  <meta name="twitter:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.2.30-Beta)" />
+  <meta name="twitter:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.3.1-Beta)" />
   <meta name="twitter:image" content="https://itsfrostyyo.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
 
   <!-- Favicon & Mobile Icons -->
@@ -324,8 +324,8 @@ header p { font-size: 1.1rem; }
 <div class="entire-map-wrapper" id="entire-map-wrapper">
   <div class="version-inline">
     <strong>Version</strong><br>
-    0.2.30-Beta<br>
-    December 22, 2025<br>
+    0.3.1-Beta<br>
+    December 23, 2025<br>
     <button onclick="openUpdateNotes()">Update Notes</button>
   </div>
 
@@ -369,8 +369,8 @@ header p { font-size: 1.1rem; }
 
   <!-- RIGHT CARD -->
   <div class="notes-column update-notes-card">
-    <h3>Version 0.3.0-Beta of December 23, 2025</h3>
-    <p>This update added the Current Location Coverage Map that Auto Updates Each New Update Keeping the Coverage Full Visable</p>
+    <h3>Version 0.3.1-Beta of December 23, 2025</h3>
+    <p>This update fixed the biomes to be tied to all correct ingame names so when played it shows all images from the biome.</p>
 
     <p>
       <strong>Current Biomes:</strong><br>
@@ -379,6 +379,10 @@ header p { font-size: 1.1rem; }
     </p>
 
     <h3>PAST Update Notes</h3>
+    <h4>Version 0.3.0-Beta of December 23, 2025</h4>
+    <p>
+      This update added the Current Location Coverage Map that Auto Updates Each New Update Keeping the Coverage Full Visable.
+    </p>
     <h4>Version 0.2.30-Beta of December 22, 2025</h4>
     <p>
       This Update Added the Sparse Reef Biome.
@@ -400,15 +404,46 @@ const IMAGE_MODE = { NORMAL: "normal", DEG360: "360" };
 let selectedImageMode = IMAGE_MODE.NORMAL;
 let currentBiome = null;
 
-const BIOME_KEY_MAP = {
-  "Safe Shallows":"safeShallows","Kelp Forest":"kelpForest","Grassy Plateaus":"grassyPlateaus",
-  "Mushroom Forest":"mushroomForest","Bulb Zone":"bulbZone","Blood Kelp":"bloodKelp",
-  "Underwater Islands":"underwaterIslands","Crag Field":"cragField","Sparse Reef":"sparseReef",
-  "Mountains":"mountains","Grand Reef":"grandReef","Sea Treaders Path":"seaTreadersPath",
-  "Dunes":"dunes","Crash Zone":"crashZone","Floating Island":"floatingIsland",
-  "Jellyshroom Caves":"jellyshroom","Lost River":"lostRiver",
-  "Inactive Lava Zone":"inactiveLavaZone","Active Lava Zone":"lavaLakes",
-  "Alien Base":"alienBase","Entire Map":"entire_map"
+// Biome name mapping
+const biomeKeys = {
+  "Safe Shallows": ["Safe Shallows", "safeShallows"],
+  "Kelp Forest": ["Kelp Forest", "kelpForest"],
+  "Grassy Plateaus": ["Grassy Plateaus", "GrassyPlateus", "grassyPlateaus"],
+  "Mushroom Forest": ["Mushroom Forest", "mushroomForest"],
+  "Bulb Zone": ["Koosh Zone", "kooshZone"],
+  "Blood Kelp": [
+    "Blood Kelp", "bloodKelp",
+    "Blood Kelp Two", "bloodKelpTwo",
+    "BloodKelpTwo_Cave", "Bloodkelp_DeepTrench",
+    "BloodKelp_Cave", "BloodKelp_Trench"
+  ],
+  "Underwater Islands": ["Underwater Islands", "underwaterIslands"],
+  "Crag Field": ["Crag Field", "CragField", "cragField"],
+  "Sparse Reef": ["Sparse Reef", "SparseReef", "sparseReef", "SparseReef_Deep"],
+  "Mountains": ["Mountains", "mountains"],
+  "Grand Reef": ["Grand Reef", "GrandReef", "grandReef", "deepGrandReef"],
+  "Sea Treaders Path": ["Sea Treaders Path", "SeaTreaderPath", "seaTreaderPath"],
+  "Dunes": ["Dunes", "dunes"],
+  "Crash Zone": ["Crash Zone", "CrashZone", "crashZone"],
+  "Floating Island": ["Floating Island", "FloatingIsland", "floatingIsland"],
+  "Jellyshroom Caves": ["Jellyshroom Caves", "JellyshroomCaves", "JellyShroomCaves"],
+  "Lost River": [
+    "LostRiver_Junction", "LostRiver_Corridor",
+    "LostRiver_GhostTree_Lower", "LostRiver_GhostTree_Skeleton",
+    "LostRiver_GhostTree", "LostRiver_TreeCove",
+    "LostRiver_BonesField", "LostRiver_Canyon",
+    "LostRiver_SkeletonCave"
+  ],
+  "Inactive Lava Zone": [
+    "ILZCastleChamber", "ILZCastleTunnel",
+    "ILZChamber", "ILZChamber_Dragon",
+    "LavaPit", "ILZCorridor"
+  ],
+  "Active Lava Zone": [
+    "LavaFalls", "LavaLakes", "ALZChamber", "LavaPit"
+  ],
+  "Alien Base": ["Alien", "Base"],
+  "Entire Map": ["Entire Map"]
 };
 
 const container = document.getElementById("gamemode-container");
@@ -482,14 +517,32 @@ mode360Btn.onclick=()=>{
   normalBtn.classList.remove("active");
 };
 
-playBtn.onclick=()=>{
-  const biomeKey=BIOME_KEY_MAP[currentBiome]||"safeShallows";
-  sessionStorage.setItem("username",usernameInput.value.trim()||"Unknown");
-  localStorage.setItem("selectedImageMode",selectedImageMode==="360"?"360":"normal");
-  localStorage.setItem("selectedBiomeDisplay",currentBiome);
-  localStorage.setItem("selectedBiomeKey",biomeKey==="entire_map"?"safeShallows":biomeKey);
-  localStorage.setItem("selectedBiomeKeys",JSON.stringify(biomeKey==="entire_map"?[]:[biomeKey]));
-  window.location.href="game.html";
+playBtn.onclick = () => {
+  const biomeList = biomeKeys[currentBiome] || [];
+
+  sessionStorage.setItem(
+    "username",
+    usernameInput.value.trim() || "Unknown"
+  );
+
+  localStorage.setItem(
+    "selectedImageMode",
+    selectedImageMode === "360" ? "360" : "normal"
+  );
+
+  localStorage.setItem("selectedBiomeDisplay", currentBiome);
+
+  // If Entire Map, send empty list (game already handles this)
+  if (currentBiome === "Entire Map") {
+    localStorage.setItem("selectedBiomeKeys", JSON.stringify([]));
+  } else {
+    localStorage.setItem(
+      "selectedBiomeKeys",
+      JSON.stringify(biomeList)
+    );
+  }
+
+  window.location.href = "game.html";
 };
 
 function openUpdateNotes(){
