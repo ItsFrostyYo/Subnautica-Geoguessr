@@ -7838,5 +7838,15 @@
     "roll": -10.0,
     "biome": "dunes",
     "image": "Images360/-1112;-428;1550;dunes.png"
+  },
+  {
+    "x": -1171.0,
+    "y": -430.0,
+    "z": 1700.0,
+    "pitch": 27.0,
+    "yaw": 70.0,
+    "roll": -8.0,
+    "biome": "dunes",
+    "image": "Images360/-1171;-430;1700;dunes.png"
   }
 ]
