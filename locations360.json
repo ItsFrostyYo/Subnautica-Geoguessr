@@ -8698,5 +8698,15 @@
     "roll": -19.0,
     "biome": "GrassyPlateaus",
     "image": "Images360/451;-109;142;GrassyPlateaus.png"
+  },
+  {
+    "x": -162.0,
+    "y": -50.0,
+    "z": 312.0,
+    "pitch": 21.0,
+    "yaw": -5.0,
+    "roll": -19.0,
+    "biome": "grassyPlateaus",
+    "image": "Images360/-162;-50;312;grassyPlateaus.png"
   }
 ]
