@@ -5888,5 +5888,15 @@
     "roll": 2.0,
     "biome": "mountains",
     "image": "Images360/485;-275;1554;mountains.png"
+  },
+  {
+    "x": 519.0,
+    "y": -283.0,
+    "z": 1602.0,
+    "pitch": 18.0,
+    "yaw": 106.0,
+    "roll": -3.0,
+    "biome": "mountains",
+    "image": "Images360/519;-283;1602;mountains.png"
   }
 ]
