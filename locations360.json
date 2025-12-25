@@ -9718,5 +9718,15 @@
     "roll": 3.0,
     "biome": "kooshZone",
     "image": "Images360/1194;-225;653;kooshZone.png"
+  },
+  {
+    "x": 1212.0,
+    "y": -217.0,
+    "z": 677.0,
+    "pitch": 30.0,
+    "yaw": -63.0,
+    "roll": 3.0,
+    "biome": "kooshZone",
+    "image": "Images360/1212;-217;677;kooshZone.png"
   }
 ]
