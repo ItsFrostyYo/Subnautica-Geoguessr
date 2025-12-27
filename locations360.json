@@ -12550,13 +12550,13 @@
     "image": "Images360/-323;-335;1056;underwaterIslands.png"
   },
   {
-    "x": -280.0,
-    "y": -336.0,
-    "z": 1156.0,
-    "pitch": 30.0,
-    "yaw": 117.0,
+    "x": -273.0,
+    "y": -337.0,
+    "z": 1173.0,
+    "pitch": 37.0,
+    "yaw": 72.0,
     "roll": 0.0,
     "biome": "underwaterIslands",
-    "image": "Images360/-280;-336;1156;underwaterIslands.png"
+    "image": "Images360/-273;-337;1173;underwaterIslands.png"
   }
 ]
