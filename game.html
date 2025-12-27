@@ -20,52 +20,68 @@
   #loadingScreen.visible{opacity:1;pointer-events:all}.spinner{width:60px;height:60px;border:5px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .9s linear infinite;margin-bottom:15px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-#compass {
+#compassBar {
   position: fixed;
-  top: 55px; /* below Round Display/Timer */
-  left: 15px;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, #111 60%, #000 100%);
-  border: 2px solid #0ff;
-  z-index: 90;
-  pointer-events: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-#compass .pointer {
-  position: absolute;
-  top: 50%;
+  top: 100px; /* moved down from 60px to avoid overlap */
   left: 50%;
-  width: 4px;
-  height: 28px;
-  background: #ff5555;
-  transform: translate(-50%, -50%);
-  z-index: 10;
+  transform: translateX(-50%);
+  width: 540px; /* 360 * 1.5 */
+  height: 27px; /* 18 * 1.5 */
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid #0ff;
+  border-radius: 13.5px; /* 50% of height */
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 0 12px #0ff50a33 inset;
 }
 
-#compass .labels {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-origin: center center; /* rotate the whole compass */
-}
-
-#compass .labels div {
-  position: absolute;
-  font-size: 14px;
+#compassBar .compassLabels {
+  display: flex;
+  white-space: nowrap;
+  font-size: 18px; /* 12 * 1.5 */
   color: #0ff;
   font-weight: bold;
+  align-items: center;
+  height: 100%;
+  margin-left: -48px; /* shift left by half a label width */
 }
 
-#compass .north { top: 4%; left: 50%; transform: translateX(-50%); }
-#compass .south { bottom: 4%; left: 50%; transform: translateX(-50%); }
-#compass .east  { top: 50%; right: 4%; transform: translateY(-50%); }
-#compass .west  { top: 50%; left: 4%; transform: translateY(-50%); }
+#compassBar .compassLabels span {
+  flex: 0 0 67.5px; /* 45 * 1.5 */
+  text-align: center;
+}
+
+#compassBar .pointer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px; /* 2 * 1.5 */
+  height: 100%;
+  background: #ff5555;
+  box-shadow: 0 0 7.5px #ff5555;
+  z-index: 10;
+  border-radius: 1.5px;
+}
+
+#back-button {
+  position: fixed;
+  top: 20px;
+  left: 22px;
+  display: block; /* make it visible always */
+  border: 2px solid #00ffff;
+  border-radius: 12px;
+  padding: 8px 18px;
+  background: none;
+  color: #00ffff;
+  cursor: pointer;
+  z-index: 999;
+}
+
+#back-button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 18px #00ffff;
+}
 
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -79,14 +95,15 @@
 
   <div id="viewer" style="width: 100vw; height: 100vh;"></div>
 
-<div id="compass">
-  <div class="pointer"></div>
-  <div class="labels">
-    <div class="north">N</div>
-    <div class="south">S</div>
-    <div class="east">E</div>
-    <div class="west">W</div>
+<div id="compassBar">
+  <div class="compassLabels">
+    <!-- repeated twice to allow smooth sliding -->
+    <span>N</span><span>NE</span><span>E</span><span>SE</span><span>S</span><span>SW</span><span>W</span><span>NW</span>
+    <span>N</span><span>NE</span><span>E</span><span>SE</span><span>S</span><span>SW</span><span>W</span><span>NW</span>
   </div>
+  <div class="pointer"></div>
+</div>
+
 </div>
 
 
@@ -123,7 +140,10 @@
     <div id="summaryText"></div>
     <div id="summaryButtons" style="margin-top:12px;"></div>
     <button id="restartBtn" style="display:none;">Play Again</button>
+ 
   </div>
+
+  <button id="back-button">← Exit to Dashboard</button>
 
 <script type="module">
 import { Viewer } from '@photo-sphere-viewer/core';
@@ -154,15 +174,6 @@ import { GameMap } from './GameMap.js';
   const summaryText = document.getElementById('summaryText');
   const summaryButtons = document.getElementById('summaryButtons');
   const result = document.getElementById('result');
-
-  const backBtn = document.createElement("button");
-  backBtn.textContent = "Back to Menu";
-  backBtn.style.position = "fixed";
-  backBtn.style.top = "15px";
-  backBtn.style.right = "15px";
-  backBtn.style.zIndex = "999";
-  backBtn.onclick = () => window.location.href = "index.html";
-  document.body.appendChild(backBtn);
 
   const viewer = new Viewer({
         container: document.querySelector('#viewer'),
@@ -457,16 +468,26 @@ function initMap(){
 document.getElementById('submit').addEventListener('click',submitGuess);
 document.addEventListener('keydown',e=>{if(e.code==='Space'&&summaryOverlay.style.display==='none'&&!roundLocked)submitGuess();});
 
-const compassLabels = document.querySelector('#compass .labels');
-
+const compassLabels = document.querySelector('#compassBar .compassLabels');
+const barWidth = 540; // matches updated CSS width
 viewer.addEventListener('position-updated', (e) => {
-  // camera yaw in degrees
   let yawDeg = e.position.yaw * (180 / Math.PI);
 
-  // rotate the compass opposite to the camera
-  compassLabels.style.transform = `rotate(${-yawDeg}deg)`;
+  if (yawDeg < 0) yawDeg += 360;
+
+  const shift = -yawDeg * (barWidth / 360);
+  compassLabels.style.transform = `translateX(${shift}px)`;
 });
 
+const backButton = document.getElementById('back-button');
+backButton.addEventListener('click', () => {
+  // hide overlays if needed
+  document.getElementById('summaryOverlay').style.display = 'none';
+  document.getElementById('compassBar').style.display = 'none';
+  
+  // go back to dashboard
+  window.location.href = "index.html";
+});
 
 const img=new Image();
 img.onload=()=>{initMap();loadLocations();};
