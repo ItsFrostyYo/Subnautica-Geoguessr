@@ -12748,5 +12748,15 @@
     "roll": -1.0,
     "biome": "UnderwaterIslands",
     "image": "Images360/-322;-41;841;UnderwaterIslands.png"
+  },
+  {
+    "x": -162.0,
+    "y": -54.0,
+    "z": 675.0,
+    "pitch": 28.0,
+    "yaw": 87.0,
+    "roll": 0.0,
+    "biome": "kelpForest",
+    "image": "Images360/-162;-54;675;kelpForest.png"
   }
 ]
