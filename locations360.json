@@ -12068,5 +12068,15 @@
     "roll": -8.0,
     "biome": "bloodKelpTwo",
     "image": "Images360/-367;-359;1219;bloodKelpTwo.png"
+  },
+  {
+    "x": -344.0,
+    "y": -344.0,
+    "z": 1218.0,
+    "pitch": 49.0,
+    "yaw": 123.0,
+    "roll": -8.0,
+    "biome": "bloodKelpTwo",
+    "image": "Images360/-344;-344;1218;bloodKelpTwo.png"
   }
 ]
