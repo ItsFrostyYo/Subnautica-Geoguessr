@@ -12598,5 +12598,15 @@
     "roll": 2.0,
     "biome": "underwaterIslands",
     "image": "Images360/-239;-361;1210;underwaterIslands.png"
+  },
+  {
+    "x": -179.0,
+    "y": -352.0,
+    "z": 1238.0,
+    "pitch": 20.0,
+    "yaw": -120.0,
+    "roll": -5.0,
+    "biome": "underwaterIslands",
+    "image": "Images360/-179;-352;1238;underwaterIslands.png"
   }
 ]
