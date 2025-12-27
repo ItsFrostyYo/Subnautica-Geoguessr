@@ -13588,5 +13588,15 @@
     "roll": -3.0,
     "biome": "seaTreaderPath",
     "image": "Images360/-1590;-376;-457;seaTreaderPath.png"
+  },
+  {
+    "x": -1523.0,
+    "y": -337.0,
+    "z": -463.0,
+    "pitch": 8.0,
+    "yaw": 4.0,
+    "roll": -3.0,
+    "biome": "seaTreaderPath",
+    "image": "Images360/-1523;-337;-463;seaTreaderPath.png"
   }
 ]
