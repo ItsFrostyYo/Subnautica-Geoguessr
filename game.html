@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Subnautica GeoGuessr — Web Edition (Smooth Zoom Update)</title>
+<title>Geonautica | In Round(s) (Update 0.6.0-Beta of December 27, 2025)</title>
 <style>
   html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
   #viewer {width:100%;height:100%;}
@@ -175,6 +175,76 @@ import { GameMap } from './GameMap.js';
   const summaryButtons = document.getElementById('summaryButtons');
   const result = document.getElementById('result');
 
+  const BIOME_SCORING_RULES = {
+  SMALL: {
+    radius: 10,
+    scale: 4.50,
+    keys: [
+      "Safe Shallows",
+      "Kelp Forest",
+      "Sparse Reef",
+      "Sea Treaders Path",
+      "Floating Island",
+      "Alien Base"
+    ]
+  },
+
+  MEDIUM: {
+    radius: 17,
+    scale: 4.40,
+    keys: [
+      "Blood Kelp",
+      "Underwater Islands",
+      "Bulb Zone",
+      "Mushroom Forest",
+      "Crag Field"
+    ]
+  },
+
+  LARGE: {
+    radius: 20,
+    scale: 4.30,
+    keys: [
+      "Dunes",
+      "Mountains",
+      "Crash Zone",
+      "Grand Reef",
+      "Jellyshroom Caves",
+      "Lost River",
+      "Active Lava Zone",
+      "Inactive Lava Zone"
+    ]
+  },
+
+  ENTIRE_MAP: {
+    radius: 17,
+    scale: 4.35
+  }
+};
+
+function getBiomeScoring() {
+  const biome = localStorage.getItem("selectedBiomeDisplay");
+
+  if (biome === "Entire Map") {
+    return BIOME_SCORING_RULES.ENTIRE_MAP;
+  }
+
+  if (BIOME_SCORING_RULES.SMALL.keys.includes(biome)) {
+    return BIOME_SCORING_RULES.SMALL;
+  }
+
+  if (BIOME_SCORING_RULES.MEDIUM.keys.includes(biome)) {
+    return BIOME_SCORING_RULES.MEDIUM;
+  }
+
+  if (BIOME_SCORING_RULES.LARGE.keys.includes(biome)) {
+    return BIOME_SCORING_RULES.LARGE;
+  }
+
+  // fallback safety
+  return BIOME_SCORING_RULES.MEDIUM;
+}
+
   const viewer = new Viewer({
         container: document.querySelector('#viewer'),
         panorama: 'Background/DashboardBackground.png',
@@ -219,7 +289,12 @@ import { GameMap } from './GameMap.js';
   }
 
   function distanceWorld(a,b,c,d){return Math.hypot(a-c,b-d);}
-  function scoreFromDistance(d){const max=5000;if(d<=10)return max;return Math.round(Math.max(0,max-(d-10)*4.50));}
+  function scoreFromDistance(distance) {
+  const { radius, scale } = getBiomeScoring();
+
+  if (distance <= radius) return 5000;
+  return Math.max(0, Math.round(5000 - (distance - radius) * scale));
+}
 
     async function getLatestCommitSha({
   owner = 'ItsFrostyYo',
@@ -426,7 +501,7 @@ function submitGuess(){
   mapLocked=true;roundLocked=true;
   const actual=places[current].coords;
   const d=distanceWorld(actual.x,actual.z,map.guessMarker.x,map.guessMarker.y);
-  const s=scoreFromDistance(d);
+  const s = scoreFromDistance(d, places[current].biome);
   totalScore+=s;
   result.textContent=`Distance: ${Math.round(d)} m — Score: ${s}`;
 
