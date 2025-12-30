@@ -15378,5 +15378,15 @@
     "roll": -3.0,
     "biome": "grandReef",
     "image": "Images360/19;-408;-1689;grandReef.png"
+  },
+  {
+    "x": 62.0,
+    "y": -383.0,
+    "z": -1646.0,
+    "pitch": 15.0,
+    "yaw": -64.0,
+    "roll": -3.0,
+    "biome": "CragField",
+    "image": "Images360/62;-383;-1646;CragField.png"
   }
 ]
