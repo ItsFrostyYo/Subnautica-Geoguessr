@@ -13858,5 +13858,15 @@
     "roll": -10.0,
     "biome": "seaTreaderPath",
     "image": "Images360/-1628;-345;-791;seaTreaderPath.png"
+  },
+  {
+    "x": 9.0,
+    "y": -144.0,
+    "z": -882.0,
+    "pitch": 17.0,
+    "yaw": -84.0,
+    "roll": 0.0,
+    "biome": "CragField",
+    "image": "Images360/9;-144;-882;CragField.png"
   }
 ]
