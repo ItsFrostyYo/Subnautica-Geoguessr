@@ -15160,13 +15160,13 @@
     "image": "Images360/-453;-340;-1415;grandReef.png"
   },
   {
-    "x": -550.0,
-    "y": -298.0,
-    "z": -1402.0,
-    "pitch": 33.0,
-    "yaw": -116.0,
+    "x": -561.0,
+    "y": -276.0,
+    "z": -1450.0,
+    "pitch": 35.0,
+    "yaw": 10.0,
     "roll": -1.0,
     "biome": "grandReef",
-    "image": "Images360/-550;-298;-1402;grandReef.png"
+    "image": "Images360/-561;-276;-1450;grandReef.png"
   }
 ]
