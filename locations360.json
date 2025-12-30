@@ -14488,5 +14488,15 @@
     "roll": -8.0,
     "biome": "grandReef",
     "image": "Images360/-401;-142;-695;grandReef.png"
+  },
+  {
+    "x": -435.0,
+    "y": -171.0,
+    "z": -764.0,
+    "pitch": 41.0,
+    "yaw": 162.0,
+    "roll": -8.0,
+    "biome": "grandReef",
+    "image": "Images360/-435;-171;-764;grandReef.png"
   }
 ]
