@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Title & Description -->
-  <title>Geonautica | On Dashboard (Update 0.7.0-Beta of January 7, 2026)</title>
-  <meta name="description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.7.0-Beta)" />
+  <title>Geonautica | On Dashboard (Update 0.7.5-Beta of January 17, 2026)</title>
+  <meta name="description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.7.5-Beta)" />
   <meta name="keywords" content="Subnautica, GeoGuessr, Subnautica GeoGuessr, SubnauticaGeoguessr, Subnautica Biomes, SubnauticaBiomes, Subnautica Game, Subnautica Fan Game, Subnautica FanGame, Exploration, Ocean Game" />
   <meta name="author" content="ItsFrosti, Sprinter_31" />
 
   <!-- Open Graph / Discord / Facebook -->
   <meta property="og:title" content="Geonautica | Guess Locations Across the Subnautica Map!" />
-  <meta property="og:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.7.0-Beta)" />
+  <meta property="og:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.7.5-Beta)" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://geonautica.netlify.app/" />
   <meta property="og:image" content="https://itsfrostyyo.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
@@ -21,7 +21,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Geonautica | Guess Locations Across the Subnautica Map!" />
-  <meta name="twitter:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.7.0-Beta)" />
+  <meta name="twitter:description" content="Dive into the Depths of Geonautica! Test your Location Knowledge across iconic Subnautica Biomes. (Version 0.7.5-Beta)" />
   <meta name="twitter:image" content="https://itsfrostyyo.github.io/Subnautica-Geoguessr/Background/DashboardBackground.png" />
 
   <!-- Favicon & Mobile Icons -->
@@ -354,7 +354,7 @@ header p { font-size: 1.1rem; }
   <h1>Geonautica</h1>
   <p>Guess Subnautica Locations Across the Entire Subnautica Map</p>
   <div class="username-container" id="username-container">
-    <input id="username-input" placeholder="Please Enter Username to Continue">
+    <input id="username-input" placeholder="Enter a Username (Not Priority)">
   </div>
 </header>
 
@@ -363,8 +363,8 @@ header p { font-size: 1.1rem; }
 <div class="entire-map-wrapper" id="entire-map-wrapper">
   <div class="version-inline">
     <strong>Version</strong><br>
-    0.7.0-Beta<br>
-    December 27, 2025<br>
+    0.7.5-Beta<br>
+    January 17, 2025<br>
     <button onclick="openUpdateNotes()">Update Notes</button>
   </div>
 
@@ -385,7 +385,7 @@ header p { font-size: 1.1rem; }
   <div class="credits-inline">
     <strong>Credits</strong><br>
     Main Devs – ItsFrosti, Sprinter_31<br>
-    Testers – Spudato_64
+    Testers – Spudato_64, Whotag
   </div>
 </div>
 
@@ -418,8 +418,8 @@ header p { font-size: 1.1rem; }
 
   <!-- RIGHT CARD -->
   <div class="notes-column update-notes-card">
-    <h3>Version 0.7.0-Beta of January 7, 2026</h3>
-    <p>This update Added the Grand Reef Biome</p>
+    <h3>Version 0.7.5-Beta of January 17, 2026</h3>
+    <p>Removed the Username as a Priority (Not Useful because of no Leaderboard)</p>
 
     <p>
       <strong>Current Biomes:</strong><br>
@@ -429,18 +429,18 @@ header p { font-size: 1.1rem; }
     </p>
 
     <h3>PAST Update Notes</h3>
+    <h4>Version 0.7.0-Beta of January 7, 2026</h4>
+    <p>
+      This update Added the Grand Reef Biome
+    </p>
     <h4>Version 0.6.1-Beta of December 29, 2025</h4>
     <p>
       Updated Score and Distance Range
     </p>
+
     <h4>Version 0.6.0-Beta of December 27, 2025</h4>
     <p>
       Compass Added to the Game. 😀
-    </p>
-
-    <h4>Version 0.5.0-Beta of December 27, 2025</h4>
-    <p>
-      This update Added the Sea Treaders Path Biome.
     </p>
   </div>
 
@@ -536,21 +536,23 @@ function fadeOutDashboard(){
   },400);
 }
 
-function selectBiome(name){
-  if(!usernameInput.value.trim()){
-    alert("Please enter a username first!");
-    return;
-  }
-  currentBiome=name;
-  backButton.style.display="block";
-  document.body.style.backgroundImage=
-    name==="Entire Map"?"url('Background/DashboardBackground.png')":`url('Background/${name}.jpg')`;
+ function selectBiome(name){
+  currentBiome = name;
+
+  backButton.style.display = "block";
+
+  document.body.style.backgroundImage =
+    name === "Entire Map"
+      ? "url('Background/DashboardBackground.png')"
+      : `url('Background/${name}.jpg')`;
+
   fadeOutDashboard();
-  setTimeout(()=>{
-    leaderboard.style.display="flex";
+
+  setTimeout(() => {
+    leaderboard.style.display = "flex";
     leaderboard.classList.add("active");
-    panelTitle.textContent=`${name} Mode Selection`;
-  },400);
+    panelTitle.textContent = `${name} Mode Selection`;
+  }, 400);
 }
 
 normalBtn.onclick=()=>{
